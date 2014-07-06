@@ -74,16 +74,6 @@ module.exports = function (grunt) {
           ]
         }
       },
-      test: {
-        options: {
-          port: 9001,
-          base: [
-            '.tmp',
-            'test',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
       dist: {
         options: {
           open: true,
@@ -120,17 +110,6 @@ module.exports = function (grunt) {
         '!<%= yeoman.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
-    },
-
-
-    // Mocha testing framework configuration options
-    mocha: {
-      all: {
-        options: {
-          run: true,
-          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
-        }
-      }
     },
 
     // Add vendor prefixed styles
@@ -231,32 +210,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //   files: {
-    //     '<%= yeoman.dist %>/styles/main.css': [
-    //     '.tmp/styles/{,*/}*.css',
-    //     '<%= yeoman.app %>/styles/{,*/}*.css'
-    //     ]
-    //   }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //   files: {
-    //     '<%= yeoman.dist %>/scripts/scripts.js': [
-    //     '<%= yeoman.dist %>/scripts/scripts.js'
-    //     ]
-    //   }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -283,14 +236,9 @@ module.exports = function (grunt) {
       }
     },
 
-
-
     // Run some tasks in parallel to speed up build process
     concurrent: {
       server: [
-        'copy:styles'
-      ],
-      test: [
         'copy:styles'
       ],
       dist: [
@@ -298,6 +246,13 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin'
       ]
+    },
+
+    karma: {
+      options: {
+        configFile: 'karma.conf.js'
+      },
+      default: {}
     }
   });
 
@@ -321,18 +276,10 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', function (target) {
-    if (target !== 'watch') {
-      grunt.task.run([
-        'clean:server',
-        'concurrent:test',
-        'autoprefixer',
-      ]);
-    }
-
+  grunt.registerTask('test', function () {
     grunt.task.run([
-      'connect:test',
-      'mocha'
+      'jshint:all',
+      'karma:default'
     ]);
   });
 
