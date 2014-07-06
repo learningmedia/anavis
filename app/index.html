@@ -1,0 +1,87 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>anavisjstest</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div data-bind="foreach: work.parts" class="work">
+            <div class="part-outer" data-bind="style: { color: category().foreground, backgroundColor: category().color, flex: length }">
+                <div class="part-inner" data-bind="text: category().name"></div>
+            </div>
+        </div>
+
+        <div id="editors" data-bind="with: work">
+            <div id="parts-editor">
+                <h3>Work</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Category</th>
+                            <th>Length</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: parts">
+                        <tr>
+                            <td><button data-bind="click: $parent.removePart">&ndash;</button></td>
+                            <td><select data-bind="options: $parent.categories, optionsText: 'name', value: category" style="width: 150px;" /></td>
+                            <td><input type="range" min="1" max="999" data-bind="value: length, valueUpdate: 'input'" style="width: 150px;" />&nbsp;&nbsp;<label data-bind="text: length" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button data-bind="click: addPart">Add part</button>
+            </div>
+            <div id="categories-editor">
+                <h3>Categories</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Color</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: categories">
+                        <tr>
+                            <td><button data-bind="click: $parent.removeCategory">&ndash;</button></td>
+                            <td><input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" style="width: 150px;" /></td>
+                            <td><input type="color" data-bind="value: color" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/knockout.js/knockout.js"></script>
+        <script src="bower_components/chroma-js/chroma.min.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
