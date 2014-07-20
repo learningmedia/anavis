@@ -27,6 +27,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      develop: {
+        files: ['app/scripts/**/*.js', 'test/**/*js'],
+        tasks: ['jshint:all', 'karma:phantom']
+      },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['jshint'],
@@ -252,7 +256,10 @@ module.exports = function (grunt) {
       options: {
         configFile: 'karma.conf.js'
       },
-      default: {}
+      default: {},
+      phantom: {
+        browsers: ['PhantomJS']
+      }
     }
   });
 
@@ -280,6 +287,12 @@ module.exports = function (grunt) {
     grunt.task.run([
       'jshint:all',
       'karma:default'
+    ]);
+  });
+
+  grunt.registerTask('develop', function () {
+    grunt.task.run([
+      'watch:develop'
     ]);
   });
 
