@@ -18,10 +18,8 @@
   "trailing": true,
   "smarttabs": true,
   "predef": [
-    "require",
-    "define",
+    "angular",
     "console",
-    "AsyncSpec",
     "describe",
     "ddescribe",
     "xdescribe",

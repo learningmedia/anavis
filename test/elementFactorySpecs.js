@@ -1,16 +1,12 @@
-define([], function() {
+(function () {
   'use strict';
 
   describe('In elementFactory', function() {
 
     var elementFactory;
-    var async = new AsyncSpec(this);
 
-    async.beforeEach(function(done) {
-      require(['core/elementFactory'], function(_elementFactory) {
-        elementFactory = _elementFactory;
-        done();
-      });
+    beforeEach(function() {
+      elementFactory = angular.injector(['core']).get('core.elementFactory');
     });
 
     describe('createPart', function () {
@@ -73,4 +69,4 @@ define([], function() {
       });
     });
   });
-});
+})();

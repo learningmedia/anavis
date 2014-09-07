@@ -4,7 +4,7 @@ define([], function () {
   describe('In commandFactory', function () {
     var commandFactory;
     var async = new AsyncSpec(this);
-    
+
     async.beforeEach(function (done) {
       require(['core/commandFactory'], function (_commandFactory) {
         commandFactory = _commandFactory;
@@ -51,7 +51,7 @@ define([], function () {
       it('should create a new command and set the part ID', function () {
         expect(command.partId).toBe(partId);
       });
-      
+
       it('should create a new command and set the new category ID', function () {
         expect(command.newCategoryId).toBe(newCategoryId);
       });

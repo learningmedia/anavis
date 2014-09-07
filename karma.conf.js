@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Sun Mar 30 2014 23:10:37 GMT+0200 (Mitteleuropäische Sommerzeit)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -10,28 +10,30 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine'],
 
 
     // list of files / patterns to load in the browser
     files: [
       'phantomjs-polyfills.js',
-      'app/bower_components/jasmine.async/lib/jasmine.async.min.js',
-      'test-main.js',
-      {pattern: 'app/bower_components/node-uuid/uuid.js', included: false},
-      {pattern: 'test/**/*Specs.js', included: false},
-      {pattern: 'app/scripts/**/*.js', included: false}
+      'app/bower_components/angular/angular.min.js',
+      'app/bower_components/angular-uuid4/angular-uuid4.min.js',
+      'app/scripts/**/*.js',
+      'test/**/*Specs.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+      'app/scripts/main.js',
+      'app/scripts/main2.js',
+      'test/commandFactorySpecs.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {    
+    preprocessors: {
     },
 
 

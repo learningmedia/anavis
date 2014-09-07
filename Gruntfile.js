@@ -256,7 +256,9 @@ module.exports = function (grunt) {
       options: {
         configFile: 'karma.conf.js'
       },
-      default: {},
+      default: {
+        browsers: ['PhantomJS']
+      },
       phantom: {
         browsers: ['PhantomJS']
       }
