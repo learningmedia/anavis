@@ -1,25 +1,33 @@
-// define([], function () {
-//   'use strict';
+(function () {
+  'use strict';
 
-//   var changePartLength = function (partId, newLength) {
-//     return {
-//       name: 'changePartLength',
-//       partId: partId,
-//       newLength: newLength
-//     };
-//   };
+  var commandFactory = function () {
 
-//   var changePartCategory = function (partId, newCategoryId) {
-//     return {
-//       name: 'changePartCategory',
-//       partId: partId,
-//       newCategoryId: newCategoryId
-//     };
-//   };
+    var changePartLength = function(partId, newLength) {
+      return {
+        name: 'changePartLength',
+        partId: partId,
+        newLength: newLength
+      };
+    };
 
-//   return {
-//     changePartLength: changePartLength,
-//     changePartCategory: changePartCategory
-// 	};
+    var changePartCategory = function(partId, newCategoryId) {
+      return {
+        name: 'changePartCategory',
+        partId: partId,
+        newCategoryId: newCategoryId
+      };
+    };
 
-// });
+    return {
+      changePartLength: changePartLength,
+      changePartCategory: changePartCategory
+    };
+  
+  };
+
+  commandFactory.$inject = [];
+
+  angular.module('core').factory('core.commandFactory', commandFactory);
+
+})();

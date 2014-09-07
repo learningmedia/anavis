@@ -1,15 +1,12 @@
-define([], function () {
+(function () {
   'use strict';
 
-  describe('In commandFactory', function () {
-    var commandFactory;
-    var async = new AsyncSpec(this);
+  describe('In commandFactory', function() {
 
-    async.beforeEach(function (done) {
-      require(['core/commandFactory'], function (_commandFactory) {
-        commandFactory = _commandFactory;
-        done();
-      });
+    var commandFactory;
+
+    beforeEach(function() {
+      commandFactory = angular.injector(['core']).get('core.commandFactory');
     });
 
     describe('changePartLength', function () {
@@ -60,4 +57,4 @@ define([], function () {
 
   });
 
-});
+})();

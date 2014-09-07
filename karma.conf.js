@@ -26,8 +26,7 @@ module.exports = function (config) {
     // list of files to exclude
     exclude: [
       'app/scripts/main.js',
-      'app/scripts/main2.js',
-      'test/commandFactorySpecs.js'
+      'app/scripts/main2.js'
     ],
 
 
