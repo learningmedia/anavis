@@ -1,12 +1,8 @@
 {
-  "name": "anavisjstest",
+  "name": "anavis",
   "private": true,
   "dependencies": {
-    "jquery": "~1.10.2",
-    "knockout.js": "~3.0.0",
     "chroma-js": "~0.5.6",
-    "requirejs": "~2.1.14",
-    "node-uuid": "~1.4.1",
     "angular": "~1.2.21",
     "angular-uuid4": "~0.2.0"
   },
