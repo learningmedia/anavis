@@ -29,11 +29,11 @@ module.exports = function (grunt) {
     watch: {
       develop: {
         files: ['app/scripts/**/*.js', 'test/**/*js'],
-        tasks: ['jshint:all', 'karma:phantom']
+        tasks: ['karma:phantom']
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        tasks: [],
         options: {
           livereload: true
         }
@@ -100,20 +100,6 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
-        '!<%= yeoman.app %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
-      ]
     },
 
     // Add vendor prefixed styles
@@ -287,7 +273,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', function () {
     grunt.task.run([
-      'jshint:all',
       'karma:default'
     ]);
   });
@@ -313,7 +298,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
     'test',
     'build'
   ]);

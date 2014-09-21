@@ -3,17 +3,17 @@
 
   var elementFactory = function (uuid4) {
 
-    var createPart = function(categoryId, length) {
+    var createPart = function(category, length, id) {
       return {
-        id: uuid4.generate(),
-        categoryId: categoryId,
+        id: id || uuid4.generate(),
+        category: category,
         length: length
       };
     };
 
-    var createCategory = function(color, name) {
+    var createCategory = function(name, color, id) {
       return {
-        id: uuid4.generate(),
+        id: id || uuid4.generate(),
         color: color,
         name: name
       };
@@ -37,6 +37,6 @@
 
   elementFactory.$inject = ['uuid4'];
 
-  angular.module('core').factory('core.elementFactory', elementFactory);
+  angular.module('core').factory('core.elementFactory', ['uuid4', elementFactory]);
 
 })();

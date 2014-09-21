@@ -12,16 +12,23 @@
     describe('createPart', function () {
 
       var part;
+      var category;
       beforeEach(function() {
-        part = elementFactory.createPart('testId', 250);
+        category = { testobject: 1 };
+        part = elementFactory.createPart(category, 250);
       });
 
       it('should create a new part and set its ID', function() {
         expect(part.id).toBeDefined();
       });
 
-      it('should create a new part and set the categoryID', function() {
-        expect(part.categoryId).toBe("testId");
+      it('should use the provided ID if defined', function() {
+        part = elementFactory.createPart(category, 250, 'some-id');
+        expect(part.id).toBe('some-id');
+      });
+
+      it('should create a new part and set the category', function() {
+        expect(part.category).toBe(category);
       });
 
       it('should create a new part and set the length', function() {
@@ -33,11 +40,16 @@
 
       var category;
       beforeEach(function () {
-        category = elementFactory.createCategory("Red", "Bridge");
+        category = elementFactory.createCategory("Bridge", "Red");
       });
 
       it('should create a new categroy and set its ID', function() {
         expect(category.id).toBeDefined();
+      });
+
+      it('should use the provided ID if defined', function() {
+        category = elementFactory.createCategory("Bridge", "Red", 'some-id');
+        expect(category.id).toBe('some-id');
       });
 
       it('should create a new categroy and set its color', function () {
