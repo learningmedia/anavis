@@ -1,55 +1,56 @@
 (function () {
   'use strict';
 
-  describe('In commandFactory', function() {
+  describe('In commandFactory', () => {
 
-    var commandFactory;
-
-    beforeEach(function() {
+    let commandFactory;
+    beforeEach(() => {
       commandFactory = angular.injector(['core']).get('core.commandFactory');
     });
 
-    describe('changePartLength', function () {
-      var partId = 'some-fake-part-id';
-      var newLength = 120;
-      var command;
+    describe('changePartLength', () => {
 
-      beforeEach(function () {
+      const partId = 'some-fake-part-id';
+      const newLength = 120;
+      let command;
+
+      beforeEach(() => {
         command = commandFactory.changePartLength(partId, newLength);
       });
 
-      it('should create a new command and set the command name', function () {
+      it('should create a new command and set the command name', () => {
         expect(command.name).toBe('changePartLength');
       });
 
-      it('should create a new command and set the part ID', function () {
+      it('should create a new command and set the part ID', () => {
         expect(command.partId).toBe(partId);
       });
 
-      it('should create a new command and set the new length', function () {
+      it('should create a new command and set the new length', () => {
         expect(command.newLength).toBe(newLength);
       });
 
     });
 
-    describe('changePartCategory', function () {
-      var partId = 'some-fake-part-id';
-      var newCategoryId = 'some-fake-category-id';
-      var command;
+    describe('changePartCategory', () => {
 
-      beforeEach(function () {
+      const partId = 'some-fake-part-id';
+      const newCategoryId = 'some-fake-category-id';
+      let command;
+
+      beforeEach(() => {
         command = commandFactory.changePartCategory(partId, newCategoryId);
       });
 
-      it('should create a new command and set the command name', function () {
+      it('should create a new command and set the command name', () => {
         expect(command.name).toBe('changePartCategory');
       });
 
-      it('should create a new command and set the part ID', function () {
+      it('should create a new command and set the part ID', () => {
         expect(command.partId).toBe(partId);
       });
 
-      it('should create a new command and set the new category ID', function () {
+      it('should create a new command and set the new category ID', () => {
         expect(command.newCategoryId).toBe(newCategoryId);
       });
 

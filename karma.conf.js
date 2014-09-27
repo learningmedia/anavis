@@ -1,5 +1,4 @@
-// Karma configuration
-// Generated on Sun Mar 30 2014 23:10:37 GMT+0200 (Mitteleuropäische Sommerzeit)
+'use strict';
 
 module.exports = function (config) {
   config.set({
@@ -15,7 +14,6 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'phantomjs-polyfills.js',
       'app/bower_components/angular/angular.min.js',
       'app/bower_components/angular-uuid4/angular-uuid4.min.js',
       'app/scripts/**/*.js',
@@ -60,11 +58,20 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', "Firefox"],
+    browsers: ['ChromeHarmony'],
+
+
+    customLaunchers: {
+      ChromeHarmony: {
+        base: 'ChromeCanary',
+        flags: ['--javascript-harmony']
+      }
+    },
+
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: false
   });
 };

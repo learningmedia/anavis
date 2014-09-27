@@ -1,31 +1,31 @@
 (function () {
   'use strict';
 
-  var elementFactory = function (uuid4) {
+  function elementFactory(uuid4) {
 
-    var createPart = function(category, length, id) {
+    function createPart(category, length, id) {
       return {
         id: id || uuid4.generate(),
         category: category,
         length: length
       };
-    };
+    }
 
-    var createCategory = function(name, color, id) {
+    function createCategory(name, color, id) {
       return {
         id: id || uuid4.generate(),
         color: color,
         name: name
       };
-    };
+    }
 
-    var createWork = function () {
+    function createWork() {
       return {
         id: uuid4.generate(),
         parts: [],
         categories: []
       };
-    };
+    }
 
     return {
       createPart: createPart,
@@ -33,7 +33,7 @@
       createWork: createWork
     };
 
-  };
+  }
 
   elementFactory.$inject = ['uuid4'];
 

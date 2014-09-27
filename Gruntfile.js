@@ -1,11 +1,4 @@
-// Generated on 2014-04-12 using generator-webapp 0.4.7
 'use strict';
-
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
 
@@ -29,7 +22,7 @@ module.exports = function (grunt) {
     watch: {
       develop: {
         files: ['app/scripts/**/*.js', 'test/**/*js'],
-        tasks: ['karma:phantom']
+        tasks: ['karma:default']
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -243,10 +236,7 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js'
       },
       default: {
-        browsers: ['PhantomJS']
-      },
-      phantom: {
-        browsers: ['PhantomJS']
+        singleRun: true
       }
     }
   });
@@ -264,11 +254,6 @@ module.exports = function (grunt) {
       'connect:livereload',
       'watch'
     ]);
-  });
-
-  grunt.registerTask('server', function () {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
   });
 
   grunt.registerTask('test', function () {

@@ -1,84 +1,86 @@
 (function () {
   'use strict';
 
-  describe('In elementFactory', function() {
+  describe('In elementFactory', () => {
 
-    var elementFactory;
-
-    beforeEach(function() {
+    let elementFactory;
+    beforeEach(() => {
       elementFactory = angular.injector(['core']).get('core.elementFactory');
     });
 
-    describe('createPart', function () {
+    describe('createPart', () => {
 
-      var part;
-      var category;
-      beforeEach(function() {
+      let part;
+      let category;
+      beforeEach(() => {
         category = { testobject: 1 };
         part = elementFactory.createPart(category, 250);
       });
 
-      it('should create a new part and set its ID', function() {
+      it('should create a new part and set its ID', () => {
         expect(part.id).toBeDefined();
       });
 
-      it('should use the provided ID if defined', function() {
+      it('should use the provided ID if defined', () => {
         part = elementFactory.createPart(category, 250, 'some-id');
         expect(part.id).toBe('some-id');
       });
 
-      it('should create a new part and set the category', function() {
+      it('should create a new part and set the category', () => {
         expect(part.category).toBe(category);
       });
 
-      it('should create a new part and set the length', function() {
+      it('should create a new part and set the length', () => {
         expect(part.length).toBe(250);
       });
+
     });
 
-    describe('createCategory', function () {
+    describe('createCategory', () => {
 
-      var category;
-      beforeEach(function () {
-        category = elementFactory.createCategory("Bridge", "Red");
+      let category;
+      beforeEach(() => {
+        category = elementFactory.createCategory('Bridge', 'Red');
       });
 
-      it('should create a new categroy and set its ID', function() {
+      it('should create a new categroy and set its ID', () => {
         expect(category.id).toBeDefined();
       });
 
-      it('should use the provided ID if defined', function() {
-        category = elementFactory.createCategory("Bridge", "Red", 'some-id');
+      it('should use the provided ID if defined', () => {
+        category = elementFactory.createCategory('Bridge', 'Red', 'some-id');
         expect(category.id).toBe('some-id');
       });
 
-      it('should create a new categroy and set its color', function () {
-        expect(category.color).toBe("Red");
+      it('should create a new categroy and set its color', () => {
+        expect(category.color).toBe('Red');
       });
 
-      it('should create a new categroy and set its name', function () {
-        expect(category.name).toBe("Bridge");
+      it('should create a new categroy and set its name', () => {
+        expect(category.name).toBe('Bridge');
       });
+
     });
 
-    describe('createWork', function () {
+    describe('createWork', () => {
 
-      var work;
-      beforeEach(function () {
+      let work;
+      beforeEach(() => {
         work = elementFactory.createWork();
       });
 
-      it('should create a new work and set its ID', function() {
+      it('should create a new work and set its ID', () => {
         expect(work.id).toBeDefined();
       });
 
-      it('should create a new work and set its parts to an empty array', function() {
+      it('should create a new work and set its parts to an empty array', () => {
         expect(work.parts).toEqual([]);
       });
 
-      it('should create a new work and set its categories to an empty array', function() {
+      it('should create a new work and set its categories to an empty array', () => {
         expect(work.categories).toEqual([]);
       });
+
     });
 
   });
