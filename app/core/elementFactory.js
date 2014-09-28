@@ -23,7 +23,8 @@
       return {
         id: uuid4.generate(),
         parts: [],
-        categories: []
+        categories: [],
+        visualizations: []
       };
     }
 

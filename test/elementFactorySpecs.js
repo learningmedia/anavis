@@ -81,6 +81,10 @@
         expect(work.categories).toEqual([]);
       });
 
+      it('should create a new work and set its visualizations to an empty array', () => {
+        expect(work.visualizations).toEqual([]);
+      });
+
     });
 
   });
