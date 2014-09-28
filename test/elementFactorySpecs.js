@@ -5,7 +5,7 @@
 
     let elementFactory;
     beforeEach(() => {
-      elementFactory = angular.injector(['core']).get('core.elementFactory');
+      elementFactory = angular.injector(['anavis']).get('core.elementFactory');
     });
 
     describe('createPart', () => {

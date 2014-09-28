@@ -1,6 +1,6 @@
 (function () {
   'use strict';
 
-  angular.module('core', ['uuid4']);
+  angular.module('anavis', ['uuid4']);
 
 })();

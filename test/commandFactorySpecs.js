@@ -5,7 +5,7 @@
 
     let commandFactory;
     beforeEach(() => {
-      commandFactory = angular.injector(['core']).get('core.commandFactory');
+      commandFactory = angular.injector(['anavis']).get('core.commandFactory');
     });
 
     describe('changePartLength', () => {

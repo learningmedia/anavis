@@ -28,6 +28,6 @@
 
   commandFactory.$inject = [];
 
-  angular.module('core').factory('core.commandFactory', commandFactory);
+  angular.module('anavis').factory('core.commandFactory', commandFactory);
 
 })();

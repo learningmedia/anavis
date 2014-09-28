@@ -37,6 +37,6 @@
 
   elementFactory.$inject = ['uuid4'];
 
-  angular.module('core').factory('core.elementFactory', ['uuid4', elementFactory]);
+  angular.module('anavis').factory('core.elementFactory', ['uuid4', elementFactory]);
 
 })();
