@@ -21,11 +21,11 @@ module.exports = function (grunt) {
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       develop: {
-        files: ['app/scripts/**/*.js', 'test/**/*js'],
+        files: ['app/**/*.js', 'test/**/*js'],
         tasks: ['karma:default']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: ['<%= yeoman.app %>/{,*/}*.js'],
         tasks: [],
         options: {
           livereload: true
@@ -123,7 +123,7 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
+            '<%= yeoman.dist %>/{,*/}*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{gif,jpeg,jpg,png,webp}',
             '<%= yeoman.dist %>/styles/fonts/{,*/}*.*'

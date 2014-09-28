@@ -16,14 +16,14 @@ module.exports = function (config) {
     files: [
       'app/bower_components/angular/angular.min.js',
       'app/bower_components/angular-uuid4/angular-uuid4.min.js',
-      'app/scripts/**/*.js',
+      'app/core/**/*.js',
       'test/**/*Specs.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      'app/scripts/main.js'
+      'app/main.js'
     ],
 
 
