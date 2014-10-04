@@ -1,11 +1,38 @@
 (function () {
   'use strict';
 
+  function getDependency(name) {
+    let dependency;
+    let fun = ($injector) => {
+      dependency = $injector.get(name);
+    };
+    fun.$inject = ['$injector'];
+    inject(fun);
+    return dependency;
+  }
+
   describe('In commandFactory', () => {
 
     let commandFactory;
     beforeEach(() => {
-      commandFactory = angular.injector(['anavis']).get('core.commandFactory');
+      module('anavis');
+      commandFactory = getDependency('core.commandFactory');
+    });
+
+    describe('createWork', () => {
+
+      const partId = 'some-fake-part-id';
+      const newLength = 120;
+      let command;
+
+      beforeEach(() => {
+        command = commandFactory.createWork();
+      });
+
+      it('should create a new command and set the command name', () => {
+        expect(command.name).toBe('createWork');
+      });
+
     });
 
     describe('changePartLength', () => {

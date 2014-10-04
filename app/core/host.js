@@ -2,9 +2,11 @@
   'use strict';
 
   function host() {
-
     return {
-      works: []
+      works: [],
+      executeCommand: function (command) {
+        command.execute();
+      }
     };
 
   }

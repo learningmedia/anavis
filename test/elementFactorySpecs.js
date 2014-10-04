@@ -1,11 +1,22 @@
 (function () {
   'use strict';
 
+  function getDependency(name) {
+    let dependency;
+    let fun = ($injector) => {
+      dependency = $injector.get(name);
+    };
+    fun.$inject = ['$injector'];
+    inject(fun);
+    return dependency;
+  }
+
   describe('In elementFactory', () => {
 
     let elementFactory;
     beforeEach(() => {
-      elementFactory = angular.injector(['anavis']).get('core.elementFactory');
+      module('anavis');
+      elementFactory = getDependency('core.elementFactory');
     });
 
     describe('createPart', () => {
