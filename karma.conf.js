@@ -18,6 +18,7 @@ module.exports = function (config) {
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-uuid4/angular-uuid4.min.js',
       'test-helper.js',
+      'app/anavis.js',
       'app/core/**/*.js'
     ],
 
