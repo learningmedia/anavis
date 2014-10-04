@@ -17,6 +17,7 @@ module.exports = function (config) {
       'app/bower_components/angular/angular.min.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-uuid4/angular-uuid4.min.js',
+      'test-helper.js',
       'app/core/**/*.js'
     ],
 
