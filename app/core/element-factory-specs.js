@@ -6,7 +6,7 @@
     let elementFactory;
     beforeEach(() => {
       module('anavis');
-      elementFactory = getDependency('core.elementFactory');
+      elementFactory = getDependency('elementFactory');
     });
 
     describe('createPart', () => {

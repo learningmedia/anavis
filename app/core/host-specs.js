@@ -6,7 +6,7 @@
     let host;
     beforeEach(function () {
       module('anavis');
-      host = getDependency('core.host');
+      host = getDependency('host');
     });
 
     it('should have an empty array of works', () => {
@@ -18,7 +18,7 @@
       let commandFactory;
       let createWorkCommand;
       beforeEach(function () {
-        commandFactory = getDependency('core.commandFactory');
+        commandFactory = getDependency('commandFactory');
         createWorkCommand = commandFactory.createWork();
         host.executeCommand(createWorkCommand);
       });

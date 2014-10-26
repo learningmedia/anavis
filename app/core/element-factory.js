@@ -1,7 +1,18 @@
 (function () {
   'use strict';
 
+  angular
+    .module('anavis')
+    .factory('elementFactory', ['uuid4', elementFactory]);
+
+  elementFactory.$inject = ['uuid4'];
+
   function elementFactory(uuid4) {
+    return {
+      createPart: createPart,
+      createCategory: createCategory,
+      createWork: createWork
+    };
 
     function createPart(category, length, id) {
       return {
@@ -27,17 +38,6 @@
         visualizations: []
       };
     }
-
-    return {
-      createPart: createPart,
-      createCategory: createCategory,
-      createWork: createWork
-    };
-
   }
-
-  elementFactory.$inject = ['uuid4'];
-
-  angular.module('anavis').factory('core.elementFactory', ['uuid4', elementFactory]);
 
 })();

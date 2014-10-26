@@ -1,13 +1,65 @@
-(function (window, chroma) {
+(function (window, angular, chroma) {
   'use strict';
 
   function findContrast(color) {
     return chroma.hex(color).luminance() < 0.33 ? '#EEE' : '#111';
   }
 
-  let anavisApp = angular.module('app', ['core']);
+  angular
+    .module('app', ['anavis']);
 
-  anavisApp.controller('testCtrl', ['$scope', 'core.elementFactory', function ($scope, elementFactory) {
+  angular
+    .module('app')
+    .controller('MainController', MainController);
+
+  MainController.$inject = ['elementFactory'];
+
+  function MainController(elementFactory) {
+    let json = localStorage.getItem('work');
+    let work = json ? jsonToWork(json) : createDefaultWork();
+
+    let vm = this;
+    vm.categories = work.categories;
+    vm.parts = work.parts;
+    vm.removeCategory = removeCategory;
+    vm.removePart = removePart;
+    vm.addPart = addPart;
+    vm.calculateForeground = calculateForeground;
+    vm.save = save;
+
+    function removeCategory(category) {
+      if (work.parts.find(x => x.category === category)) {
+        window.alert('This category cannot be removed because it is in use.');
+        return;
+      }
+      let index = work.categories.indexOf(category);
+      work.categories.splice(index, 1);
+    }
+
+    function removePart(part) {
+      if (work.parts.length < 2) {
+        window.alert('This part cannot be removed because it is the only one.');
+        return;
+      }
+      let index = work.parts.indexOf(part);
+      work.parts.splice(index, 1);
+    }
+
+    function addPart() {
+      work.parts.push(part(work.categories[0], 100));
+    }
+
+    function calculateForeground(color) {
+      return findContrast(color);
+    }
+
+    function save() {
+      let w = {
+        parts: work.parts,
+        categories: work.categories
+      };
+      window.localStorage.setItem('work', workToJson(w));
+    }
 
     function workToJson(work) {
       let obj = {
@@ -59,44 +111,6 @@
         ]
       };
     }
+  }
 
-    let json = localStorage.getItem('work');
-    let work = json ? jsonToWork(json) : createDefaultWork();
-
-    $scope.categories = work.categories;
-
-    $scope.parts = work.parts;
-
-    $scope.removeCategory = category => {
-      if (work.parts.find(x => x.category === category)) {
-        window.alert('This category cannot be removed because it is in use.');
-        return;
-      }
-      let index = work.categories.indexOf(category);
-      work.categories.splice(index, 1);
-    };
-
-    $scope.removePart = part => {
-      if (work.parts.length < 2) {
-        window.alert('This part cannot be removed because it is the only one.');
-        return;
-      }
-      let index = work.parts.indexOf(part);
-      work.parts.splice(index, 1);
-    };
-
-    $scope.addPart = () => work.parts.push(part(work.categories[0], 100));
-
-    $scope.calculateForeground = color => findContrast(color);
-
-    $scope.save = () => {
-      let w = {
-        parts: work.parts,
-        categories: work.categories
-      };
-      window.localStorage.setItem('work', workToJson(w));
-    };
-
-  }]);
-
-})(window, window.chroma);
+})(window, window.angular, window.chroma);

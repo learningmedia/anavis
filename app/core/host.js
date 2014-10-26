@@ -1,6 +1,12 @@
 (function () {
   'use strict';
 
+  angular
+    .module('anavis')
+    .factory('host', [host]);
+
+  host.$inject = [];
+
   function host() {
     return {
       works: [],
@@ -8,11 +14,6 @@
         command.execute();
       }
     };
-
   }
-
-  host.$inject = [];
-
-  angular.module('anavis').factory('core.host', [host]);
 
 })();

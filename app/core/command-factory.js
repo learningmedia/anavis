@@ -1,7 +1,18 @@
 (function () {
   'use strict';
 
+  angular
+    .module('anavis')
+    .factory('commandFactory', commandFactory);
+
+  commandFactory.$inject = ['host', 'elementFactory'];
+
   function commandFactory(host, elementFactory) {
+    return {
+      createWork: createWork,
+      changePartLength: changePartLength,
+      changePartCategory: changePartCategory
+    };
 
     function createWork() {
       return {
@@ -32,17 +43,6 @@
         newCategoryId: newCategoryId
       };
     }
-
-    return {
-      createWork: createWork,
-      changePartLength: changePartLength,
-      changePartCategory: changePartCategory
-    };
-
   }
-
-  commandFactory.$inject = ['core.host', 'core.elementFactory'];
-
-  angular.module('anavis').factory('core.commandFactory', commandFactory);
 
 })();

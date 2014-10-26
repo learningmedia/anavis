@@ -6,7 +6,7 @@
     let commandFactory;
     beforeEach(() => {
       module('anavis');
-      commandFactory = getDependency('core.commandFactory');
+      commandFactory = getDependency('commandFactory');
     });
 
     describe('createWork', () => {
