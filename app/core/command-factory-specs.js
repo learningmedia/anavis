@@ -11,8 +11,6 @@
 
     describe('createWork', () => {
 
-      const partId = 'some-fake-part-id';
-      const newLength = 120;
       let command;
 
       beforeEach(() => {

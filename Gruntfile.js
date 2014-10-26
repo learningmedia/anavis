@@ -20,23 +20,16 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      develop: {
-        files: ['app/**/*.js', 'test/**/*js'],
-        tasks: ['karma:default']
-      },
       js: {
-        files: ['<%= yeoman.app %>/{,*/}*.js'],
-        tasks: [],
+        files: ['<%= yeoman.app %>/**/*.js'],
+        tasks: ['jshint'],
         options: {
           livereload: true
         }
       },
-      jstest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['test:watch']
-      },
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],
+        tasks: ['jshint']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -93,6 +86,19 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
+    },
+
+    // Make sure code styles are up to par and there are no obvious mistakes
+    jshint: {
+      options: {
+        jshintrc: true,
+        reporter: require('jshint-stylish')
+      },
+      all: [
+        'Gruntfile.js',
+        '<%= yeoman.app %>/**/*.js',
+        '!<%= yeoman.app %>/bower_components/**'
+      ]
     },
 
     // Add vendor prefixed styles
@@ -257,13 +263,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', function () {
     grunt.task.run([
+      'jshint:all',
       'karma:default'
     ]);
   });
 
   grunt.registerTask('develop', function () {
     grunt.task.run([
-      'watch:develop'
+      'watch'
     ]);
   });
 

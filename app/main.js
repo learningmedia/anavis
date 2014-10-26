@@ -37,14 +37,15 @@
     }
 
     function createDefaultWork() {
+      let categories = [
+        category('Intro', '#4582B4'),
+        category('Verse', '#FFD700'),
+        category('Chorus', '#228B22'),
+        category('Bridge', '#FF0000'),
+        category('Outro', '#4582B4')
+      ];
       return {
-        categories: [
-          category('Intro', '#4582B4'),
-          category('Verse', '#FFD700'),
-          category('Chorus', '#228B22'),
-          category('Bridge', '#FF0000'),
-          category('Outro', '#4582B4')
-        ],
+        categories: categories,
         parts: [
           part(categories[0], 100),
           part(categories[1], 200),
