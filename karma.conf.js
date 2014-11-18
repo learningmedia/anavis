@@ -65,7 +65,7 @@ module.exports = function (config) {
 
     customLaunchers: {
       ChromeHarmony: {
-        base: 'ChromeCanary',
+        base: 'Chrome',
         flags: ['--javascript-harmony']
       }
     },
