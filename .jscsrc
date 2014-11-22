@@ -32,7 +32,7 @@
     "disallowSpacesInFunctionDeclaration": {
         "beforeOpeningRoundBrace": true
     },
-    "requireMultipleVarDecl": "onevar",
+    "disallowMultipleVarDecl": "strict",
     "requireBlocksOnNewline": 1,
     "disallowEmptyBlocks": true,
     "disallowSpacesInsideArrayBrackets": true,
@@ -56,10 +56,9 @@
     "disallowMixedSpacesAndTabs": true,
     "disallowTrailingWhitespace": true,
     "disallowTrailingComma": true,
-    "disallowKeywordsOnNewLine": [ "else" ],
+    "disallowKeywordsOnNewLine": [ "else", "catch" ],
     "requireLineFeedAtFileEnd": true,
     "requireCapitalizedConstructors": true,
-    "requireDotNotation": true,
     "disallowYodaConditions": true,
     "disallowNewlineBeforeBlockStatements": true
 }

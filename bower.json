@@ -1,12 +1,13 @@
 {
   "name": "anavis",
+  "version": "0.0.1",
+  "homepage": "https://github.com/learningmedia/anavis",
   "private": true,
   "dependencies": {
+    "traceur": "~0.0.74",
+    "es6-module-loader": "~0.10.0",
+    "system.js": "~0.10.0",
     "chroma-js": "~0.5.6",
-    "angular": "~1.2.21",
-    "angular-uuid4": "~0.2.0"
-  },
-  "devDependencies": {
-    "angular-mocks": "~1.2.26"
+    "lil-uuid": "~0.1.0"
   }
 }

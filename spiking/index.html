@@ -1,0 +1,100 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="app"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="app"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="app"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="app"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>anavisjstest</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body ng-controller="MainController as main">
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="work">
+            <div class="part-outer" ng-repeat="part in main.parts" style="background-color: {{ part.category.color }}; flex: {{ part.length }};">
+                <div class="part-inner" style="color: {{ main.calculateForeground(part.category.color) }}">{{ part.category.name }}</div>
+            </div>
+        </div>
+
+        <div id="editors">
+            <div id="parts-editor">
+                <h3>Work</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Category</th>
+                            <th>Length</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="part in main.parts">
+                            <td><button ng-click="removePart(part)">&ndash;</button></td>
+                            <td>
+                                <select style="width: 150px;" ng-model="part.category" ng-options="category.name for category in main.categories"></select>
+                            </td>
+                            <td><input type="range" min="1" max="999" ng-model="part.length" style="width: 150px;" />&nbsp;&nbsp;<label>{{ part.length }}</label></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button ng-click="main.addPart()">Add part</button>
+            </div>
+            <div id="categories-editor">
+                <h3>Categories</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Color</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="category in main.categories">
+                            <td><button ng-click="removeCategory(category)">&ndash;</button></td>
+                            <td><input type="text" ng-model="category.name" style="width: 150px;" /></td>
+                            <td><input type="color" ng-model="category.color" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br>
+
+        <div>
+          <button ng-click="main.save()">Save!</button>
+        </div>
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-uuid4/angular-uuid4.min.js"></script>
+        <script src="bower_components/chroma-js/chroma.min.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="anavis.js"></script>
+        <script src="core/host.js"></script>
+        <script src="core/command-factory.js"></script>
+        <script src="core/element-factory.js"></script>
+        <script src="main.js"></script>
+        <!-- endbuild -->
+</body>
+</html>

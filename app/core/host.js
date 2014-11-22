@@ -1,19 +1,17 @@
-(function () {
-  'use strict';
+'use strict';
 
-  angular
-    .module('anavis')
-    .factory('host', [host]);
+let works = [];
 
-  host.$inject = [];
+function reset() {
+  works.length = 0;
+}
 
-  function host() {
-    return {
-      works: [],
-      executeCommand: function (command) {
-        command.execute();
-      }
-    };
-  }
+function executeCommand(command) {
+  command.execute();
+}
 
-})();
+export default {
+  works: works,
+  reset: reset,
+  executeCommand: executeCommand
+};

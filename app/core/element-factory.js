@@ -1,43 +1,34 @@
-(function () {
-  'use strict';
+'use strict';
 
-  angular
-    .module('anavis')
-    .factory('elementFactory', ['uuid4', elementFactory]);
+import uuid from 'uuid';
 
-  elementFactory.$inject = ['uuid4'];
+function createPart(category, length, id) {
+  return {
+    id: id || uuid.uuid(),
+    category: category,
+    length: length
+  };
+}
 
-  function elementFactory(uuid4) {
-    return {
-      createPart: createPart,
-      createCategory: createCategory,
-      createWork: createWork
-    };
+function createCategory(name, color, id) {
+  return {
+    id: id || uuid.uuid(),
+    color: color,
+    name: name
+  };
+}
 
-    function createPart(category, length, id) {
-      return {
-        id: id || uuid4.generate(),
-        category: category,
-        length: length
-      };
-    }
+function createWork() {
+  return {
+    id: uuid.uuid(),
+    parts: [],
+    categories: [],
+    visualizations: []
+  };
+}
 
-    function createCategory(name, color, id) {
-      return {
-        id: id || uuid4.generate(),
-        color: color,
-        name: name
-      };
-    }
-
-    function createWork() {
-      return {
-        id: uuid4.generate(),
-        parts: [],
-        categories: [],
-        visualizations: []
-      };
-    }
-  }
-
-})();
+export default {
+  createPart: createPart,
+  createCategory: createCategory,
+  createWork: createWork
+};
