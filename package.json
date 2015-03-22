@@ -1,0 +1,44 @@
+{
+  "name": "es2015bp",
+  "version": "1.0.0",
+  "description": "Boilerplate project setup using ECMAScript 2015",
+  "author": "Andreas Helmberger",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^2.0.2",
+    "browser-sync": "^2.2.5",
+    "connect-history-api-fallback": "0.0.5",
+    "gulp": "^3.8.11",
+    "gulp-csso": "^1.0.0",
+    "gulp-eslint": "^0.7.0",
+    "gulp-html-replace": "^1.4.4",
+    "gulp-if": "^1.2.5",
+    "gulp-less": "^3.0.1",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-minify-html": "^1.0.1",
+    "jasmine-core": "^2.2.0",
+    "jspm": "^0.14.0",
+    "karma": "^0.12.32",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5",
+    "karma-jspm": "^1.1.4",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-phantomjs-shim": "^1.0.0",
+    "karma-spec-reporter": "0.0.16",
+    "less": "^2.4.0",
+    "less-plugin-autoprefix": "^1.4.0",
+    "rimraf": "^2.3.2",
+    "run-sequence": "^1.0.2"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "app",
+      "lib": "app",
+      "packages": "app/jspm_packages"
+    },
+    "dependencies": {
+      "knockout": "npm:knockout@^3.3.0",
+      "learningmedia/intempojs": "github:learningmedia/intempojs@^1.0.2"
+    }
+  }
+}

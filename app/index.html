@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>anavis</title>
+  <!-- build:css -->
+  <link rel="stylesheet" href="/main.less">
+  <!-- endbuild -->
+</head>
+<body>
+  <!-- build:js -->
+  <script src="/jspm_packages/system.js"></script>
+  <script src="/config.js"></script>
+  <script>System.import("main");</script>
+  <!-- endbuild -->
+
+  <script id="intempo-template" type="text/html">
+    <progress class="intempo" data-bind="attr: { max: totalLength, value: currentPosition }"></progress>
+  </script>
+
+  <script id="part-template" type="text/html">
+    <div class="part-outer" data-bind="style: { flex: length }">
+      <div class="part-inner" data-bind="text: name, style: { backgroundColor: color }, attr: { title: name }" contenteditable></div>
+    </div>
+  </script>
+
+  <script id="work-template" type="text/html">
+    <div class="work" data-bind="template: { name: 'part-template', foreach: parts }"></div>
+    <div class="intempo" data-bind="template: { name: 'intempo-template', data: $data }">
+  </script>
+
+  <div data-bind="template: { name: 'work-template', foreach: works }"></div>
+
+</body>
+</html>

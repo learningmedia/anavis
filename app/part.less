@@ -1,0 +1,33 @@
+.part-outer {
+    border: 1px solid #111;
+}
+
+.part-outer:first-child {
+    border-top-left-radius: @corner-radius;
+    border-bottom-left-radius: @corner-radius;
+}
+
+.part-outer:last-child {
+    border-top-right-radius: @corner-radius;
+    border-bottom-right-radius: @corner-radius;
+}
+
+.part-inner {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 2px;
+    background: linear-gradient(to bottom,  rgba(255,255,255,0.2) 0%,rgba(0,0,0,0.2) 100%);
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.part-outer:first-child .part-inner {
+    border-top-left-radius: @corner-radius;
+    border-bottom-left-radius: @corner-radius;
+}
+
+.part-outer:last-child .part-inner {
+    border-top-right-radius: @corner-radius;
+    border-bottom-right-radius: @corner-radius;
+}
