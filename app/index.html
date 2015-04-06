@@ -7,14 +7,15 @@
   <!-- endbuild -->
 </head>
 <body>
+  <script src="jspm_packages/npm/whatwg-fetch@0.7.0/fetch.js"></script>
   <!-- build:js -->
   <script src="/jspm_packages/system.js"></script>
   <script src="/config.js"></script>
   <script>System.import("main");</script>
   <!-- endbuild -->
 
-  <script id="intempo-template" type="text/html">
-    <progress class="intempo" data-bind="attr: { max: totalLength, value: currentPosition }"></progress>
+  <script id="sound-template" type="text/html">
+    <progress class="sound" data-bind="attr: { max: totalLength, value: currentPosition }, click: onClick"></progress>
   </script>
 
   <script id="part-template" type="text/html">
@@ -25,7 +26,7 @@
 
   <script id="work-template" type="text/html">
     <div class="work" data-bind="template: { name: 'part-template', foreach: parts }"></div>
-    <div class="intempo" data-bind="template: { name: 'intempo-template', data: $data }">
+    <div class="sound" data-bind="template: { name: 'sound-template', data: sound }">
   </script>
 
   <div data-bind="template: { name: 'work-template', foreach: works }"></div>

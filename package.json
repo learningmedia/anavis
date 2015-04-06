@@ -38,7 +38,8 @@
     },
     "dependencies": {
       "knockout": "npm:knockout@^3.3.0",
-      "learningmedia/intempojs": "github:learningmedia/intempojs@^1.0.2"
+      "learningmedia/intempojs": "github:learningmedia/intempojs@^1.0.2",
+      "whatwg-fetch": "npm:whatwg-fetch@^0.7.0"
     }
   }
 }

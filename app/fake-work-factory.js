@@ -1,4 +1,5 @@
 import ko from "knockout";
+import sound from "./sound";
 
 function createFakePart(name, length, color) {
   return {
@@ -19,8 +20,7 @@ function createFakeWork() {
     createFakePart("Verse", 200, "yellow"),
     createFakePart("Chorus", 200, "darkgreen")
   ]);
-  work.totalLength = ko.computed(() => work.parts().reduce((accu, item) => accu + item.length(), 0));
-  work.currentPosition = ko.observable(0);
+  work.sound = sound.createViewModel("/audio/example.mp3");
   return work;
 }
 
