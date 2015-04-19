@@ -15,7 +15,7 @@
   <!-- endbuild -->
 
   <script id="sound-template" type="text/html">
-    <progress class="sound" data-bind="attr: { max: totalLength, value: currentPosition }, click: onClick"></progress>
+    <progress class="sound" data-bind="attr: { max: totalLength, value: currentPosition }, click: onClick, style: { 'display': state() === 'LOADING' ? 'none' : 'block' }"></progress>
   </script>
 
   <script id="part-template" type="text/html">
@@ -28,6 +28,8 @@
     <div class="work" data-bind="template: { name: 'part-template', foreach: parts }"></div>
     <div class="sound" data-bind="template: { name: 'sound-template', data: sound }">
   </script>
+
+  <av-toolbar>Toolbar</av-toolbar>
 
   <div data-bind="template: { name: 'work-template', foreach: works }"></div>
 

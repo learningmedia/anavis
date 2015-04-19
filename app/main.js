@@ -1,10 +1,13 @@
 import ko from "knockout";
-import fwf from "fake-work-factory";
-import intempo from "learningmedia/intempojs";
+import toolbar from "components/toolbar";
+import workList from "work-list";
 
 window.ko = ko;
 
+// Register all components:
+[toolbar].forEach(component => component.register());
+
 const vm = {};
-vm.works = ko.observableArray([fwf.createFakeWork()]);
+vm.works = workList;
 
 ko.applyBindings(vm);

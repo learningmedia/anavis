@@ -19,6 +19,8 @@ function createViewModel(path) {
   vm.currentPosition = ko.observable(0);
   vm.totalLength = ko.observable(0);
   vm.onClick = onClick;
+  vm.stop = stop;
+  vm.pause = pause;
 
   function onStateChanged(state) {
     vm.state(state);
@@ -35,6 +37,18 @@ function createViewModel(path) {
     }
   }
 
+  function stop() {
+    if (player) {
+      player.stop();
+    }
+  }
+
+  function pause() {
+    if (player) {
+      player.pause();
+    }
+  }
+
   fetch(path)
     .then(response => response.arrayBuffer())
     .then(buffer => intempo.loadPlayer({
@@ -47,6 +61,7 @@ function createViewModel(path) {
     .then(p => {
       player = p;
       vm.totalLength(player.duration);
+      vm.state(p.state);
     })
     .catch(() => vm.state("ERROR"));
 
