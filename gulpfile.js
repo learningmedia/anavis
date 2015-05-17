@@ -54,7 +54,7 @@ gulp.task("build", function (done) {
 });
 
 gulp.task("test", function (done) {
-  runKarma(done, true, ["PhantomJS"]);
+  runKarma(done, true, ["Chrome"]);
 });
 
 gulp.task("test:debug", function (done) {
