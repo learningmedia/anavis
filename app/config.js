@@ -10,6 +10,7 @@ System.config({
 
 System.config({
   "map": {
+    "dexie": "npm:dexie@1.1.0",
     "knockout": "npm:knockout@3.3.0",
     "learningmedia/intempojs": "github:learningmedia/intempojs@1.0.2",
     "text": "github:systemjs/plugin-text@0.0.2",
