@@ -4,14 +4,8 @@ import template from "components/toolbar.html!text";
 
 function createToolbarViewModel() {
   return {
-    stop: () => {
-      console.log("STOP");
-      workList().forEach(w => w.sound.stop());
-    },
-    pause: () => {
-      console.log("PAUSE");
-      workList().forEach(w => w.sound.pause());
-    }
+    stop: () => workList().forEach(w => w.sound && w.sound.stop()),
+    pause: () => workList().forEach(w => w.sound && w.sound.pause())
   };
 }
 
