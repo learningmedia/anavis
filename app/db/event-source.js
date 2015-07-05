@@ -29,6 +29,15 @@ function create(name) {
     return Promise.resolve();
   };
 
+  eventSource.reduce = function (cid, build) {
+    return eventSource.getEvents(cid)
+      .then(events => build(events))
+      .then(projection => {
+        return eventSource.removeEvents(cid)
+          .then(() => eventSource.addEvent(cid, projection));
+      });
+  };
+
   return eventSource;
 }
 
