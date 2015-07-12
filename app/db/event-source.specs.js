@@ -1,11 +1,26 @@
 import eventSource from "db/event-source";
+import Dexie from "dexie";
 
-describe("Event Source", () => {
+describe("Db Event Source", () => {
+
+  let db;
+  beforeEach(done => {
+    db = new Dexie("TestDb");
+    db.delete().then(() => {
+      db.version(1).stores({works: "++id, cid, rank, data"});
+      db.open();
+    }).then(done, done);
+  });
+
+  afterEach(() => {
+    db.close();
+    db.delete();
+  });
 
   describe("When we add 2 events and then remove them", () => {
     let es, events;
     beforeEach(done => {
-      es = eventSource.create("Works");
+      es = eventSource.create(db.works);
       const first = () => es.addEvent("340658043860", { eventName: "WorkCreated", parts: 4 });
       const second = () => es.addEvent("340658043860", { eventName: "WorkChanged", parts: 3 });
       const clear = () => es.removeEvents("340658043860");
@@ -20,7 +35,7 @@ describe("Event Source", () => {
   describe("When we add 2 events to the event source", () => {
     let es, events;
     beforeEach(done => {
-      es = eventSource.create("Works");
+      es = eventSource.create(db.works);
       const clear = () => es.removeEvents("340658043860");
       const first = () => es.addEvent("340658043860", { eventName: "WorkCreated", parts: 4 });
       const second = () => es.addEvent("340658043860", { eventName: "WorkChanged", parts: 3 });
@@ -42,7 +57,7 @@ describe("Event Source", () => {
   describe("When we add 2 events and then reduce them", () => {
     let es, events;
     beforeEach(done => {
-      es = eventSource.create("Works");
+      es = eventSource.create(db.works);
       const clear = () => es.removeEvents("340658043860");
       const first = () => es.addEvent("340658043860", { eventName: "WorkCreated", parts: 4 });
       const second = () => es.addEvent("340658043860", { eventName: "WorkChanged", parts: 3 });
@@ -58,7 +73,7 @@ describe("Event Source", () => {
   describe("When we add 2 events and then reduce them and the build function throw an exception", () => {
     let es, events;
     beforeEach(done => {
-      es = eventSource.create("Works");
+      es = eventSource.create(db.works);
       const clear = () => es.removeEvents("340658043860");
       const first = () => es.addEvent("340658043860", { eventName: "WorkCreated", parts: 4 });
       const second = () => es.addEvent("340658043860", { eventName: "WorkChanged", parts: 3 });
