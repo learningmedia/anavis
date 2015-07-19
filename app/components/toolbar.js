@@ -1,11 +1,12 @@
 import ko from "knockout";
-import workList from "work-list";
+import workService from "work-service";
 import template from "components/toolbar.html!text";
 
 function createToolbarViewModel() {
   return {
-    stop: () => workList().forEach(w => w.sound && w.sound.stop()),
-    pause: () => workList().forEach(w => w.sound && w.sound.pause())
+    stop: () => workService.works().forEach(w => w.sound && w.sound.stop()),
+    pause: () => workService.works().forEach(w => w.sound && w.sound.pause()),
+    create: () => workService.create()
   };
 }
 

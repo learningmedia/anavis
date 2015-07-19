@@ -1,7 +1,7 @@
 import ko from "knockout";
 import Dexie from "dexie";
 import toolbar from "components/toolbar";
-import workList from "work-list";
+import workService from "work-service";
 
 window.ko = ko;
 
@@ -11,6 +11,6 @@ window.ko = ko;
 const vm = {};
 
 (function startApplication() {
-  vm.works = workList;
+  vm.works = workService.works;
   ko.applyBindings(vm);
 })();
