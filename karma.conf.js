@@ -1,17 +1,15 @@
+/* eslint strict: 0 */
 "use strict";
 
 module.exports = function (config) {
 
   config.set({
-    basePath: "",
-    frameworks: ["jspm", "jasmine", "phantomjs-shim"],
+    basePath: "app",
+    frameworks: ["jspm", "jasmine"],
     files: [],
     jspm: {
-      serveFiles: ["app/**"],
-      loadFiles: ["app/**/*.specs.js"]
-    },
-    proxies: {
-      "/base/": "/base/app/"
+      serveFiles: ["**"],
+      loadFiles: ["**/*.specs.js"]
     },
     exclude: [],
     preprocessors: {},

@@ -1,3 +1,4 @@
+/* eslint strict: 0 */
 "use strict";
 
 var fs                 = require("fs");
@@ -9,9 +10,9 @@ var jspm               = require("jspm");
 var karma              = require("karma");
 var rimraf             = require("rimraf");
 var runSequence        = require("run-sequence");
-var browserSync        = require("browser-sync");
+var browserSync        = require("browser-sync").create();
 var AutoPrefixPlugin   = require("less-plugin-autoprefix");
-var historyApiFallback = require("connect-history-api-fallback");
+var historyApiFallback = require("connect-history-api-fallback")();
 var $                  = require("gulp-load-plugins")();
 
 var autoPrefix = new AutoPrefixPlugin({
@@ -39,7 +40,9 @@ gulp.task("build:css", function () {
 
 gulp.task("build:js", function (done) {
   jspm.setPackagePath(".");
-  jspm.bundleSFX("main", "dist/main.js", { minify: true, mangle: true, sourceMaps: true, lowResSourceMaps: false }).then(done);
+  new jspm.Builder()
+    .buildSFX("main", "dist/main.js", { minify: true, mangle: true, sourceMaps: true, lowResSourceMaps: false })
+    .then(done.bind(null, null), done);
 });
 
 gulp.task("build:html", function () {
@@ -95,7 +98,7 @@ function lessMiddleware (req, res, next) {
 }
 
 function runKarma(done, singleRun, browsers) {
-  karma.server.start({
+  var server = new karma.Server({
     configFile: path.resolve("karma.conf.js"),
     singleRun: singleRun,
     browsers: browsers || ["Chrome"]
@@ -105,10 +108,11 @@ function runKarma(done, singleRun, browsers) {
     }
     done();
   });
+  server.start();
 }
 
 function startBrowserSync(baseDir, browser) {
-  browserSync({
+  browserSync.init({
     files: [baseDir + "/**"],
     server: { baseDir: baseDir, middleware: [lessMiddleware, historyApiFallback] },
     injectFileTypes: ["less"],

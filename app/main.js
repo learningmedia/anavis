@@ -1,5 +1,4 @@
 import ko from "knockout";
-import Dexie from "dexie";
 import toolbar from "components/toolbar";
 import workService from "work-service";
 

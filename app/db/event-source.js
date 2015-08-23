@@ -1,5 +1,3 @@
-import Dexie from "dexie";
-
 const getNextRank = (function () {
   let current = 0;
   return () => ++current;
