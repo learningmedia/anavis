@@ -26,6 +26,9 @@
   <script id="work-template" type="text/html">
     <div class="work" data-bind="template: { name: 'part-template', foreach: parts }"></div>
     <div class="sound" data-bind="template: { if: sound, name: 'sound-template', data: sound }"></div>
+    <!-- ko ifnot: sound -->
+    <div class="sound-loader" data-bind="soundDrop: onSoundDropped" style="height: 25px; background-color: silver;">Drop sound file here...</div>
+    <!-- /ko -->
   </script>
 
   <av-toolbar></av-toolbar>

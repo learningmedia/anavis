@@ -18,6 +18,7 @@ System.config({
     "color": "npm:color@0.10.1",
     "core-js": "npm:core-js@1.1.1",
     "dexie": "npm:dexie@1.1.0",
+    "drag-and-drop-files": "npm:drag-and-drop-files@0.0.1",
     "knockout": "npm:knockout@3.3.0",
     "learningmedia/intempojs": "github:learningmedia/intempojs@1.0.3",
     "text": "github:systemjs/plugin-text@0.0.2",
