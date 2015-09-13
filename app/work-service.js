@@ -13,9 +13,9 @@ function create() {
     id: ko.observable(getNextRank()),
     length: ko.observable(1024),
     color: ko.observable("navy"),
-    name: ko.observable("unbekannt"),
-    sound: ko.observable()
+    name: ko.observable("unbekannt")
   };
+  work.sound = ko.observable();
   work.parts = ko.observableArray();
   work.parts.push(part);
   works.push(work);

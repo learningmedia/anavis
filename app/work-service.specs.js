@@ -21,12 +21,15 @@ describe("workService", () => {
       expect(typeof workService.works()[0].parts()).toBe("object");
     });
 
-    it("should a work with a part collection with one part", () => {
+    it("should have a work with an undefined sound", () => {
+      expect(workService.works()[0].sound()).toBeUndefined();
+    });
+
+    it("should have a work with a part collection with one part", () => {
       expect(workService.works()[0].parts()[0].id()).toBeDefined();
       expect(workService.works()[0].parts()[0].length()).toBe(1024);
       expect(workService.works()[0].parts()[0].color()).toBe("navy");
       expect(workService.works()[0].parts()[0].name()).toBe("unbekannt");
-      expect(workService.works()[0].parts()[0].sound()).toBeUndefined();
     });
 
   });

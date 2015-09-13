@@ -19,7 +19,7 @@
 
   <script id="part-template" type="text/html">
     <div class="part-outer" data-bind="style: { flex: length }">
-      <div class="part-inner" data-bind="text: name, style: { backgroundColor: color }, attr: { title: name }" contenteditable></div>
+      <div class="part-inner" data-bind="text: name, style: { color: $root.utils.getContrastColor(color()), backgroundColor: color }, attr: { title: name }" contenteditable></div>
     </div>
   </script>
 

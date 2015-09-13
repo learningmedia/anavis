@@ -15,6 +15,7 @@ System.config({
   map: {
     "babel": "npm:babel-core@5.8.22",
     "babel-runtime": "npm:babel-runtime@5.8.20",
+    "color": "npm:color@0.10.1",
     "core-js": "npm:core-js@1.1.1",
     "dexie": "npm:dexie@1.1.0",
     "knockout": "npm:knockout@3.3.0",
@@ -25,6 +26,16 @@ System.config({
     },
     "npm:babel-runtime@5.8.20": {
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:color-name@1.0.0": {
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:color-string@0.3.0": {
+      "color-name": "npm:color-name@1.0.0"
+    },
+    "npm:color@0.10.1": {
+      "color-convert": "npm:color-convert@0.5.3",
+      "color-string": "npm:color-string@0.3.0"
     },
     "npm:core-js@1.1.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
