@@ -1,6 +1,5 @@
 import ko from "knockout";
 import utils from "utils";
-import intempo from "learningmedia/intempojs";
 
 const works = ko.observableArray();
 
@@ -24,10 +23,7 @@ function create() {
   work.parts.push(part);
 
   work.onSoundDropped = function (files) {
-    utils.blobToBuffer(files[0])
-      .then(buffer => intempo.loadPlayer({ arraybuffer: buffer }))
-      .then(player => player.start())
-      .catch(error => console.error(error));
+    utils.blobToBuffer(files[0]).then(buffer => work.sound({ id: Date.now().toString(), buffer: buffer }));
   };
 
   works.push(work);
