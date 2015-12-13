@@ -1,5 +1,5 @@
-import ko from "knockout";
-import utils from "utils";
+import ko from 'knockout';
+import utils from './utils';
 
 const works = ko.observableArray();
 
@@ -14,8 +14,8 @@ function create() {
   let part = {
     id: ko.observable(getNextRank()),
     length: ko.observable(1024),
-    color: ko.observable("navy"),
-    name: ko.observable("unbekannt")
+    color: ko.observable('navy'),
+    name: ko.observable('unbekannt')
   };
 
   work.sound = ko.observable();

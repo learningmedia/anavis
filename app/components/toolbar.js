@@ -1,6 +1,6 @@
-import ko from "knockout";
-import workService from "work-service";
-import template from "components/toolbar.html!text";
+import ko from 'knockout';
+import workService from '../work-service';
+import template from './toolbar.html';
 
 function createToolbarViewModel() {
   return {
@@ -12,7 +12,7 @@ function createToolbarViewModel() {
 
 function register() {
 	// Register the toolbar as a new knockout component:
-	ko.components.register("av-toolbar", {
+	ko.components.register('av-toolbar', {
     viewModel: createToolbarViewModel,
     template: template
 	});

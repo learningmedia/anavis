@@ -1,7 +1,7 @@
-import color from "color";
+import color from 'color';
 
 function getContrastColor(col) {
-  return color(col).light() ? "#000" : "#FFF";
+  return color(col).light() ? '#000' : '#FFF';
 }
 
 function blobToBuffer(blob) {
