@@ -1,0 +1,3 @@
+[submodule "chromeextensions-knockoutjs"]
+	path = chromeextensions-knockoutjs
+	url = https://github.com/timstuyckens/chromeextensions-knockoutjs.git

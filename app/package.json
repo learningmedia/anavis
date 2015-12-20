@@ -1,0 +1,18 @@
+{
+  "name": "anavis",
+  "productName": "anavis",
+  "identifier": "de.anavis",
+  "description": "Anavis is a tool to visualize musical form.",
+  "version": "0.0.0",
+  "author": "Andreas Helmberger <public@ahelmberger.de> and Ulrich Kaiser <anavis@kaiser-ulrich.de>",
+  "main": "background.js",
+  "private": true,
+  "dependencies": {
+    "color": "~0.10.1",
+    "drag-and-drop-files": "~0.0.1",
+    "fs-jetpack": "~0.7.0",
+    "intempo": "~1.1.0",
+    "knockout": "~3.4.0",
+    "normalize.css": "~3.0.3"
+  }
+}

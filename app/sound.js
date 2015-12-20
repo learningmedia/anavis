@@ -1,5 +1,5 @@
-import ko from "knockout";
-import intempo from "learningmedia/intempojs";
+import ko from 'knockout';
+import intempo from 'intempo';
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const fetch = window.fetch;
@@ -15,7 +15,7 @@ function createViewModel(path) {
   let player;
 
   const vm = {};
-  vm.state = ko.observable("LOADING");
+  vm.state = ko.observable('LOADING');
   vm.currentPosition = ko.observable(0);
   vm.totalLength = ko.observable(0);
   vm.onClick = onClick;
@@ -63,7 +63,7 @@ function createViewModel(path) {
       vm.totalLength(player.duration);
       vm.state(p.state);
     })
-    .catch(() => vm.state("ERROR"));
+    .catch(() => vm.state('ERROR'));
 
   return vm;
 }

@@ -1,6 +1,6 @@
-import ko from "knockout";
-import template from "components/sound-player.html!text";
-import intempo from "learningmedia/intempojs";
+import ko from 'knockout';
+import template from './sound-player.html';
+import intempo from 'intempo';
 
 function createSoundPlayerViewModel(params) {
   const sound = params.sound();
@@ -37,7 +37,7 @@ function createSoundPlayerViewModel(params) {
 
 function register() {
   // Register the sound player as a new knockout component:
-  ko.components.register("av-sound-player", {
+  ko.components.register('av-sound-player', {
     viewModel: createSoundPlayerViewModel,
     template: template
   });
