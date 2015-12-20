@@ -1,6 +1,6 @@
 import ko from 'knockout';
 import template from './sound-player.html';
-// import intempo from 'intempo';
+import intempo from 'intempo';
 
 function createSoundPlayerViewModel(params) {
   const sound = params.sound();
@@ -9,17 +9,17 @@ function createSoundPlayerViewModel(params) {
   const state = ko.observable();
   let player;
 
-  // intempo.loadPlayer({
-  //     arraybuffer: sound.buffer,
-  //     stateChangedCallback: state,
-  //     positionChangedCallback: currentPosition
-  //   })
-  //   .then(p => {
-  //     player = p;
-  //     totalLength(player.duration);
-  //     player.start();
-  //   })
-  //   .catch(error => console.error(error));
+  intempo.loadPlayer({
+      arraybuffer: sound.buffer,
+      stateChangedCallback: state,
+      positionChangedCallback: currentPosition
+    })
+    .then(p => {
+      player = p;
+      totalLength(player.duration);
+      player.start();
+    })
+    .catch(error => console.error(error));
 
   return {
     totalLength,

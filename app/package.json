@@ -11,7 +11,7 @@
     "color": "~0.10.1",
     "drag-and-drop-files": "~0.0.1",
     "fs-jetpack": "~0.7.0",
-    "intempo": "git+https://git@github.com/learningmedia/intempojs.git#v1.0.3",
+    "intempo": "~1.1.0",
     "knockout": "~3.4.0"
   }
 }
