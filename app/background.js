@@ -21,6 +21,8 @@ var mainWindowState = windowStateKeeper('main', {
 
 app.on('ready', function () {
 
+  BrowserWindow.addDevToolsExtension(__dirname + '/chromeextensions-knockoutjs');
+
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,

@@ -11,15 +11,6 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1 id="greet"></h1>
-    <p class="subtitle">
-      Welcome to <a href="http://electron.atom.io" class="js-external-link">Electron</a> app running on this magnificent <strong id="platform-info"></strong> machine.
-    </p>
-    <p class="subtitle">
-      You are in <strong id="env-name"></strong> environment.
-    </p>
-  </div>
   <script id="part-template" type="text/html">
     <div class="part-outer" data-bind="style: { flex: length }">
       <div class="part-inner" data-bind="text: name, style: { color: $root.utils.getContrastColor(color()), backgroundColor: color }, attr: { title: name }" contenteditable></div>

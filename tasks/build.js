@@ -37,6 +37,11 @@ var copyTask = function () {
     return projectDir.copyAsync('app', destDir.path(), {
         overwrite: true,
         matching: paths.copyFromAppDir
+    }).then(function () {
+        return projectDir.copyAsync('chromeextensions-knockoutjs', destDir.path() + '/chromeextensions-knockoutjs', {
+            overwrite: true,
+            matching: '**/*'
+        });
     });
 };
 gulp.task('copy', ['clean'], copyTask);
