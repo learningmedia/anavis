@@ -1,0 +1,8 @@
+<div class="Work" data-bind="foreach: { data: parts, as: 'part' }, soundDrop: onSoundDropped">
+  <div class="Work-partOuter" data-bind="style: { flex: part.length }">
+    <div class="Work-partInner" data-bind="text: part.name, style: { color: $component.getContrastColor(part.color()), backgroundColor: part.color }, attr: { title: part.name }"></div>
+  </div>
+</div>
+<!-- ko if: sound -->
+<av-sound-player params="sound: sound"></av-sound-player>
+<!-- /ko -->
