@@ -1,6 +1,6 @@
 import ko from 'knockout';
 
-export default {
+const vm = {
   settings: ko.observableArray([]),
   works: ko.observableArray([{
     id: ko.observable('e8df0341-02fc-4f53-a899-f6ce05dc92d6'),
@@ -73,5 +73,10 @@ export default {
       id: ko.observable('19217983-93d0-402f-9088-25f5e8d76da2'),
       path: ko.observable('')
     })
-  }])
-};
+  }]),
+  currentPart: ko.observable()
+}
+
+vm.currentWork = ko.computed(() => vm.currentPart() ? vm.works().find(work => work.parts().indexOf(vm.currentPart()) !== -1) : undefined);
+
+export default vm;

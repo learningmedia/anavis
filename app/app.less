@@ -1,6 +1,7 @@
 @import (less) './node_modules/normalize.css/normalize.css';
 
 html, body {
+  font-family: @default-font-family;
   box-sizing: border-box;
 }
 
@@ -11,4 +12,39 @@ html, body {
 @import 'variables.less';
 
 @import './components/work.less';
+@import './components/inspector.less';
 @import './components/sound-player.less';
+
+.App {
+  display: flex;
+  min-height: 100vh;
+}
+
+.App-workspace {
+  flex: 1 0 0%;
+  overflow: hidden;
+}
+
+.App-work {
+  display: block;
+  margin: @default-margin;
+}
+
+.App-inspectorArea {
+  flex: none;
+  width: @inspector-width;
+  overflow: hidden;
+  transition: width @transition-duration ease;
+  background-color: @inspector-area-background-color;
+  color: @inspector-area-color;
+
+  @media (max-width: @very-small-screen) {
+    width: 0;
+    transition: width @transition-duration ease;
+  }
+}
+
+.App-inspector {
+  display: block;
+  margin: @default-margin;
+}

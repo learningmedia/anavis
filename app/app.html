@@ -10,11 +10,13 @@
   <script src="app.js"></script>
 </head>
 
-<body>
-  <av-toolbar></av-toolbar>
-  <div data-bind="foreach: { data: works, as: 'work' }">
-    <av-work params="work: work"></av-work>
+<body class="App">
+  <div class="App-workspace" data-bind="foreach: { data: works, as: 'work' }">
+    <av-work class="App-work" params="app: $parent, work: work"></av-work>
   </div>
+  <section class="App-inspectorArea">
+    <av-inspector class="App-inspector" params="app: $data"></av-inspector>
+  </section>
 </body>
 
 </html>
