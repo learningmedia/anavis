@@ -11,7 +11,10 @@ function viewModel(params) {
     sound: work.sound,
     getContrastColor: utils.getContrastColor,
     onSoundDropped: files => work.sound().path(files[0].path),
-    onPartClicked: part => app.currentPart(part)
+    onPartClicked: (part, event) => {
+      app.currentPart(part);
+      event.stopPropagation();
+    }
   };
 }
 

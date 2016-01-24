@@ -43,6 +43,8 @@ window.ko = ko;
 
 const mainViewModel = mockViewModel;
 
+mainViewModel.deselectAll = () => mainViewModel.currentPart(undefined);
+
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(mainViewModel, document.body);
 });

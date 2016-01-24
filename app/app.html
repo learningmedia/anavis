@@ -11,7 +11,7 @@
 </head>
 
 <body class="App">
-  <div class="App-workspace" data-bind="foreach: { data: works, as: 'work' }">
+  <div class="App-workspace" data-bind="foreach: { data: works, as: 'work' }, click: deselectAll">
     <av-work class="App-work" params="app: $parent, work: work"></av-work>
   </div>
   <section class="App-inspectorArea">

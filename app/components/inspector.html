@@ -1,5 +1,6 @@
-<div>
-  Anzahl Werke: <span data-bind="text: workCount"></span><br>
-  Current Work: <span data-bind="text: currentWork() ? currentWork().id : '?'"></span><br>
-  Current Part: <span data-bind="text: currentPart() ? currentPart().name : '?'"></span>
+<div data-bind="if: currentWork() && currentPart()">
+  Titel: <input class="Inspector-input" type="text" data-bind="value: currentWork().name" />
+  Name: <input class="Inspector-input" type="text" data-bind="value: currentPart().name" />
+  Länge: <input class="Inspector-input" type="range" data-bind="value: currentPart().length" />
+  Farbe: <input class="Inspector-input" type="color" data-bind="value: currentPart().color" />
 </div>
