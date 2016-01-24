@@ -1,6 +1,7 @@
 import ko from 'knockout';
 import utils from '../utils';
 import template from './work.html';
+import soundController from '../sound-controller';
 
 function viewModel(params) {
   const app = params.app;
@@ -10,7 +11,11 @@ function viewModel(params) {
     parts: work.parts,
     sound: work.sound,
     getContrastColor: utils.getContrastColor,
-    onSoundDropped: files => work.sound().path(files[0].path),
+    onSoundDropped: files => {
+      const ctrl = soundController.create(files[0].path);
+      // TODO Stop old sound if exists!
+      work.sound(ctrl);
+    },
     onPartClicked: (part, event) => {
       app.currentPart(part);
       event.stopPropagation();

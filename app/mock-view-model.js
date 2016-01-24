@@ -26,10 +26,7 @@ const vm = {
       color: ko.observable('#FFFF00'),
       name: ko.observable('Verse')
     }]),
-    sound: ko.observable({
-      id: ko.observable('25ac7df5-59f2-419e-bf37-bd4744bf7a68'),
-      path: ko.observable('')
-    })
+    sound: ko.observable()
   }, {
     id: ko.observable('bc3c6b0c-b7b8-4ffc-b544-3bad19149aad'),
     name: ko.observable('Werk 2'),
@@ -69,10 +66,7 @@ const vm = {
       color: ko.observable('#FFFF00'),
       name: ko.observable('Verse')
     }]),
-    sound: ko.observable({
-      id: ko.observable('19217983-93d0-402f-9088-25f5e8d76da2'),
-      path: ko.observable('')
-    })
+    sound: ko.observable()
   }]),
   currentPart: ko.observable()
 }

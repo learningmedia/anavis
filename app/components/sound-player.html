@@ -1,1 +1,9 @@
-<progress class="SoundPlayer" data-bind="attr: { max: totalLength, value: currentPosition }, click: onClick, style: { 'display': state() === 'LOADING' ? 'none' : 'block' }"></progress>
+<!-- ko if: sound.isLoading -->
+LOADING
+<!-- /ko -->
+<!-- ko if: sound.hasError -->
+ERROR
+<!-- /ko -->
+<!-- ko if: sound.isReady -->
+<progress class="SoundPlayer" data-bind="attr: { max: sound.length, value: sound.position }, click: onClick"></progress>
+<!-- /ko -->
