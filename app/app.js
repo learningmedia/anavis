@@ -28,6 +28,7 @@
 import ko from 'knockout';
 import utils from './utils';
 import soundDrop from './bindings/sound-drop';
+import moveBorder from './bindings/move-border';
 import work from './components/work';
 import inspector from './components/inspector';
 import soundPlayer from './components/sound-player';
@@ -36,7 +37,7 @@ import mockViewModel from './mock-view-model';
 window.ko = ko;
 
 // Register all bindings:
-[soundDrop].forEach(binding => binding.register());
+[soundDrop, moveBorder].forEach(binding => binding.register());
 
 // Register all components:
 [work, inspector, soundPlayer].forEach(component => component.register());
