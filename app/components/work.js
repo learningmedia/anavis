@@ -8,6 +8,7 @@ function viewModel(params) {
   const work = params.work;
   return {
     app: app,
+    work: work,
     parts: work.parts,
     sound: work.sound,
     getContrastColor: utils.getContrastColor,
