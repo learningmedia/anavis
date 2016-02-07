@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var rollup = require('rollup');
 var string = require('rollup-plugin-string');
 var less = require('gulp-less');
+var autoprefixer = require('gulp-autoprefixer');
 var jetpack = require('fs-jetpack');
 
 var utils = require('./utils');
@@ -106,6 +107,7 @@ gulp.task('bundle-watch', bundleTask);
 var lessTask = function () {
     return gulp.src('app/app.less')
     .pipe(less())
+    .pipe(autoprefixer())
     .pipe(gulp.dest(destDir.path('.')));
 };
 gulp.task('less', ['clean'], lessTask);
