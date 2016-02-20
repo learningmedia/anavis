@@ -17,27 +17,44 @@ function getMovementInfo(element, event, work) {
   const avusPerPixel = totalWorkLengthInAvus / totalWorkLengthInPixels;
   const touchOffsetInAvus = touchOffsetInPixels * avusPerPixel;
   const touchToleranceInAvus = TOUCH_TOLERANCE_IN_PIXELS * avusPerPixel;
-  for (let currentLeftPartIndex = 0, currentBorderOffsetInAvus = 0; currentLeftPartIndex < totalParts - 1; currentLeftPartIndex += 1) {
-    const currentLeftPart = work.parts()[currentLeftPartIndex];
-    currentBorderOffsetInAvus += currentLeftPart.length();
-    const minTouchOffsetInAvus = currentBorderOffsetInAvus - touchToleranceInAvus;
-    const maxTouchOffsetInAvus = currentBorderOffsetInAvus + touchToleranceInAvus;
-    if (touchOffsetInAvus >= minTouchOffsetInAvus && touchOffsetInAvus <= maxTouchOffsetInAvus) {
-      return {
-        initialTouchOffsetInAvus: touchOffsetInAvus,
-        leftIndex: currentLeftPartIndex,
-        rightIndex: currentLeftPartIndex + 1,
-        initalLeftPartLengthInAvus: work.parts()[currentLeftPartIndex].length(),
-        initalRightPartLengthInAvus: work.parts()[currentLeftPartIndex + 1].length(),
-        avusPerPixel: avusPerPixel
-      };
+
+  for (let currentPartIndex = 0, currentBorderOffsetInAvus = 0; currentPartIndex < totalParts; currentPartIndex += 1) {
+    const currentPartLength = work.parts()[currentPartIndex].length();
+    const leftBorderOffsetInAvus = currentBorderOffsetInAvus;
+    const rightBorderOffsetInAvus = leftBorderOffsetInAvus + currentPartLength;
+    const isTouchWithinCurrentPart = touchOffsetInAvus >= leftBorderOffsetInAvus && touchOffsetInAvus < rightBorderOffsetInAvus;
+    if (isTouchWithinCurrentPart) {
+      const info = {};
+      info.isResizing = false;
+      info.index = currentPartIndex;
+      info.avusPerPixel = avusPerPixel;
+      info.initialTouchOffsetInAvus = touchOffsetInAvus;
+
+      if (touchOffsetInAvus <= (leftBorderOffsetInAvus + touchToleranceInAvus) && currentPartIndex !== 0) {
+        info.isResizing = true;
+        info.leftIndex = currentPartIndex - 1;
+        info.rightIndex = currentPartIndex;
+        info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex - 1].length();
+        info.initalRightPartLengthInAvus = work.parts()[currentPartIndex].length();
+      } else if (touchOffsetInAvus >= (rightBorderOffsetInAvus - touchToleranceInAvus) && currentPartIndex !== (totalParts - 1)) {
+        info.isResizing = true;
+        info.leftIndex = currentPartIndex;
+        info.rightIndex = currentPartIndex + 1;
+        info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex].length();
+        info.initalRightPartLengthInAvus = work.parts()[currentPartIndex + 1].length();
+      }
+
+      return info;
     }
+
+    currentBorderOffsetInAvus = rightBorderOffsetInAvus;
   }
+
   return undefined;
 }
 
 function applyMovementInfo(currentMovementInfo, work, element) {
-  if (!currentMovementInfo) {
+  if (!currentMovementInfo || !currentMovementInfo.isResizing) {
     return;
   }
   const minPartLengthInAvus = TOUCH_TOLERANCE_IN_PIXELS * currentMovementInfo.avusPerPixel;
@@ -52,8 +69,8 @@ function applyMovementInfo(currentMovementInfo, work, element) {
   }
 }
 
-function toggleResizeCursor(element, isMoving) {
-  if (isMoving) {
+function toggleResizeCursor(element, currentMovementInfo) {
+  if (currentMovementInfo && currentMovementInfo.isResizing) {
     element.classList.add('u-col-resize');
   } else {
     element.classList.remove('u-col-resize');
@@ -61,13 +78,13 @@ function toggleResizeCursor(element, isMoving) {
 }
 
 function register() {
-  ko.bindingHandlers.moveBorder = {
+  ko.bindingHandlers.partOperations = {
     init: function (element, valueAccessor) {
       const work = valueAccessor().work;
 
       registerEventListenerWithTeardown(element, 'mousedown', onMouseDown);
-      registerEventListenerWithTeardown(element, 'mouseup', onMouseUpOrLeave);
-      registerEventListenerWithTeardown(element, 'mouseleave', onMouseUpOrLeave);
+      registerEventListenerWithTeardown(element, 'mouseup', onMouseUp);
+      registerEventListenerWithTeardown(element, 'mouseleave', onMouseLeave);
       registerEventListenerWithTeardown(element, 'mousemove', onMouseMove);
 
       let currentMovementInfo = undefined;
@@ -77,7 +94,12 @@ function register() {
         toggleResizeCursor(element, currentMovementInfo);
       }
 
-      function onMouseUpOrLeave(event) {
+      function onMouseUp(event) {
+        currentMovementInfo = undefined;
+        toggleResizeCursor(element, currentMovementInfo);
+      }
+
+      function onMouseLeave(event) {
         currentMovementInfo = undefined;
         toggleResizeCursor(element, currentMovementInfo);
       }
