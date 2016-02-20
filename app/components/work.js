@@ -16,10 +16,6 @@ function viewModel(params) {
       const ctrl = soundController.create(files[0].path);
       // TODO Stop old sound if exists!
       work.sound(ctrl);
-    },
-    onPartClicked: (part, event) => {
-      app.currentPart(part);
-      event.stopPropagation();
     }
   };
 }

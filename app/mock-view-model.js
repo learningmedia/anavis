@@ -67,6 +67,16 @@ const vm = {
       name: ko.observable('Verse')
     }]),
     sound: ko.observable()
+  }, {
+    id: ko.observable('a1acf9f2-db99-4ea7-8745-615f5261dba5'),
+    name: ko.observable('Werk 3'),
+    parts: ko.observableArray([{
+      id: ko.observable('7a38a651-e67f-458f-a9bf-e31d040011cf'),
+      length: ko.observable(100),
+      color: ko.observable('#000080'),
+      name: ko.observable('Unbenannt')
+    }]),
+    sound: ko.observable()
   }]),
   currentPart: ko.observable()
 }

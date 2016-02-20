@@ -1,4 +1,5 @@
 import ko from 'knockout';
+import uuid from 'uuid';
 
 const TOUCH_TOLERANCE_IN_PIXELS = 12;
 
@@ -9,7 +10,7 @@ function registerEventListenerWithTeardown(element, event, handler) {
   ko.utils.domNodeDisposal.addDisposeCallback(element, () => element.removeEventListener(event, handler));
 }
 
-function getMovementInfo(element, event, work) {
+function getOperationsInfo(element, event, work) {
   const totalWorkLengthInPixels = element.clientWidth;
   const touchOffsetInPixels = event.clientX - element.offsetLeft;
   const totalParts = work.parts().length;
@@ -29,6 +30,7 @@ function getMovementInfo(element, event, work) {
       info.index = currentPartIndex;
       info.avusPerPixel = avusPerPixel;
       info.initialTouchOffsetInAvus = touchOffsetInAvus;
+      info.touchOffsetWithinPartInAvus = touchOffsetInAvus - leftBorderOffsetInAvus;
 
       if (touchOffsetInAvus <= (leftBorderOffsetInAvus + touchToleranceInAvus) && currentPartIndex !== 0) {
         info.isResizing = true;
@@ -53,24 +55,41 @@ function getMovementInfo(element, event, work) {
   return undefined;
 }
 
-function applyMovementInfo(currentMovementInfo, work, element) {
-  if (!currentMovementInfo || !currentMovementInfo.isResizing) {
+function applyMovement(currentOperationsInfo, work, element) {
+  if (!currentOperationsInfo || !currentOperationsInfo.isResizing) {
     return;
   }
-  const minPartLengthInAvus = TOUCH_TOLERANCE_IN_PIXELS * currentMovementInfo.avusPerPixel;
+  const minPartLengthInAvus = TOUCH_TOLERANCE_IN_PIXELS * currentOperationsInfo.avusPerPixel;
   const touchOffsetInPixels = event.clientX - element.offsetLeft;
-  const touchOffsetInAvus = touchOffsetInPixels * currentMovementInfo.avusPerPixel;
-  const distanceInAvus = Math.round(touchOffsetInAvus - currentMovementInfo.initialTouchOffsetInAvus);
-  const newLeftPartLength = currentMovementInfo.initalLeftPartLengthInAvus + distanceInAvus;
-  const newRightPartLength = currentMovementInfo.initalRightPartLengthInAvus - distanceInAvus;
+  const touchOffsetInAvus = touchOffsetInPixels * currentOperationsInfo.avusPerPixel;
+  const distanceInAvus = Math.round(touchOffsetInAvus - currentOperationsInfo.initialTouchOffsetInAvus);
+  const newLeftPartLength = currentOperationsInfo.initalLeftPartLengthInAvus + distanceInAvus;
+  const newRightPartLength = currentOperationsInfo.initalRightPartLengthInAvus - distanceInAvus;
   if (newLeftPartLength >= minPartLengthInAvus && newRightPartLength >= minPartLengthInAvus) {
-    work.parts()[currentMovementInfo.leftIndex].length(newLeftPartLength);
-    work.parts()[currentMovementInfo.rightIndex].length(newRightPartLength);
+    work.parts()[currentOperationsInfo.leftIndex].length(newLeftPartLength);
+    work.parts()[currentOperationsInfo.rightIndex].length(newRightPartLength);
   }
 }
 
-function toggleResizeCursor(element, currentMovementInfo) {
-  if (currentMovementInfo && currentMovementInfo.isResizing) {
+function applyRelease(currentOperationsInfo, work, element, event, app) {
+  if (!currentOperationsInfo || currentOperationsInfo.isResizing) {
+    return;
+  }
+  const newInfo = getOperationsInfo(element, event, work);
+  if (newInfo && !newInfo.isResizing && newInfo.index === currentOperationsInfo.index) {
+    const clickedPart = work.parts()[newInfo.index];
+    if (clickedPart === app.currentPart()) {
+      splitPart(work, newInfo.index, newInfo.touchOffsetWithinPartInAvus);
+      app.currentPart(work.parts()[newInfo.index + 1]);
+    } else {
+      app.currentPart(clickedPart);
+    }
+    event.stopPropagation();
+  }
+}
+
+function toggleResizeCursor(element, currentOperationsInfo) {
+  if (currentOperationsInfo && currentOperationsInfo.isResizing) {
     element.classList.add('u-col-resize');
   } else {
     element.classList.remove('u-col-resize');
@@ -80,6 +99,7 @@ function toggleResizeCursor(element, currentMovementInfo) {
 function register() {
   ko.bindingHandlers.partOperations = {
     init: function (element, valueAccessor) {
+      const app = valueAccessor().app;
       const work = valueAccessor().work;
 
       registerEventListenerWithTeardown(element, 'mousedown', onMouseDown);
@@ -87,29 +107,65 @@ function register() {
       registerEventListenerWithTeardown(element, 'mouseleave', onMouseLeave);
       registerEventListenerWithTeardown(element, 'mousemove', onMouseMove);
 
-      let currentMovementInfo = undefined;
+      let currentOperationsInfo = undefined;
 
       function onMouseDown(event) {
-        currentMovementInfo = getMovementInfo(element, event, work);
-        toggleResizeCursor(element, currentMovementInfo);
+        currentOperationsInfo = getOperationsInfo(element, event, work);
+        toggleResizeCursor(element, currentOperationsInfo);
       }
 
       function onMouseUp(event) {
-        currentMovementInfo = undefined;
-        toggleResizeCursor(element, currentMovementInfo);
+        applyRelease(currentOperationsInfo, work, element, event, app);
+        currentOperationsInfo = undefined;
+        toggleResizeCursor(element, undefined);
       }
 
       function onMouseLeave(event) {
-        currentMovementInfo = undefined;
-        toggleResizeCursor(element, currentMovementInfo);
+        currentOperationsInfo = undefined;
+        toggleResizeCursor(element, currentOperationsInfo);
       }
 
       function onMouseMove(event) {
-        applyMovementInfo(currentMovementInfo, work, element);
-        toggleResizeCursor(element, currentMovementInfo || getMovementInfo(element, event, work));
+        applyMovement(currentOperationsInfo, work, element);
+        toggleResizeCursor(element, currentOperationsInfo || getOperationsInfo(element, event, work));
       }
     }
   };
+}
+
+////// TODO EXTRACT ///////////////////////////////
+
+function splitPart(work, partIndex, splitPoint) {
+  console.log('YAY');
+  const oldPartsArray = work.parts();
+  const partToSplit = oldPartsArray[partIndex];
+  const originalLength = partToSplit.length();
+
+  const leftClone = clonePart(partToSplit);
+  const rightClone = clonePart(partToSplit);
+  leftClone.length(splitPoint);
+  rightClone.length(originalLength - splitPoint);
+
+  const newPartsArray = [];
+  oldPartsArray.slice(0, partIndex).forEach(x => newPartsArray.push(x));
+  newPartsArray.push(leftClone);
+  newPartsArray.push(rightClone);
+  oldPartsArray.slice(partIndex + 1).forEach(x => newPartsArray.push(x));
+
+  work.parts(newPartsArray);
+}
+
+function clonePart(part) {
+  return {
+    id: ko.observable(newId()),
+    length: ko.observable(part.length()),
+    color: ko.observable(part.color()),
+    name: ko.observable(part.name())
+  };
+}
+
+function newId() {
+  return uuid.v4();
 }
 
 export default { register };
