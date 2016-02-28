@@ -13,6 +13,7 @@ html, body {
 @import 'utilities.less';
 
 @import './components/work.less';
+@import './components/toolbar.less';
 @import './components/inspector.less';
 @import './components/sound-player.less';
 
@@ -21,9 +22,19 @@ html, body {
   min-height: 100vh;
 }
 
+.App-toolbar {
+  width: calc(~"100% - "@inspector-width);
+  position: fixed;
+  background-color: @toolbar-background-color;
+}
+
 .App-workspace {
   flex: 1 0 0%;
   overflow: hidden;
+}
+
+.App-works {
+  padding-top: 25px;
 }
 
 .App-work {
@@ -48,4 +59,9 @@ html, body {
 .App-inspector {
   display: block;
   margin: @default-margin;
+}
+
+// TODO Make own cursor file:
+.u-scissors .App-work, .u-scissors .App-work * {
+  cursor: url('./images/scissors.png'), auto !important;
 }

@@ -78,7 +78,8 @@ const vm = {
     }]),
     sound: ko.observable()
   }]),
-  currentPart: ko.observable()
+  currentPart: ko.observable(),
+  currentTool: ko.observable('default')
 }
 
 vm.currentWork = ko.computed(() => vm.currentPart() ? vm.works().find(work => work.parts().indexOf(vm.currentPart()) !== -1) : undefined);

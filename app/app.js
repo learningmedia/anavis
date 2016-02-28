@@ -30,6 +30,7 @@ import utils from './utils';
 import soundDrop from './bindings/sound-drop';
 import partOperations from './bindings/part-operations';
 import work from './components/work';
+import toolbar from './components/toolbar';
 import inspector from './components/inspector';
 import soundPlayer from './components/sound-player';
 import mockViewModel from './mock-view-model';
@@ -40,12 +41,12 @@ window.ko = ko;
 [soundDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, inspector, soundPlayer].forEach(component => component.register());
+[work, toolbar, inspector, soundPlayer].forEach(component => component.register());
 
 const mainViewModel = mockViewModel;
 
 mainViewModel.deselectAll = () => mainViewModel.currentPart(undefined);
 
 document.addEventListener('DOMContentLoaded', function() {
-  ko.applyBindings(mainViewModel, document.body);
+  ko.applyBindings(mainViewModel, document.getElementsByTagName('html')[0]);
 });

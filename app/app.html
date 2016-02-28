@@ -10,10 +10,15 @@
   <script src="app.js"></script>
 </head>
 
-<body class="App">
-  <div class="App-workspace" data-bind="foreach: { data: works, as: 'work' }, event: { 'mouseup': deselectAll }">
-    <av-work class="App-work" params="app: $parent, work: work"></av-work>
-  </div>
+<body class="App" data-bind="css: 'u-' + $data.currentTool()">
+  <section class="App-workspace">
+    <aside class="App-toolbar">
+      <av-toolbar params="app: $data"></av-toolbar>
+    </aside>
+    <main class="App-works" data-bind="foreach: { data: works, as: 'work' }, event: { 'mouseup': deselectAll }">
+      <av-work class="App-work" params="app: $parent, work: work"></av-work>
+    </main>
+  </section>
   <section class="App-inspectorArea">
     <av-inspector class="App-inspector" params="app: $data"></av-inspector>
   </section>
