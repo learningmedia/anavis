@@ -34,6 +34,8 @@ import toolbar from './components/toolbar';
 import inspector from './components/inspector';
 import soundPlayer from './components/sound-player';
 import mockViewModel from './mock-view-model';
+import fileDialog from './file-dialog';
+import { ipcRenderer } from 'electron';
 
 window.ko = ko;
 
@@ -50,3 +52,7 @@ mainViewModel.deselectAll = () => mainViewModel.currentPart(undefined);
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(mainViewModel, document.getElementsByTagName('html')[0]);
 });
+
+ipcRenderer.on('OPEN_FILE', function () {
+  fileDialog.open();
+})

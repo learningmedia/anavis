@@ -3,45 +3,45 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, BrowserWindow } from 'electron';
-import devHelper from './vendor/electron_boilerplate/dev_helper';
+import { app, BrowserWindow, Menu } from 'electron';
 import windowStateKeeper from './vendor/electron_boilerplate/window_state';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
 
-var mainWindow;
+import mainMenu from './main-menu';
 
 // Preserver of the window size and position between app launches.
-var mainWindowState = windowStateKeeper('main', {
+const mainWindowState = windowStateKeeper('main', {
   width: 1000,
   height: 600
 });
 
 app.on('ready', function () {
+  BrowserWindow.addDevToolsExtension(`${__dirname}/chromeextensions-knockoutjs`);
 
-  BrowserWindow.addDevToolsExtension(__dirname + '/chromeextensions-knockoutjs');
-
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height
   });
 
+  const menu = Menu.buildFromTemplate(mainMenu.getMainMenuTemplate());
+  Menu.setApplicationMenu(menu);
+
   if (mainWindowState.isMaximized) {
     mainWindow.maximize();
   }
 
   if (env.name === 'test') {
-    mainWindow.loadURL('file://' + __dirname + '/spec.html');
+    mainWindow.loadURL(`file://${__dirname}/spec.html`);
   } else {
-    mainWindow.loadURL('file://' + __dirname + '/app.html');
+    mainWindow.loadURL(`file://${__dirname}/app.html`);
   }
 
   if (env.name !== 'production') {
-    devHelper.setDevMenu();
     mainWindow.openDevTools();
   }
 

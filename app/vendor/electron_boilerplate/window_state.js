@@ -7,18 +7,18 @@ import jetpack from 'fs-jetpack';
 
 export default function (name, defaults) {
 
-    var userDataDir = jetpack.cwd(app.getPath('userData'));
-    var stateStoreFile = 'window-state-' + name +'.json';
+    const userDataDir = jetpack.cwd(app.getPath('userData'));
+    const stateStoreFile = 'window-state-' + name +'.json';
 
-    var state = userDataDir.read(stateStoreFile, 'json') || {
+    const state = userDataDir.read(stateStoreFile, 'json') || {
         width: defaults.width,
         height: defaults.height
     };
 
-    var saveState = function (win) {
+    const saveState = function (win) {
         if (!win.isMaximized() && !win.isMinimized()) {
-            var position = win.getPosition();
-            var size = win.getSize();
+            const position = win.getPosition();
+            const size = win.getSize();
             state.x = position[0];
             state.y = position[1];
             state.width = size[0];

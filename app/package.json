@@ -11,9 +11,14 @@
     "color": "~0.10.1",
     "drag-and-drop-files": "~0.0.1",
     "fs-jetpack": "~0.7.0",
+    "glob": "~7.0.3",
     "intempo": "~1.1.0",
     "knockout": "~3.4.0",
+    "knockout-mapping": "~2.6.0",
+    "mkdirp": "~0.5.1",
     "normalize.css": "~3.0.3",
-    "uuid": "~2.0.1"
+    "uuid": "~2.0.1",
+    "yauzl": "~2.4.2",
+    "yazl": "~2.3.1"
   }
 }
