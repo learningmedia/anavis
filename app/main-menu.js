@@ -1,9 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+import { app, Menu } from 'electron';
 import env from './env';
-import fileDialog from './file-dialog';
+import events from './events';
 
-function getMainMenuTemplate() {
-  const mainMenu = [{
+function setMenu(mainWindow) {
+  const menuTemplate = [{
     label: 'File',
     submenu: [{
       label: 'New',
@@ -12,28 +12,31 @@ function getMainMenuTemplate() {
     }, {
       label: 'Open...',
       accelerator: 'CmdOrCtrl+O',
-      click: () => BrowserWindow.getFocusedWindow().webContents.send('OPEN_FILE')
+      click: () => mainWindow.webContents.send(events.OPEN_FILE)
     }, {
       label: 'Quit',
       accelerator: 'CmdOrCtrl+Q',
       click: () => app.quit()
     }]
   }];
+
   if (env.name !== 'production') {
-    mainMenu.push({
+    menuTemplate.push({
       label: 'Development',
       submenu: [{
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
-        click: () => BrowserWindow.getFocusedWindow().webContents.reloadIgnoringCache()
+        click: () => mainWindow.webContents.reloadIgnoringCache()
       }, {
         label: 'Toggle DevTools',
         accelerator: 'Alt+CmdOrCtrl+I',
-        click: () => BrowserWindow.getFocusedWindow().toggleDevTools()
+        click: () => mainWindow.toggleDevTools()
       }]
     });
   }
-  return mainMenu;
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
 }
 
-export default { getMainMenuTemplate };
+export default { setMenu };

@@ -3,14 +3,14 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import windowStateKeeper from './vendor/electron_boilerplate/window_state';
+import mainMenu from './main-menu';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
 
-import mainMenu from './main-menu';
 
 // Preserver of the window size and position between app launches.
 const mainWindowState = windowStateKeeper('main', {
@@ -28,8 +28,7 @@ app.on('ready', function () {
     height: mainWindowState.height
   });
 
-  const menu = Menu.buildFromTemplate(mainMenu.getMainMenuTemplate());
-  Menu.setApplicationMenu(menu);
+  mainMenu.setMenu(mainWindow);
 
   if (mainWindowState.isMaximized) {
     mainWindow.maximize();

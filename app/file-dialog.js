@@ -11,7 +11,6 @@ function open() {
       openDocument(filenames[0], function (error, doc) {
         const workVm = createWorkViewModelFromDocunment(doc);
         mockViewModel.works.push(workVm);
-        console.log('It is pushed!');
       })
     }
   });
@@ -20,7 +19,6 @@ function open() {
 function openDocument(filename, cb) {
   const userDataDir = remote.app.getPath('userData');
   const unzipDir = path.join(userDataDir, `doc_${Date.now()}`);
-  console.log('unzipDir', unzipDir);
   folderZip.unzip(filename, unzipDir, function (err) {
     if (err) return cb && cb(err);
     const docFileName = path.join(unzipDir, 'anavis.json');
