@@ -8,6 +8,7 @@
   "main": "background.js",
   "private": true,
   "dependencies": {
+    "bignumber.js": "~2.3.0",
     "color": "~0.10.1",
     "drag-and-drop-files": "~0.0.1",
     "fs-jetpack": "~0.7.0",

@@ -2,6 +2,7 @@ import mockViewModel from './mock-view-model';
 import folderZip from './common/folder-zip';
 import { remote } from 'electron';
 import koMapping from 'knockout-mapping';
+import BigNumber from 'bignumber.js';
 import path from 'path';
 import fs from 'fs';
 
@@ -30,7 +31,16 @@ function openDocument(filename, cb) {
 }
 
 function createWorkViewModelFromDocunment(doc) {
+  consolidatePartLengths(doc);
   return koMapping.fromJS(doc);
+}
+
+function consolidatePartLengths(doc) {
+  const maxSum = 1000000;
+  const sum = doc.parts.reduce((accu, part) => accu.plus(part.length), new BigNumber(0));
+  const factor = new BigNumber(maxSum).dividedBy(sum).toNumber();
+  doc.parts.forEach(part => { part.length *= factor; });
+  return doc;
 }
 
 export default { open };
