@@ -3,6 +3,8 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
+import path from 'path';
+import rimraf from 'rimraf';
 import { app, BrowserWindow } from 'electron';
 import windowStateKeeper from './vendor/electron_boilerplate/window_state';
 import mainMenu from './main-menu';
@@ -46,6 +48,9 @@ app.on('ready', function () {
 
   mainWindow.on('close', function () {
     mainWindowState.saveState(mainWindow);
+    const userDataDir = app.getPath('userData');
+    const tempDocsDir = path.join(userDataDir, 'temp-docs');
+    rimraf.sync(tempDocsDir);
   });
 });
 
