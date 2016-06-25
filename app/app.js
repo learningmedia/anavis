@@ -71,6 +71,7 @@ function save(work, cb) {
   const workingDirectory = work._.workingDirectory;
   const docFileName = path.normalize(path.join(workingDirectory, 'anavis.json'));
   const workJson = ko.toJSON(work);
+  delete workJson['_'];
   fs.writeFile(docFileName, workJson, 'utf8', err => {
     if (err) return cb && cb(err);
     folderZip.zip(workingDirectory, zipFileName, cb);
