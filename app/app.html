@@ -16,7 +16,7 @@
       <av-toolbar params="app: $data"></av-toolbar>
     </aside>
     <main class="App-works" data-bind="foreach: { data: works, as: 'work' }, event: { 'mouseup': deselectAll }">
-      <av-work class="App-work" params="app: $parent, work: work"></av-work>
+      <av-work class="App-work" params="app: $parent, work: work" data-bind="css: { 'is-selected': $parent.currentWork() === work }"></av-work>
     </main>
   </section>
   <section class="App-inspectorArea">

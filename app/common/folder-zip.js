@@ -23,10 +23,10 @@ function zip(sourceDir, targetFileName, cb) {
       const relativeFileName = path.relative(sourceDir, file);
       zipfile.addFile(file, relativeFileName);
     });
-    zipfile.outputStream
-      .pipe(fs.createWriteStream(targetFileName))
-      .on('error', err => cb && cb(err))
-      .on('end', () => cb && cb());
+    const writeStream = fs.createWriteStream(targetFileName);
+    writeStream.on('error', err => cb && cb(err));
+    writeStream.on('finish', () => cb && cb());
+    zipfile.outputStream.pipe(writeStream);
     zipfile.end();
   });
 }

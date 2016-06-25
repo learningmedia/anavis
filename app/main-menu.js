@@ -14,6 +14,10 @@ function setMenu(mainWindow) {
       accelerator: 'CmdOrCtrl+O',
       click: () => mainWindow.webContents.send(events.OPEN_FILE)
     }, {
+      label: 'Save',
+      accelerator: 'CmdOrCtrl+S',
+      click: () => mainWindow.webContents.send(events.SAVE_FILE)
+    }, {
       label: 'Quit',
       accelerator: 'CmdOrCtrl+Q',
       click: () => app.quit()

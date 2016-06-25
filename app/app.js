@@ -25,17 +25,21 @@
 //     document.getElementById('env-name').innerHTML = env.name;
 // });
 
+import fs from 'fs';
+import path from 'path';
 import ko from 'knockout';
-import utils from './utils';
+import { ipcRenderer } from 'electron';
+import folderZip from './common/folder-zip';
 import soundDrop from './bindings/sound-drop';
 import partOperations from './bindings/part-operations';
 import work from './components/work';
 import toolbar from './components/toolbar';
 import inspector from './components/inspector';
 import soundPlayer from './components/sound-player';
-import mockViewModel from './mock-view-model';
+import appViewModel from './app-view-model';
+import utils from './utils';
+import events from './events';
 import fileDialog from './file-dialog';
-import { ipcRenderer } from 'electron';
 
 window.ko = ko;
 
@@ -45,14 +49,30 @@ window.ko = ko;
 // Register all components:
 [work, toolbar, inspector, soundPlayer].forEach(component => component.register());
 
-const mainViewModel = mockViewModel;
-
-mainViewModel.deselectAll = () => mainViewModel.currentPart(undefined);
+appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
 
 document.addEventListener('DOMContentLoaded', function() {
-  ko.applyBindings(mainViewModel, document.getElementsByTagName('html')[0]);
+  ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
 });
 
-ipcRenderer.on('OPEN_FILE', function () {
+ipcRenderer.on(events.OPEN_FILE, function () {
   fileDialog.open();
-})
+});
+
+ipcRenderer.on(events.SAVE_FILE, function () {
+  save(appViewModel.currentWork(), (err) => {
+    console.log(err || 'Saved!');
+  });
+});
+
+function save(work, cb) {
+  if (!work) return cb && cb();
+  const zipFileName = work._.zipFileName;
+  const workingDirectory = work._.workingDirectory;
+  const docFileName = path.normalize(path.join(workingDirectory, 'anavis.json'));
+  const workJson = ko.toJSON(work);
+  fs.writeFile(docFileName, workJson, 'utf8', err => {
+    if (err) return cb && cb(err);
+    folderZip.zip(workingDirectory, zipFileName, cb);
+  });
+}

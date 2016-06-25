@@ -39,7 +39,11 @@ html, body {
 
 .App-work {
   display: block;
-  margin: @default-margin;
+  padding: @default-margin;
+}
+
+.App-work.is-selected {
+  background-color: @selected-work-background-color;
 }
 
 .App-inspectorArea {
