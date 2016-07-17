@@ -1,0 +1,161 @@
+{
+  "version": "2",
+  "id": "e8df0341-02fc-4f53-a899-f6ce05dc92d2",
+  "name": "Werk, das aus dem ZIP-File kam",
+  "parts": [{
+    "id": "722c40d3-d7c4-4b64-9bc7-6b58d1ab5130",
+    "name": "Intro",
+    "color": "#4582B4",
+    "length": 161992531
+  }, {
+    "id": "ce15b62a-0137-4697-b7c4-da55020c883b",
+    "name": "Verse (instr.)",
+    "color": "#FFD700",
+    "length": 155059124
+  }, {
+    "id": "c60662ed-830a-4f53-84e0-280adcad7053",
+    "name": "Verse",
+    "color": "#FFD700",
+    "length": 125031887
+  }, {
+    "id": "39a6bd28-2c3e-43f9-be39-710d97fe6da4",
+    "name": "Verse",
+    "color": "#FFD700",
+    "length": 124552391
+  }, {
+    "id": "c64cfcd7-f5ff-4335-86e1-5f43802c8af3",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 123667479
+  }, {
+    "id": "1ed6fcca-8614-4b3c-b315-54d53bb158c6",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 122295418
+  }, {
+    "id": "d4c64b3f-4b0d-40f4-a6d5-2d52d244630f",
+    "name": "Verse",
+    "color": "#FFD700",
+    "length": 122851114
+  }, {
+    "id": "55be5358-5f62-401d-9f50-3847a4da28d0",
+    "name": "Verse",
+    "color": "#FFD700",
+    "length": 123681319
+  }, {
+    "id": "5150d729-42d9-4b56-9c2f-6f0946f8f6d5",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 123095339
+  }, {
+    "id": "1d41d86c-91ba-4312-b8be-eaaae300051b",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 121355800
+  }, {
+    "id": "c0301aa3-5608-4681-aae3-1a81cba8008d",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 121726698
+  }, {
+    "id": "ea2741dc-27c7-4452-9dd2-621c552d8beb",
+    "name": "Verse (instr.)",
+    "color": "#FFD700",
+    "length": 122107691
+  }, {
+    "id": "347655d6-5344-434e-a88a-196a3fc58d55",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 122602491
+  }, {
+    "id": "8e502ed8-9dcf-4746-a0f5-21f296aaf736",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 122795918
+  }, {
+    "id": "dfb1de6b-29c1-4db5-8131-a09b0c03f2ab",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 123479263
+  }, {
+    "id": "fbf8027c-0cc5-4341-99ce-d0b98ce4621c",
+    "name": "Chorus",
+    "color": "#228B22",
+    "length": 123480402
+  }, {
+    "id": "faedcdd0-2c5e-4d7d-9a99-1bcbcafa3ed1",
+    "name": "Outro",
+    "color": "#4582B4",
+    "length": 107708782
+  }],
+  "annotations": [{
+    "id": "39fb6387-05d8-4419-9d5a-0127191f6277",
+    "type": "lyrics",
+    "values": [
+      "",
+      "",
+      "Mister Your eyes are full of hesitation Sure makes me wonder If you know what you're looking for",
+      "Baby I wanna keep my reputation I'm a sensation You try me once, you'll beg for more",
+      "Oh, yes sir, I can boogie But a I need a certain song I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      "No sir I don't feel very much like talking No, neither walking You wanna know if I can dance",
+      "Yes sir Already told you in the first verse And in the chorus But I will give you one more chance",
+      "Oh, yes sir, I can boogie But a need a certain song I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      "",
+      "Oh, yes sir, I can boogie But I need a certain song I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long",
+      ""
+    ]
+  }, {
+    "id": "ed35f9dd-d68a-40af-b374-c851fc404f1b",
+    "type": "harmonies",
+    "values": [
+      "E a E a f# C G",
+      "C E a f# C G A",
+      "C E a f# C G C E",
+      "C E a f# C G a",
+      "C E F C E A",
+      "C E F C E A",
+      "C E a f# C G C E",
+      "C E a f# C G a",
+      "C E F C E A",
+      "C E F C E A",
+      "C E F C E A",
+      "C E a f# C G a",
+      "C E F C E A",
+      "C E F C E A",
+      "C E F C E A",
+      "C E F C E A",
+      "C E F C E A"
+    ]
+  }, {
+    "id": "0f4651c8-a903-44e3-be90-c1bf42710210",
+    "type": "remarks",
+    "values": [
+      "Das ist eine Anmerkung",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }],
+  "sounds": [{
+    "uri": "embedded://Baccara - Yes Sir, I Can Boogie.mp3"
+  }]
+}

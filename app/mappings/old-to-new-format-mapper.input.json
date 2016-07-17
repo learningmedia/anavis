@@ -1,0 +1,312 @@
+{
+  "work": {
+    "properties": null,
+    "categories": [{
+      "id": "e996e1ca-52cf-4c81-8ce8-5d7f1b3cfd97",
+      "name": "Unbenannt",
+      "color": "#FF001464"
+    }, {
+      "id": "790b80a5-7ddf-421a-8232-ff3fe1443a03",
+      "name": "",
+      "color": "#FFA9A9A9"
+    }, {
+      "id": "c1b0a189-5a52-4032-a1c4-af9b4605d706",
+      "name": "A",
+      "color": "#FFFF0000"
+    }, {
+      "id": "2f6266a1-e461-43ab-9f66-ee69e589080d",
+      "name": "B",
+      "color": "#FFFFD700"
+    }, {
+      "id": "62fac934-177e-43e0-a040-217e6ef5c208",
+      "name": "Break",
+      "color": "#FFFFFAFA"
+    }, {
+      "id": "d94fbaf0-ebea-4c37-b5f3-6d960576ac9d",
+      "name": "Bridge",
+      "color": "#FFFF0000"
+    }, {
+      "id": "f0da4c70-9217-4b63-97a3-2cac8a909b38",
+      "name": "C",
+      "color": "#FF4582B4"
+    }, {
+      "id": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "name": "Chorus",
+      "color": "#FF228B22"
+    }, {
+      "id": "2e6bf213-4bd7-4b62-be51-4d57f2af5ea3",
+      "name": "Chorus (instr.)",
+      "color": "#FF228B22"
+    }, {
+      "id": "e3d271aa-d9ec-4412-a4a9-c0027ca24e9b",
+      "name": "Ending",
+      "color": "#FF4582B4"
+    }, {
+      "id": "fe17b370-5830-43e2-928e-4e4a01521f52",
+      "name": "Headline",
+      "color": "#FF228B22"
+    }, {
+      "id": "4107592d-579e-4384-8e4c-cdcf780bfe45",
+      "name": "Instr. Solo",
+      "color": "#FF800000"
+    }, {
+      "id": "a0abb2e2-80a1-4325-83cf-e23fec32504e",
+      "name": "Interlude",
+      "color": "#FF4682B4"
+    }, {
+      "id": "4ccbebf8-3226-4e2b-9b4d-d9cbe827f7a8",
+      "name": "Intro",
+      "color": "#FF4582B4"
+    }, {
+      "id": "a23ee22b-0476-4a73-ba3a-8d6b44478ab6",
+      "name": "Outro",
+      "color": "#FF4582B4"
+    }, {
+      "id": "96866656-7ed5-4d77-aa52-c34fe03f0ab0",
+      "name": "Prechorus",
+      "color": "#FF7FFF00"
+    }, {
+      "id": "846bc717-279d-4871-abd8-c5ed63a16394",
+      "name": "Refrain",
+      "color": "#FF228B22"
+    }, {
+      "id": "702523e5-2b7e-4593-9baf-0402dc34c0bc",
+      "name": "Strophe",
+      "color": "#FFFFD700"
+    }, {
+      "id": "584d279c-7d3f-4592-a8e3-acc6fca9ca14",
+      "name": "Trans. Bridge",
+      "color": "#FFFF0000"
+    }, {
+      "id": "fbc94504-7604-44fe-b900-4734c99698f7",
+      "name": "Verse",
+      "color": "#FFFFD700"
+    }, {
+      "id": "b75464d7-9e25-4cde-ad00-e0394fd6e6d7",
+      "name": "Verse (instr.)",
+      "color": "#FFFFD700"
+    }, {
+      "id": "4815936c-d5e5-4d4d-8910-3d5a8b0b560b",
+      "name": "Verse (m. Refrain)",
+      "color": "#FFFFD700"
+    }, {
+      "id": "168f0747-47eb-413f-b962-44bcb61bd596",
+      "name": "Verse I",
+      "color": "#FFFFD700"
+    }, {
+      "id": "d2f18ef5-b304-4640-a636-299c60d273e7",
+      "name": "Verse II",
+      "color": "#FFFFD700"
+    }],
+    "parts": [{
+      "id": "722c40d3-d7c4-4b64-9bc7-6b58d1ab5130",
+      "categoryId": "4ccbebf8-3226-4e2b-9b4d-d9cbe827f7a8",
+      "length": "161992531"
+    }, {
+      "id": "ce15b62a-0137-4697-b7c4-da55020c883b",
+      "categoryId": "b75464d7-9e25-4cde-ad00-e0394fd6e6d7",
+      "length": "155059124"
+    }, {
+      "id": "c60662ed-830a-4f53-84e0-280adcad7053",
+      "categoryId": "fbc94504-7604-44fe-b900-4734c99698f7",
+      "length": "125031887"
+    }, {
+      "id": "39a6bd28-2c3e-43f9-be39-710d97fe6da4",
+      "categoryId": "fbc94504-7604-44fe-b900-4734c99698f7",
+      "length": "124552391"
+    }, {
+      "id": "c64cfcd7-f5ff-4335-86e1-5f43802c8af3",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "123667479"
+    }, {
+      "id": "1ed6fcca-8614-4b3c-b315-54d53bb158c6",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "122295418"
+    }, {
+      "id": "d4c64b3f-4b0d-40f4-a6d5-2d52d244630f",
+      "categoryId": "fbc94504-7604-44fe-b900-4734c99698f7",
+      "length": "122851114"
+    }, {
+      "id": "55be5358-5f62-401d-9f50-3847a4da28d0",
+      "categoryId": "fbc94504-7604-44fe-b900-4734c99698f7",
+      "length": "123681319"
+    }, {
+      "id": "5150d729-42d9-4b56-9c2f-6f0946f8f6d5",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "123095339"
+    }, {
+      "id": "1d41d86c-91ba-4312-b8be-eaaae300051b",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "121355800"
+    }, {
+      "id": "c0301aa3-5608-4681-aae3-1a81cba8008d",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "121726698"
+    }, {
+      "id": "ea2741dc-27c7-4452-9dd2-621c552d8beb",
+      "categoryId": "b75464d7-9e25-4cde-ad00-e0394fd6e6d7",
+      "length": "122107691"
+    }, {
+      "id": "347655d6-5344-434e-a88a-196a3fc58d55",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "122602491"
+    }, {
+      "id": "8e502ed8-9dcf-4746-a0f5-21f296aaf736",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "122795918"
+    }, {
+      "id": "dfb1de6b-29c1-4db5-8131-a09b0c03f2ab",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "123479263"
+    }, {
+      "id": "fbf8027c-0cc5-4341-99ce-d0b98ce4621c",
+      "categoryId": "09e58fd2-f45f-41aa-bb78-77230ee8a4e6",
+      "length": "123480402"
+    }, {
+      "id": "faedcdd0-2c5e-4d7d-9a99-1bcbcafa3ed1",
+      "categoryId": "a23ee22b-0476-4a73-ba3a-8d6b44478ab6",
+      "length": "107708782"
+    }]
+  },
+  "visualizations": [{
+    "id": "d451ba70-5458-4861-8cfb-b15e19ef88a4",
+    "type": "sound",
+    "soundFile": {
+      "uri": "resource:///Baccara - Yes Sir, I Can Boogie.mp3"
+    }
+  }, {
+    "id": "39fb6387-05d8-4419-9d5a-0127191f6277",
+    "type": "lyrics",
+    "lyrics": {
+      "defaultBackground": "#FFD2D2D2",
+      "defaultAlternateBackground": "#FFE6E6E6",
+      "parts": [{
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": "Mister Your eyes are full of hesitation Sure makes me wonder If you know what you're looking for"
+      }, {
+        "text": "Baby I wanna keep my reputation I'm a sensation You try me once, you'll beg for more"
+      }, {
+        "text": "Oh, yes sir, I can boogie But a I need a certain song I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "No sir I don't feel very much like talking No, neither walking You wanna know if I can dance"
+      }, {
+        "text": "Yes sir Already told you in the first verse And in the chorus But I will give you one more chance"
+      }, {
+        "text": "Oh, yes sir, I can boogie But a need a certain song I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": ""
+      }, {
+        "text": "Oh, yes sir, I can boogie But I need a certain song I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": "And yes sir, I can boogie If you stay, you can't go wrong I can boogie, boogie-boogie All night long"
+      }, {
+        "text": ""
+      }]
+    }
+  }, {
+    "id": "ed35f9dd-d68a-40af-b374-c851fc404f1b",
+    "type": "harmonies",
+    "harmonies": {
+      "defaultBackground": "#FFD2D2D2",
+      "defaultAlternateBackground": "#FFE6E6E6",
+      "parts": [{
+        "text": "E a E a f# C G"
+      }, {
+        "text": "C E a f# C G A"
+      }, {
+        "text": "C E a f# C G C E"
+      }, {
+        "text": "C E a f# C G a"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E a f# C G C E"
+      }, {
+        "text": "C E a f# C G a"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E a f# C G a"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }, {
+        "text": "C E F C E A"
+      }]
+    }
+  }, {
+    "id": "0f4651c8-a903-44e3-be90-c1bf42710210",
+    "type": "annotations",
+    "annotations": {
+      "defaultBackground": "#FFD2D2D2",
+      "defaultAlternateBackground": "#FFE6E6E6",
+      "parts": [{
+        "customBackground": "#FF008080",
+        "text": "Das ist eine Anmerkung"
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }, {
+        "text": ""
+      }]
+    }
+  }],
+  "resources": [{
+    "visualizationId": "d451ba70-5458-4861-8cfb-b15e19ef88a4",
+    "items": [{
+      "name": "SoundFile",
+      "relationshipId": "R2ddc56838f76492f"
+    }]
+  }]
+}

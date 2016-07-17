@@ -4,6 +4,7 @@ var pathUtil = require('path');
 var Q = require('q');
 var gulp = require('gulp');
 var rollup = require('rollup');
+var json = require('rollup-plugin-json');
 var string = require('rollup-plugin-string');
 var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
@@ -54,7 +55,10 @@ var bundle = function (src, dest) {
 
     rollup.rollup({
         entry: src,
-        plugins: [string({ extensions: ['.html'] })]
+        plugins: [
+          json(),
+          string({ extensions: ['.html'] })
+        ]
     }).then(function (bundle) {
         var jsFile = pathUtil.basename(dest);
         var result = bundle.generate({
