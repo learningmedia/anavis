@@ -78,11 +78,14 @@ function applyRelease(currentOperationsInfo, work, element, event, app) {
   const newInfo = getOperationsInfo(element, event, work);
   if (newInfo && !newInfo.isResizing && newInfo.index === currentOperationsInfo.index) {
     const clickedPart = work.parts()[newInfo.index];
-    if (clickedPart === app.currentPart()) {
+
+    if (app.currentTool() === 'default') {
+      app.currentPart(clickedPart);
+    } else if (app.currentTool() === 'scissors') {
       splitPart(work, newInfo.index, newInfo.touchOffsetWithinPartInAvus);
       app.currentPart(work.parts()[newInfo.index + 1]);
-    } else {
-      app.currentPart(clickedPart);
+    } else if (app.currentTool() === 'glue') {
+      console.log('right or left is here the question!');
     }
     event.stopPropagation();
   }
