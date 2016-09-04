@@ -39,7 +39,7 @@ import soundPlayer from './components/sound-player';
 import appViewModel from './app-view-model';
 import utils from './utils';
 import events from './events';
-import fileDialog from './file-dialog';
+import file from './file';
 
 window.ko = ko;
 
@@ -55,8 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
 });
 
+ipcRenderer.on(events.NEW_FILE, function () {
+  file.create();
+});
+
 ipcRenderer.on(events.OPEN_FILE, function () {
-  fileDialog.open();
+  file.open();
 });
 
 ipcRenderer.on(events.SAVE_FILE, function () {

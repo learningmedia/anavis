@@ -8,7 +8,7 @@ function setMenu(mainWindow) {
     submenu: [{
       label: 'New',
       accelerator: 'CmdOrCtrl+N',
-      click: () => {}
+      click: () => mainWindow.webContents.send(events.NEW_FILE)
     }, {
       label: 'Open...',
       accelerator: 'CmdOrCtrl+O',

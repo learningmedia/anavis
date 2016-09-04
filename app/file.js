@@ -5,12 +5,28 @@ import koMapping from 'knockout-mapping';
 import BigNumber from 'bignumber.js';
 import path from 'path';
 import fs from 'fs';
+import mkdirp from 'mkdirp';
+import defaultDocument from './default-document';
+
+function create() {
+  const documentDir = createTempDirectoryName();
+  mkdirp.sync(documentDir);
+  const content = JSON.stringify(defaultDocument.create());
+  fs.writeFileSync(path.join(documentDir, 'anavis.json'), content, 'utf8');
+  readDocument(documentDir, function (error, doc) {
+    const workVm = createWorkViewModelFromDocunment(doc);
+    workVm._ = {
+      zipFileName: undefined,
+      workingDirectory: documentDir
+    };
+    appViewModel.works.push(workVm);
+  });
+}
 
 function open() {
   remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (filenames) {
     if (filenames && filenames.length) {
-      const userDataDir = remote.app.getPath('userData');
-      const unzipDir = path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
+      const unzipDir = createTempDirectoryName()
       openDocument(filenames[0], unzipDir, function (error, doc) {
         const workVm = createWorkViewModelFromDocunment(doc);
         workVm._ = {
@@ -23,14 +39,23 @@ function open() {
   });
 }
 
+function createTempDirectoryName() {
+  const userDataDir = remote.app.getPath('userData');
+  return path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
+}
+
 function openDocument(filename, unzipDir, cb) {
   folderZip.unzip(filename, unzipDir, function (err) {
     if (err) return cb && cb(err);
-    const docFileName = path.join(unzipDir, 'anavis.json');
-    fs.readFile(docFileName, 'utf8', function (err, content) {
-      if (err) return cb && cb(err);
-      return cb && cb(null, JSON.parse(content));
-    });
+    readDocument(unzipDir, cb);
+  });
+}
+
+function readDocument(unzipDir, cb) {
+  const docFileName = path.join(unzipDir, 'anavis.json');
+  fs.readFile(docFileName, 'utf8', function (err, content) {
+    if (err) return cb && cb(err);
+    return cb && cb(null, JSON.parse(content));
   });
 }
 
@@ -49,4 +74,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-export default { open };
+export default { create, open };
