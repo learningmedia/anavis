@@ -10,7 +10,7 @@ function registerEventListenerWithTeardown(element, event, handler) {
   ko.utils.domNodeDisposal.addDisposeCallback(element, () => element.removeEventListener(event, handler));
 }
 
-function getOperationsInfo(element, event, work) {
+function getOperationsInfo(element, event, work, app) {
   const totalWorkLengthInPixels = element.clientWidth;
   const touchOffsetInPixels = event.clientX - element.offsetLeft;
   const totalParts = work.parts().length;
@@ -33,13 +33,13 @@ function getOperationsInfo(element, event, work) {
       info.touchOffsetWithinPartInAvus = touchOffsetInAvus - leftBorderOffsetInAvus;
 
       if (touchOffsetInAvus <= (leftBorderOffsetInAvus + touchToleranceInAvus) && currentPartIndex !== 0) {
-        info.isResizing = true;
+        info.isResizing = app.currentTool() === 'default';
         info.leftIndex = currentPartIndex - 1;
         info.rightIndex = currentPartIndex;
         info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex - 1].length();
         info.initalRightPartLengthInAvus = work.parts()[currentPartIndex].length();
       } else if (touchOffsetInAvus >= (rightBorderOffsetInAvus - touchToleranceInAvus) && currentPartIndex !== (totalParts - 1)) {
-        info.isResizing = true;
+        info.isResizing = app.currentTool() === 'default';
         info.leftIndex = currentPartIndex;
         info.rightIndex = currentPartIndex + 1;
         info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex].length();
@@ -75,7 +75,7 @@ function applyRelease(currentOperationsInfo, work, element, event, app) {
   if (!currentOperationsInfo || currentOperationsInfo.isResizing) {
     return;
   }
-  const newInfo = getOperationsInfo(element, event, work);
+  const newInfo = getOperationsInfo(element, event, work, app);
   if (newInfo && !newInfo.isResizing && newInfo.index === currentOperationsInfo.index) {
     const clickedPart = work.parts()[newInfo.index];
 
@@ -113,7 +113,7 @@ function register() {
       let currentOperationsInfo = undefined;
 
       function onMouseDown(event) {
-        currentOperationsInfo = getOperationsInfo(element, event, work);
+        currentOperationsInfo = getOperationsInfo(element, event, work, app);
         toggleResizeCursor(element, currentOperationsInfo);
       }
 
@@ -130,7 +130,7 @@ function register() {
 
       function onMouseMove(event) {
         applyMovement(currentOperationsInfo, work, element);
-        toggleResizeCursor(element, currentOperationsInfo || getOperationsInfo(element, event, work));
+        toggleResizeCursor(element, currentOperationsInfo || getOperationsInfo(element, event, work, app));
       }
     }
   };
