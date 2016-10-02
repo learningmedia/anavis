@@ -26,20 +26,21 @@ function getOperationsInfo(element, event, work, app) {
     const isTouchWithinCurrentPart = touchOffsetInAvus >= leftBorderOffsetInAvus && touchOffsetInAvus < rightBorderOffsetInAvus;
     if (isTouchWithinCurrentPart) {
       const info = {};
-      info.isResizing = false;
+      info.currentTool = app.currentTool();
+      info.isBetweenTwoParts = false;
       info.index = currentPartIndex;
       info.avusPerPixel = avusPerPixel;
       info.initialTouchOffsetInAvus = touchOffsetInAvus;
       info.touchOffsetWithinPartInAvus = touchOffsetInAvus - leftBorderOffsetInAvus;
 
       if (touchOffsetInAvus <= (leftBorderOffsetInAvus + touchToleranceInAvus) && currentPartIndex !== 0) {
-        info.isResizing = app.currentTool() === 'default';
+        info.isBetweenTwoParts = true;
         info.leftIndex = currentPartIndex - 1;
         info.rightIndex = currentPartIndex;
         info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex - 1].length();
         info.initalRightPartLengthInAvus = work.parts()[currentPartIndex].length();
       } else if (touchOffsetInAvus >= (rightBorderOffsetInAvus - touchToleranceInAvus) && currentPartIndex !== (totalParts - 1)) {
-        info.isResizing = app.currentTool() === 'default';
+        info.isBetweenTwoParts = true;
         info.leftIndex = currentPartIndex;
         info.rightIndex = currentPartIndex + 1;
         info.initalLeftPartLengthInAvus = work.parts()[currentPartIndex].length();
@@ -56,7 +57,7 @@ function getOperationsInfo(element, event, work, app) {
 }
 
 function applyMovement(currentOperationsInfo, work, element) {
-  if (!currentOperationsInfo || !currentOperationsInfo.isResizing) {
+  if (!currentOperationsInfo || !currentOperationsInfo.isBetweenTwoParts || currentOperationsInfo.currentTool !== 'default') {
     return;
   }
   const minPartLengthInAvus = TOUCH_TOLERANCE_IN_PIXELS * currentOperationsInfo.avusPerPixel;
@@ -71,31 +72,35 @@ function applyMovement(currentOperationsInfo, work, element) {
   }
 }
 
-function applyRelease(currentOperationsInfo, work, element, event, app) {
-  if (!currentOperationsInfo || currentOperationsInfo.isResizing) {
+function applyRelease(work, element, event, app) {
+  const newInfo = getOperationsInfo(element, event, work, app);
+  event.stopPropagation();
+
+  if (newInfo.currentTool === 'scissors' && !newInfo.isBetweenTwoParts) {
+    splitPart(work, newInfo.index, newInfo.touchOffsetWithinPartInAvus);
     return;
   }
-  const newInfo = getOperationsInfo(element, event, work, app);
-  if (newInfo && !newInfo.isResizing && newInfo.index === currentOperationsInfo.index) {
-    const clickedPart = work.parts()[newInfo.index];
 
-    if (app.currentTool() === 'default') {
-      app.currentPart(clickedPart);
-    } else if (app.currentTool() === 'scissors') {
-      splitPart(work, newInfo.index, newInfo.touchOffsetWithinPartInAvus);
-      app.currentPart(work.parts()[newInfo.index + 1]);
-    } else if (app.currentTool() === 'glue') {
-      console.log('right or left is here the question!');
-    }
-    event.stopPropagation();
+  if (newInfo.currentTool === 'glue' && newInfo.isBetweenTwoParts) {
+    mergeParts(work, newInfo.leftIndex, newInfo.rightIndex);
+    return;
   }
+
+  if (newInfo.currentTool === 'default' && newInfo.isBetweenTwoParts) {
+    return;
+  }
+
+  const clickedPart = work.parts()[newInfo.index];
+  app.currentPart(clickedPart);
 }
 
-function toggleResizeCursor(element, currentOperationsInfo) {
-  if (currentOperationsInfo && currentOperationsInfo.isResizing) {
-    element.classList.add('u-col-resize');
+function toggleCursorClass(element, currentOperationsInfo) {
+  if (currentOperationsInfo && currentOperationsInfo.isBetweenTwoParts) {
+    element.classList.add('u-cursor-between-two-parts');
+    element.classList.remove('u-cursor-in-part');
   } else {
-    element.classList.remove('u-col-resize');
+    element.classList.remove('u-cursor-between-two-parts');
+    element.classList.add('u-cursor-in-part');
   }
 }
 
@@ -114,23 +119,24 @@ function register() {
 
       function onMouseDown(event) {
         currentOperationsInfo = getOperationsInfo(element, event, work, app);
-        toggleResizeCursor(element, currentOperationsInfo);
+        toggleCursorClass(element, currentOperationsInfo);
       }
 
       function onMouseUp(event) {
-        applyRelease(currentOperationsInfo, work, element, event, app);
+        applyMovement(currentOperationsInfo, work, element);
+        applyRelease(work, element, event, app);
         currentOperationsInfo = undefined;
-        toggleResizeCursor(element, undefined);
+        toggleCursorClass(element, undefined);
       }
 
       function onMouseLeave(event) {
         currentOperationsInfo = undefined;
-        toggleResizeCursor(element, currentOperationsInfo);
+        toggleCursorClass(element, currentOperationsInfo);
       }
 
       function onMouseMove(event) {
         applyMovement(currentOperationsInfo, work, element);
-        toggleResizeCursor(element, currentOperationsInfo || getOperationsInfo(element, event, work, app));
+        toggleCursorClass(element, currentOperationsInfo || getOperationsInfo(element, event, work, app));
       }
     }
   };
@@ -139,7 +145,6 @@ function register() {
 ////// TODO EXTRACT ///////////////////////////////
 
 function splitPart(work, partIndex, splitPoint) {
-  console.log('YAY');
   const oldPartsArray = work.parts();
   const partToSplit = oldPartsArray[partIndex];
   const originalLength = partToSplit.length();
@@ -156,6 +161,13 @@ function splitPart(work, partIndex, splitPoint) {
   oldPartsArray.slice(partIndex + 1).forEach(x => newPartsArray.push(x));
 
   work.parts(newPartsArray);
+}
+
+function mergeParts(work, leftIndex, rightIndex) {
+  const lengthToAdd = work.parts()[rightIndex].length();
+  const leftPart = work.parts()[leftIndex];
+  work.parts.splice(rightIndex, 1);
+  leftPart.length(leftPart.length() + lengthToAdd);
 }
 
 function clonePart(part) {
