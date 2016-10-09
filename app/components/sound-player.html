@@ -1,9 +1,16 @@
-<!-- ko if: sound.isLoading -->
-LOADING
-<!-- /ko -->
-<!-- ko if: sound.hasError -->
-ERROR
-<!-- /ko -->
-<!-- ko if: sound.isReady -->
-<progress class="SoundPlayer" data-bind="attr: { max: sound.length, value: sound.position }, click: onClick"></progress>
-<!-- /ko -->
+<div class="SoundPlayer">
+  <!-- ko if: sound.isLoading -->
+  LOADING
+  <!-- /ko -->
+  <!-- ko if: sound.hasError -->
+  ERROR
+  <!-- /ko -->
+  <!-- ko if: sound.isReady -->
+  <progress class="SoundPlayer-progress" data-bind="attr: { max: sound.length, value: sound.position }, click: onProgressClick"></progress>
+  <div class="SoundPlayer-controller">
+    <button data-bind="click: onStartClick">Start</button>
+    <button data-bind="click: onStopClick">Stopp</button>
+    <button data-bind="click: onPauseClick">Pause</button>
+  </div>
+  <!-- /ko -->
+</div>

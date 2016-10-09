@@ -11,12 +11,21 @@ function viewModel(params) {
 
   return {
     sound,
-    onClick: function (vm, event) {
+    onProgressClick: function (vm, event) {
       const element = event.target;
       const elementWidth = element.clientWidth;
       const clickPositionX = event.pageX - element.offsetLeft;
       const clickPercent = clickPositionX / elementWidth;
       sound.start(clickPercent * sound.length());
+    },
+    onStartClick: function () {
+      sound.start();
+    },
+    onStopClick: function () {
+      sound.stop();
+    },
+    onPauseClick: function () {
+      sound.pause();
     }
   };
 }
