@@ -1,7 +1,6 @@
 import ko from 'knockout';
 import utils from '../utils';
 import template from './work.html';
-import soundController from '../sound-controller';
 
 function viewModel(params) {
   const app = params.app;
@@ -10,13 +9,9 @@ function viewModel(params) {
     app: app,
     work: work,
     parts: work.parts,
-    sound: work.sound,
+    sounds: work.sounds,
     getContrastColor: utils.getContrastColor,
-    onSoundDropped: files => {
-      const ctrl = soundController.create(files[0].path);
-      // TODO Stop old sound if exists!
-      work.sound(ctrl);
-    }
+    onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => f.path))
   };
 }
 

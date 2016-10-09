@@ -3,6 +3,6 @@
     <div class="Work-partInner" data-bind="text: part.name, style: { color: $component.getContrastColor(part.color()), backgroundColor: part.color }, css: { 'is-selected': $component.app.currentPart() === $data }, attr: { title: part.name }"></div>
   </div>
 </div>
-<!-- ko if: sound -->
-<av-sound-player params="sound: sound"></av-sound-player>
+<!-- ko foreach: { data: sounds, as: 'sound' } -->
+<av-sound-player params="path: sound"></av-sound-player>
 <!-- /ko -->

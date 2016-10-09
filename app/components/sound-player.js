@@ -4,9 +4,10 @@ import intempo from 'intempo';
 
 import utils from '../utils';
 import template from './sound-player.html';
+import soundController from '../sound-controller';
 
 function viewModel(params) {
-  const sound = params.sound();
+  const sound = soundController.create(params.path);
 
   return {
     sound,
