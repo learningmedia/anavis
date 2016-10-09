@@ -1,3 +1,5 @@
+@sound-player-height: 16px;
+
 av-sound-player {
   display: block;
 }
@@ -6,10 +8,38 @@ av-sound-player {
   margin-top: 10px;
 }
 
-.SoundPlayer-progress {
-  background-color: silver;
+.SoundPlayer-progressContainer {
+  background-color: yellow;
+  position: relative;
+  height: @sound-player-height;
+}
+
+.SoundPlayer-progressGrid {
+  background-color: orange;
+  height: @sound-player-height;
+  position: absolute;
   width: 100%;
+  font-size: 8px;
+}
+
+.SoundPlayer-progress {
+  width: 100%;
+  height: @sound-player-height;
   display: block;
+  position: absolute;
+  -webkit-appearance: none;
+
+  &::-webkit-progress-inner-element {
+    background-color: transparent;
+  }
+
+  &::-webkit-progress-bar {
+    background-color: transparent;
+  }
+
+  &::-webkit-progress-value {
+    background-color: fade(black, 25%);
+  }
 }
 
 .SoundPlayer-controller {

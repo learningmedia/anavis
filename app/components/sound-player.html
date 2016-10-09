@@ -6,7 +6,11 @@
   ERROR
   <!-- /ko -->
   <!-- ko if: sound.isReady -->
-  <progress class="SoundPlayer-progress" data-bind="attr: { max: sound.length, value: sound.position }, click: onProgressClick"></progress>
+  <div class="SoundPlayer-progressContainer">
+    <div class="SoundPlayer-progressGrid">TODO: Show the parts here!</div>
+    <progress class="SoundPlayer-progress" data-bind="attr: { max: sound.length, value: sound.position }, click: onProgressClick">
+  </div>
+  </progress>
   <div class="SoundPlayer-controller">
     <button data-bind="click: onStartClick">Start</button>
     <button data-bind="click: onStopClick">Stopp</button>

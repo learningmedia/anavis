@@ -11,6 +11,7 @@ function viewModel(params) {
 
   return {
     sound,
+    parts: params.parts,
     onProgressClick: function (vm, event) {
       const element = event.target;
       const elementWidth = element.clientWidth;

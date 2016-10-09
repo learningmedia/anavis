@@ -4,5 +4,5 @@
   </div>
 </div>
 <!-- ko foreach: { data: sounds, as: 'sound' } -->
-<av-sound-player params="path: sound"></av-sound-player>
+<av-sound-player params="path: sound, parts: $parent.parts"></av-sound-player>
 <!-- /ko -->
