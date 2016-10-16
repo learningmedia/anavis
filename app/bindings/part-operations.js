@@ -12,7 +12,7 @@ function registerEventListenerWithTeardown(element, event, handler) {
 
 function getOperationsInfo(element, event, work, app) {
   const totalWorkLengthInPixels = element.clientWidth;
-  const touchOffsetInPixels = event.clientX - element.offsetLeft;
+  const touchOffsetInPixels = event.clientX - (element.getBoundingClientRect().left - window.scrollX);
   const totalParts = work.parts().length;
   const totalWorkLengthInAvus = work.parts().reduce((sum, currentPart) => sum + currentPart.length(), 0);
   const avusPerPixel = totalWorkLengthInAvus / totalWorkLengthInPixels;

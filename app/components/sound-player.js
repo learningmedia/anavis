@@ -13,11 +13,26 @@ function viewModel(params) {
     sound,
     parts: params.parts,
     onProgressClick: function (vm, event) {
+      let playPercent;
+      let playAvu;
       const element = event.target;
       const elementWidth = element.clientWidth;
-      const clickPositionX = event.pageX - element.offsetLeft;
-      const clickPercent = clickPositionX / elementWidth;
-      sound.start(clickPercent * sound.length());
+      const clickPositionX = event.pageX - (element.getBoundingClientRect().left - window.scrollX);
+      playPercent = clickPositionX / elementWidth;
+      if (!event.ctrlKey) {
+        const parts = vm.parts();
+        const totalLengthInAvu = parts.reduce((sum, part) => sum + part.length(), 0);
+        const clickAvu = totalLengthInAvu * playPercent;
+        var partBeginInAvu = 0;
+        for (var i = 0; i < parts.length; i++) {
+          if ((partBeginInAvu + parts[i].length()) >= clickAvu) {
+            break;
+          }
+          partBeginInAvu += parts[i].length();
+        }
+        playPercent = partBeginInAvu / totalLengthInAvu;
+      }
+      sound.start(playPercent * sound.length());
     },
     onStartClick: function () {
       sound.start();
