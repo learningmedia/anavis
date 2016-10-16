@@ -7,7 +7,9 @@
   <!-- /ko -->
   <!-- ko if: sound.isReady -->
   <div class="SoundPlayer-progressContainer">
-    <div class="SoundPlayer-progressGrid">TODO: Show the parts here!</div>
+    <div class="SoundPlayer-progressGrid" data-bind="foreach: { data: parts, as: 'part' }">
+      <span class="SoundPlayer-progressGridPart" data-bind="style: { flex: part.length }"></span>
+    </div>
     <progress class="SoundPlayer-progress" data-bind="attr: { max: sound.length, value: sound.position }, click: onProgressClick">
   </div>
   </progress>

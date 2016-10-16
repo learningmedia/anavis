@@ -20,6 +20,16 @@ av-sound-player {
   position: absolute;
   width: 100%;
   font-size: 8px;
+  display: flex;
+}
+
+.SoundPlayer-progressGridPart {
+  border-left: 1px black solid;
+  display: block;
+
+  &:first-child {
+    border-left: none;
+  }
 }
 
 .SoundPlayer-progress {
