@@ -21,8 +21,8 @@
       </div>
     </main>
   </section>
-  <section class="App-inspectorArea">
-    <av-inspector class="App-inspector" params="app: $data"></av-inspector>
+  <section class="App-inspectorArea" data-bind="css: 'App-inspectorArea--' + (isInspectorExpanded() ? 'expanded' : 'collapsed')">
+    <av-inspector params="app: $data"></av-inspector>
   </section>
 </body>
 

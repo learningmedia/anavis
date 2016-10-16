@@ -33,7 +33,6 @@ import folderZip from './common/folder-zip';
 import soundDrop from './bindings/sound-drop';
 import partOperations from './bindings/part-operations';
 import work from './components/work';
-import toolbar from './components/toolbar';
 import inspector from './components/inspector';
 import soundPlayer from './components/sound-player';
 import appViewModel from './app-view-model';
@@ -47,7 +46,7 @@ window.ko = ko;
 [soundDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, toolbar, inspector, soundPlayer].forEach(component => component.register());
+[work, inspector, soundPlayer].forEach(component => component.register());
 
 appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
 

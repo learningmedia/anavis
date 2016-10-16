@@ -13,7 +13,6 @@ html, body {
 @import 'utilities.less';
 
 @import './components/work.less';
-@import './components/toolbar.less';
 @import './components/inspector.less';
 @import './components/sound-player.less';
 
@@ -22,19 +21,12 @@ html, body {
   min-height: 100vh;
 }
 
-.App-toolbar {
-  width: calc(~"100% - "@inspector-width);
-  position: fixed;
-  background-color: @toolbar-background-color;
-}
-
 .App-workspace {
   flex: 1 0 0%;
   overflow: hidden;
 }
 
 .App-works {
-  padding-top: 25px;
 }
 
 .App-work {
@@ -48,19 +40,18 @@ html, body {
 
 .App-inspectorArea {
   flex: none;
-  width: @inspector-width;
   overflow: hidden;
   transition: width @transition-duration ease;
   background-color: @inspector-area-background-color;
   color: @inspector-area-color;
 
-  @media (max-width: @very-small-screen) {
-    width: 0;
+  &.App-inspectorArea--expanded {
+    width: @inspector-width-expanded;
     transition: width @transition-duration ease;
   }
-}
 
-.App-inspector {
-  display: block;
-  margin: @default-work-padding;
+  &.App-inspectorArea--collapsed {
+    width: @inspector-width-collapsed;
+    transition: width @transition-duration ease;
+  }
 }
