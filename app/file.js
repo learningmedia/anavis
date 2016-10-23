@@ -39,6 +39,31 @@ function open() {
   });
 }
 
+function save(cb) {
+  const work = appViewModel.currentWork();
+  if (!work) return cb && cb();
+  if (!work._.zipFileName) {
+    remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
+      if (fileName) {
+        work._.zipFileName = fileName;
+        save(cb);
+      } else {
+        return cb && cb();
+      }
+    });
+  } else {
+    const zipFileName = work._.zipFileName;
+    const workingDirectory = work._.workingDirectory;
+    const docFileName = path.normalize(path.join(workingDirectory, 'anavis.json'));
+    const workJson = ko.toJSON(work);
+    delete workJson['_'];
+    fs.writeFile(docFileName, workJson, 'utf8', err => {
+      if (err) return cb && cb(err);
+      folderZip.zip(workingDirectory, zipFileName, cb);
+    });
+  }
+}
+
 function createTempDirectoryName() {
   const userDataDir = remote.app.getPath('userData');
   return path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
@@ -74,4 +99,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-export default { create, open };
+export default { create, open, save };

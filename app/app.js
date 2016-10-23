@@ -63,20 +63,5 @@ ipcRenderer.on(events.OPEN_FILE, function () {
 });
 
 ipcRenderer.on(events.SAVE_FILE, function () {
-  save(appViewModel.currentWork(), (err) => {
-    console.log(err || 'Saved!');
-  });
+  file.save();
 });
-
-function save(work, cb) {
-  if (!work) return cb && cb();
-  const zipFileName = work._.zipFileName;
-  const workingDirectory = work._.workingDirectory;
-  const docFileName = path.normalize(path.join(workingDirectory, 'anavis.json'));
-  const workJson = ko.toJSON(work);
-  delete workJson['_'];
-  fs.writeFile(docFileName, workJson, 'utf8', err => {
-    if (err) return cb && cb(err);
-    folderZip.zip(workingDirectory, zipFileName, cb);
-  });
-}
