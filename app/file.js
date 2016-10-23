@@ -26,6 +26,7 @@ function create() {
 function open() {
   remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (filenames) {
     if (filenames && filenames.length) {
+      if (appViewModel.works().some(x => x._.zipFileName === filenames[0])) return;
       const unzipDir = createTempDirectoryName()
       openDocument(filenames[0], unzipDir, function (error, doc) {
         const workVm = createWorkViewModelFromDocunment(doc);
