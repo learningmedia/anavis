@@ -65,6 +65,13 @@ function save(cb) {
   }
 }
 
+function close() {
+  const work = appViewModel.currentWork();
+  if (work) {
+    appViewModel.works.remove(work);
+  }
+}
+
 function createTempDirectoryName() {
   const userDataDir = remote.app.getPath('userData');
   return path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
@@ -100,4 +107,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-export default { create, open, save };
+export default { create, open, save, close };

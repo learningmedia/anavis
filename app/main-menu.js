@@ -1,3 +1,4 @@
+
 import { app, Menu } from 'electron';
 import env from './env';
 import events from './events';
@@ -17,6 +18,10 @@ function setMenu(mainWindow) {
       label: 'Save',
       accelerator: 'CmdOrCtrl+S',
       click: () => mainWindow.webContents.send(events.SAVE_FILE)
+    }, {
+      label: 'Close',
+      accelerator: 'CmdOrCtrl+W',
+      click: () => mainWindow.webContents.send(events.CLOSE_FILE)
     }, {
       label: 'Quit',
       accelerator: 'CmdOrCtrl+Q',

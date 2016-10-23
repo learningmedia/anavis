@@ -65,3 +65,7 @@ ipcRenderer.on(events.OPEN_FILE, function () {
 ipcRenderer.on(events.SAVE_FILE, function () {
   file.save();
 });
+
+ipcRenderer.on(events.CLOSE_FILE, function () {
+  file.close();
+});
