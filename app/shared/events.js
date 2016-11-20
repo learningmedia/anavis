@@ -1,0 +1,6 @@
+module.exports = {
+  NEW_FILE: 'NEW_FILE',
+  OPEN_FILE: 'OPEN_FILE',
+  SAVE_FILE: 'SAVE_FILE',
+  CLOSE_FILE: 'CLOSE_FILE'
+};

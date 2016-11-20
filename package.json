@@ -1,28 +1,84 @@
 {
-  "devDependencies": {
-    "asar": "~0.7.2",
-    "electron-prebuilt": "~0.35.1",
-    "fs-jetpack": "~0.7.0",
-    "gulp": "~3.9.0",
-    "gulp-autoprefixer": "~3.1.0",
-    "gulp-less": "~3.0.3",
-    "gulp-util": "~3.0.6",
-    "q": "~1.4.1",
-    "rollup": "~0.21.0",
-    "rollup-plugin-json": "~2.0.1",
-    "rollup-plugin-string": "~1.0.1",
-    "tree-kill": "~0.1.1",
-    "yargs": "~3.15.0"
+  "name": "anavis",
+  "description": "AnaVis is a tool to visualize musical form",
+  "version": "0.0.0",
+  "author": "The AnaVis Team <info@anavis.de>",
+  "contributors": [
+    "Andreas Helmberger <public@ahelmberger.de>",
+    "Ulrich Kaiser <ulrich.kaiser@hmtm.de>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/learningmedia/anavis.git"
   },
-  "optionalDependencies": {
-    "appdmg": "~0.3.2",
-    "rcedit": "~0.3.0"
-  },
+  "private": true,
+  "main": "app/server/main.js",
   "scripts": {
-    "postinstall": "cd app && npm install",
-    "build": "gulp build",
-    "release": "gulp release --env=production",
-    "start": "node ./tasks/start",
-    "test": "node ./tasks/start --env=test"
+    "test": "node run-specs",
+    "lint": "eslint .",
+    "start": "electron ./app/server/main",
+    "watch": "node run-watch",
+    "clean:osx": "rimraf dist/mac",
+    "clean:win": "rimraf dist/win*",
+    "clean:linux": "rimraf dist/linux* dist/*.deb dist/*.AppImage",
+    "clean": "npm run clean:linux && npm run clean:win && npm run clean:osx",
+    "pack:osx": "build --dir --mac",
+    "pack:win": "build --dir --win --x64",
+    "pack:linux": "build --dir --linux --x64",
+    "pack": "build --dir",
+    "prebuild": "node build/target.js",
+    "build:osx": "npm run prebuild && build --mac && npm run postbuild",
+    "build:win": "npm run prebuild && build --win --x64 && npm run postbuild",
+    "build:linux": "npm run prebuild && build --linux deb AppImage --x64 && npm run postbuild",
+    "build": "build",
+    "postbuild": "node build/target.js --clean",
+    "postinstall": "install-app-deps"
+  },
+  "keywords": [
+    "anavis",
+    "music",
+    "analysis"
+  ],
+  "build": {
+    "appId": "de.anavis.app",
+    "productName": "AnaVis",
+    "dmg": {
+      "iconSize": 120,
+      "iconTextSize": 14,
+      "contents": [
+        {
+          "x": 478,
+          "y": 170,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 170,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.education"
+    },
+    "linux": {
+      "category": "Education"
+    },
+    "win": {}
+  },
+  "devDependencies": {
+    "async": "^2.1.2",
+    "chokidar": "^1.6.1",
+    "electron-builder": "^7.15.2",
+    "electron-connect": "^0.6.0",
+    "electron-prebuilt": "^1.3.8",
+    "eslint": "^3.9.0",
+    "expect.js": "^0.3.1",
+    "glob": "^7.1.1",
+    "mocha": "^3.1.2",
+    "rimraf": "^2.5.4",
+    "shelljs": "^0.7.5"
   }
 }

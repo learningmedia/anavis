@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+const chokidar = require('chokidar');
+const electronConnect = require('electron-connect');
+
+const ELECTRON_CONNECT_LOG_LEVEL_WARN_ONLY = 0;
+
+const chokidarOpts = {
+  atomic: true,
+  ignoreInitial: true,
+  awaitWriteFinish: {
+    stabilityThreshold: 250,
+    pollInterval: 50
+  }
+};
+
+const watchers = [];
+
+const server = electronConnect.server.create({
+  logLevel: ELECTRON_CONNECT_LOG_LEVEL_WARN_ONLY,
+  stopOnClose: true,
+  spawnOpt: {
+    stdio: 'inherit',
+    env: Object.assign({ LIVE_RELOAD: 'true' }, process.env)
+  }
+});
+
+function callback(procState) {
+  console.log('[WATCH]', procState);
+  if (procState === 'stopped') process.exit(0);
+}
+
+// Start browser process
+server.start(callback);
+
+watchers.push(chokidar.watch('app/{server,shared}/**/*.{js,json}', chokidarOpts).on('all', () => {
+  // Restart browser process
+  server.restart(callback);
+}));
+
+watchers.push(chokidar.watch('app/client/**/*.{html,js,json}', chokidarOpts).on('all', () => {
+  // Reload renderer process
+  server.reload(callback);
+}));
+
+watchers.push(chokidar.watch('app/client/**/*.{css,less}', chokidarOpts).on('all', () => {
+  // Send signal to reload the stylesheets
+  server.broadcast('less');
+  callback('stylesheets refresh');
+}));

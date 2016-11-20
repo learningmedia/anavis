@@ -1,0 +1,70 @@
+require('./ex-links.js')
+require('./notifications.js')
+require('./actions/zoom.js')
+require('./context-menu.js')
+
+const ko = require('knockout');
+const { ipcRenderer } = require('electron');
+
+const file = require('./file');
+const events = require('../shared/events');
+const work = require('./components/work');
+const appViewModel = require('./app-view-model');
+const soundDrop = require('./bindings/sound-drop');
+const inspector = require('./components/inspector');
+const soundPlayer = require('./components/sound-player');
+const partOperations = require('./bindings/part-operations');
+
+const LESS_LOG_LEVEL_ERRORS = 1;
+
+// Load stylesheets
+window.less = {
+  env: 'production',
+  async: true,
+  fileAsync: true,
+  logLevel: LESS_LOG_LEVEL_ERRORS
+};
+
+require('less/dist/less.js')
+
+// Enable KO development tools
+window.ko = ko;
+
+// Setup live reload
+if (process.env.LIVE_RELOAD === 'true') {
+  const { client } = require('electron-connect');
+  // Connect to live-reload server process
+  client.create().on('less', function (argument) {
+    window.less.refresh(true)
+      .then(() => console.log('Styles reloaded!'))
+      .catch(err => console.error(err))
+  });
+}
+
+// Register all bindings:
+[soundDrop, partOperations].forEach(binding => binding.register());
+
+// Register all components:
+[work, inspector, soundPlayer].forEach(component => component.register());
+
+appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
+
+document.addEventListener('DOMContentLoaded', function() {
+  ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
+});
+
+ipcRenderer.on(events.NEW_FILE, function () {
+  file.create();
+});
+
+ipcRenderer.on(events.OPEN_FILE, function () {
+  file.open();
+});
+
+ipcRenderer.on(events.SAVE_FILE, function () {
+  file.save();
+});
+
+ipcRenderer.on(events.CLOSE_FILE, function () {
+  file.close();
+});

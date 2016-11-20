@@ -1,0 +1,10 @@
+extends: eslint:recommended
+parserOptions:
+  ecmaVersion: 2015
+env:
+  es6: true
+  node: true
+  mocha: true
+  browser: true
+rules:
+  no-console: warn
