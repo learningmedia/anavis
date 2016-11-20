@@ -127,6 +127,15 @@ function initialize () {
 
     if (isDev) {
       BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../chromeextensions-knockoutjs'))
+
+      // Setup live reload
+      if (process.env.LIVE_RELOAD === 'true') {
+        const { client } = require('electron-connect');
+        // Connect to live-reload server process
+        client.create().on('less', () => {
+          mainWindow.webContents.send('less');
+        });
+      }
     }
 
     // Manage automatic updates

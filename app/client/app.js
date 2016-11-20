@@ -30,17 +30,6 @@ require('less/dist/less.js')
 // Enable KO development tools
 window.ko = ko;
 
-// Setup live reload
-if (process.env.LIVE_RELOAD === 'true') {
-  const { client } = require('electron-connect');
-  // Connect to live-reload server process
-  client.create().on('less', function (argument) {
-    window.less.refresh(true)
-      .then(() => console.log('Styles reloaded!'))
-      .catch(err => console.error(err))
-  });
-}
-
 // Register all bindings:
 [soundDrop, partOperations].forEach(binding => binding.register());
 
@@ -67,4 +56,10 @@ ipcRenderer.on(events.SAVE_FILE, function () {
 
 ipcRenderer.on(events.CLOSE_FILE, function () {
   file.close();
+});
+
+ipcRenderer.on('less', function () {
+  window.less.refresh(true)
+    .then(() => console.log('Styles reloaded!'))
+    .catch(err => console.error(err))
 });

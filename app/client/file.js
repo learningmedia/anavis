@@ -18,8 +18,8 @@ function create() {
   readDocument(documentDir, function (error, doc) {
     const workVm = createWorkViewModelFromDocunment(doc);
     workVm._ = {
-      zipFileName: undefined,
-      workingDirectory: documentDir
+      zipFileName: ko.observable(),
+      workingDirectory: ko.observable(documentDir)
     };
     appViewModel.works.push(workVm);
   });
@@ -28,13 +28,13 @@ function create() {
 function open() {
   remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (filenames) {
     if (filenames && filenames.length) {
-      if (appViewModel.works().some(x => x._.zipFileName === filenames[0])) return;
+      if (appViewModel.works().some(x => x._.zipFileName() === filenames[0])) return;
       const unzipDir = createTempDirectoryName()
       openDocument(filenames[0], unzipDir, function (error, doc) {
         const workVm = createWorkViewModelFromDocunment(doc);
         workVm._ = {
-          zipFileName: filenames[0],
-          workingDirectory: unzipDir
+          zipFileName: ko.observable(filenames[0]),
+          workingDirectory: ko.observable(unzipDir)
         };
         appViewModel.works.push(workVm);
       })
@@ -45,18 +45,19 @@ function open() {
 function save(cb) {
   const work = appViewModel.currentWork();
   if (!work) return cb && cb();
-  if (!work._.zipFileName) {
+  if (!work._.zipFileName()) {
     remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
+      console.log('fileName', fileName)
       if (fileName) {
-        work._.zipFileName = fileName;
+        work._.zipFileName(fileName);
         save(cb);
       } else {
         return cb && cb();
       }
     });
   } else {
-    const zipFileName = work._.zipFileName;
-    const workingDirectory = work._.workingDirectory;
+    const zipFileName = work._.zipFileName();
+    const workingDirectory = work._.workingDirectory();
     const docFileName = path.normalize(path.join(workingDirectory, 'anavis.json'));
     const workJson = ko.toJSON(work);
     delete workJson['_'];
