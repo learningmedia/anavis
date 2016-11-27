@@ -132,7 +132,7 @@ function initialize () {
       if (process.env.LIVE_RELOAD === 'true') {
         const { client } = require('electron-connect');
         // Connect to live-reload server process
-        client.create().on('less', () => {
+        client.create(mainWindow).on('less', () => {
           mainWindow.webContents.send('less');
         });
       }
