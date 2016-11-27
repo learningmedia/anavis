@@ -1,18 +1,58 @@
-<div>
-  <button class="Inspector-button" data-bind="click: toggleCollapse" title="Toggle">T</button>
-  <br>
-  <button class="Inspector-button" data-bind="click: function () { selectTool('default'); }" title="Normalo">N</button>
-  <br>
-  <button class="Inspector-button" data-bind="click: function () { selectTool('scissors'); }" title="Schere">S</button>
-  <br>
-  <button class="Inspector-button" data-bind="click: function () { selectTool('glue'); }" title="Kleber">K</button>
-  <br>
-  <span>Current Tool: <span data-bind="text: app.currentTool"></span></span>
-  <br>
-  <div data-bind="if: currentWork() && currentPart()">
-    Titel: <input class="Inspector-input" type="text" data-bind="value: currentWork().name" />
-    Name: <input class="Inspector-input" type="text" data-bind="value: currentPart().name" />
-    Länge: <input class="Inspector-input" type="range" data-bind="value: currentPart().length" />
-    Farbe: <input class="Inspector-input" type="color" data-bind="value: currentPart().color" />
+<div class="Inspector" data-bind="css: { 'Inspector--expanded': isExpanded, 'Inspector--collapsed': !isExpanded() }">
+  <div class="Inspector-group Inspector-group--tools">
+    <button
+      class="Inspector-button"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === 'default' }, click: function () { selectTool('default'); }"
+      title="Normalo"
+      >
+      <span class="Inspector-buttonIcon Inspector-buttonIcon--default"></span>
+      <span class="Inspector-buttonTitle">Standard</span>
+    </button>
+    <button
+      class="Inspector-button"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === 'scissors' }, click: function () { selectTool('scissors'); }"
+      title="Schere"
+      >
+      <span class="Inspector-buttonIcon Inspector-buttonIcon--scissors"></span>
+      <span class="Inspector-buttonTitle">Teilen</span>
+    </button>
+    <button
+      class="Inspector-button"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === 'glue' }, click: function () { selectTool('glue'); }"
+      title="Kleber"
+      >
+      <span class="Inspector-buttonIcon Inspector-buttonIcon--glue"></span>
+      <span class="Inspector-buttonTitle">Verbinden</span>
+    </button>
+  </div>
+  <hr class="Inspector-groupSeparator">
+  <div class="Inspector-group Inspector-group--partDetails">
+    <div data-bind="if: currentWork() && currentPart()">
+      <div class="Inspector-partDetail">
+        Dateiname:
+        <br>
+        <input class="Inspector-input" type="text" readonly data-bind="value: fileName" />
+      </div>
+      <div class="Inspector-partDetail">
+        Name:
+        <br>
+        <input class="Inspector-input" type="text" data-bind="value: currentPart().name" />
+      </div>
+      <div class="Inspector-partDetail">
+        Länge:
+        <br>
+        <input class="Inspector-input" type="range" data-bind="value: currentPart().length" />
+      </div>
+      <div class="Inspector-partDetail">
+        Farbe:
+        <br>
+        <input class="Inspector-input" type="color" data-bind="value: currentPart().color" />
+      </div>
+    </div>
+  </div>
+  <div class="Inspector-group Inspector-group--toggle">
+    <button class="Inspector-button" data-bind="click: toggleCollapse" title="Toggle">
+      <span class="Inspector-buttonIcon Inspector-buttonIcon--toggle"></span>
+    </button>
   </div>
 </div>

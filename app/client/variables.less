@@ -1,13 +1,23 @@
 @default-font-family: 'Segoe UI', 'Lucida Grande', Arial, sans-serif;
-@inspector-width-expanded: 200px;
-@inspector-width-collapsed: 25px;
+@default-text-color: #555;
+
 @transition-duration: 0.2s;
 @very-small-screen: 250px;
 @default-work-padding: 10px;
 @selected-work-background-color: #D3D3D3;
-@inspector-area-background-color: #333;
-@inspector-area-color: #FFF;
+
+@default-glossy-shadow: 0 5px 5px rgba(255, 255, 255, .3) inset, 0 -5px 5px rgba(255, 255, 255, .3) inset;
+
+
+
+@inspector-area-color: @default-text-color;
+@inspector-area-background-color: #f5f5f5;
+@inspector-area-border-color: darken(@inspector-area-background-color, 10%);
+@inspector-button-highlight-color: darken(@inspector-area-background-color, 10%);
 @inspector-area-input-border-color: #222;
 @inspector-area-input-background-color: #D3D3D3;
 @inspector-area-input-color: #000;
-@default-glossy-shadow: 0 5px 5px rgba(255, 255, 255, .3) inset, 0 -5px 5px rgba(255, 255, 255, .3) inset;
+@inspector-area-button-height: 42px;
+@inspector-width-expanded: 200px;
+@inspector-width-collapsed: @inspector-area-button-height;
+

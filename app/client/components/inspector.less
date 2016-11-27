@@ -1,20 +1,127 @@
 av-inspector {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
 }
 
 .Inspector {
-  display: block;
-  padding: @default-work-padding;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  background-color: @inspector-area-background-color;
+  color: @inspector-area-color;
+  border-left: 1px solid @inspector-area-border-color;
+
+  input[type=text] {
+    width: 100%;
+  }
+}
+
+.Inspector-group {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+
+  &.Inspector-group--tools {
+  }
+
+  &.Inspector-group--partDetails {
+    margin: 10px;
+  }
+
+  &.Inspector-group--toggle {
+    flex: 1 0 0%;
+    justify-content: flex-end;
+  }
 }
 
 .Inspector-button {
-  width: @inspector-width-collapsed;
-  color: black;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+  height: @inspector-area-button-height;
+  text-align: left;
+  outline: none;
+
+  &:hover {
+    background-color: @inspector-button-highlight-color;
+  }
+  &.Inspector-button--selected {
+    background-color: @inspector-button-highlight-color;
+  }
 }
 
-.Inspector-input {
-  background-color: @inspector-area-input-background-color;
-  color: @inspector-area-input-color;
-  border: 1px solid @inspector-area-input-border-color;
-  padding: 2px;
+.Inspector-buttonIcon {
+  width: @inspector-width-collapsed;
+  height: @inspector-width-collapsed;
+
+  &.Inspector-buttonIcon--default {
+    .fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:before {
+      content: @fa-var-mouse-pointer;
+    }
+  }
+  &.Inspector-buttonIcon--scissors {
+    .fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:before {
+      content: @fa-var-unlink;
+    }
+  }
+  &.Inspector-buttonIcon--glue {
+    .fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:before {
+      content: @fa-var-link;
+    }
+  }
+  &.Inspector-buttonIcon--toggle {
+    .fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:before {
+      content: @fa-var-angle-double-right;
+    }
+  }
+}
+
+.Inspector-buttonTitle {
+  display: block;
+  padding-left: 10px;
+}
+
+.Inspector-groupSeparator {
+  height: 1px;
+  width: 100%;
+  border: none;
+  border-top: 1px solid @inspector-button-highlight-color;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.Inspector-partDetail {
+  margin-bottom: 10px;
+}
+
+.Inspector--collapsed {
+  .Inspector-buttonTitle, .Inspector-group--partDetails {
+    display: none;
+  }
+  .Inspector-buttonIcon--toggle:before {
+    content: @fa-var-angle-double-left;
+  }
 }

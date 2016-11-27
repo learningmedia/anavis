@@ -1,5 +1,20 @@
 @import (less) '../node_modules/normalize.css/normalize.css';
 
+@import "../node_modules/font-awesome/less/variables.less";
+@fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/less/mixins.less";
+@import "../node_modules/font-awesome/less/path.less";
+@import "../node_modules/font-awesome/less/core.less";
+@import "../node_modules/font-awesome/less/larger.less";
+@import "../node_modules/font-awesome/less/fixed-width.less";
+@import "../node_modules/font-awesome/less/list.less";
+@import "../node_modules/font-awesome/less/bordered-pulled.less";
+@import "../node_modules/font-awesome/less/animated.less";
+@import "../node_modules/font-awesome/less/rotated-flipped.less";
+@import "../node_modules/font-awesome/less/stacked.less";
+@import "../node_modules/font-awesome/less/icons.less";
+@import "../node_modules/font-awesome/less/screen-reader.less";
+
 html, body {
   font-family: @default-font-family;
   box-sizing: border-box;
@@ -40,10 +55,9 @@ html, body {
 
 .App-inspectorArea {
   flex: none;
+  display: flex;
   overflow: hidden;
   transition: width @transition-duration ease;
-  background-color: @inspector-area-background-color;
-  color: @inspector-area-color;
 
   &.App-inspectorArea--expanded {
     width: @inspector-width-expanded;
