@@ -58,6 +58,12 @@ ipcRenderer.on(events.CLOSE_FILE, function () {
   file.close();
 });
 
+ipcRenderer.on(events.REQUEST_TERMINATION, function () {
+  if (confirm('Echt jetzt?')) {
+    ipcRenderer.send(events.CONFIRM_TERMINATION);
+  }
+});
+
 ipcRenderer.on('less', function () {
   window.less.refresh(true)
     .then(() => console.log('Styles reloaded!'))

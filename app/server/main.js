@@ -4,6 +4,7 @@ const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
 const path = require('path')
 const _ = require('lodash')
 
+const events = require('../shared/events');
 const pkg = require('../package.json')
 
 // Use system log facility
@@ -46,6 +47,8 @@ let mainWindow
 
 // Other windows we may need
 let infoWindow = null
+
+let terminationConfirmed = false;
 
 app.setName(pkg.productName)
 
@@ -106,8 +109,20 @@ function initialize () {
       win.webContents.send('hello')
     })
 
+    win.on('close', event => {
+      if (terminationConfirmed) return
+      mainWindow.webContents.send(events.REQUEST_TERMINATION);
+      event.preventDefault();
+    })
+
     return win
   }
+
+  app.on('before-quit', event => {
+    if (terminationConfirmed) return
+    mainWindow.webContents.send(events.REQUEST_TERMINATION);
+    event.preventDefault();
+  });
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -171,8 +186,6 @@ function initialize () {
     }
   })
 
-  app.on('will-quit', () => {})
-
   ipcMain.on('open-info-window', () => {
     if (infoWindow) {
       return
@@ -187,6 +200,11 @@ function initialize () {
     infoWindow.on('closed', () => {
       infoWindow = null
     })
+  })
+
+  ipcMain.on(events.CONFIRM_TERMINATION, () => {
+    terminationConfirmed = true
+    app.quit()
   })
 }
 
