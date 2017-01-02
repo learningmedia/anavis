@@ -13,7 +13,7 @@ require('./lib/log')(pkg.name)
 // Manage unhandled exceptions as early as possible
 process.on('uncaughtException', (error) => {
   console.error(`Caught unhandled exception: ${error}`)
-  dialog.showErrorBox('Caught unhandled exception', e.message || 'Unknown error message')
+  dialog.showErrorBox('Caught unhandled exception', error.message || 'Unknown error message')
   app.quit()
 })
 
