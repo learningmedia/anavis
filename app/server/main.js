@@ -4,6 +4,7 @@ const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
 const path = require('path')
 const _ = require('lodash')
 
+const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
 const pkg = require('../package.json')
 
@@ -74,6 +75,8 @@ function initialize () {
       }
     })
 
+    Messenger.instance = new Messenger(win.webContents, ipcMain);
+
     // Remove file:// if you need to load http URLs
     win.loadURL(`file://${__dirname}/../client/${pkg.config.url}`, {})
 
@@ -111,8 +114,11 @@ function initialize () {
 
     win.on('close', event => {
       if (terminationConfirmed) return
-      mainWindow.webContents.send(events.REQUEST_TERMINATION);
-      event.preventDefault();
+      Messenger.instance.send(events.REQUEST_TERMINATION).then(canTerminate => {
+        terminationConfirmed = canTerminate
+        if (canTerminate) app.quit()
+      })
+      event.preventDefault()
     })
 
     return win
@@ -120,8 +126,11 @@ function initialize () {
 
   app.on('before-quit', event => {
     if (terminationConfirmed) return
-    mainWindow.webContents.send(events.REQUEST_TERMINATION);
-    event.preventDefault();
+    Messenger.instance.send(events.REQUEST_TERMINATION).then(canTerminate => {
+      terminationConfirmed = canTerminate
+      if (canTerminate) app.quit()
+    })
+    event.preventDefault()
   });
 
   app.on('window-all-closed', () => {
@@ -200,11 +209,6 @@ function initialize () {
     infoWindow.on('closed', () => {
       infoWindow = null
     })
-  })
-
-  ipcMain.on(events.CONFIRM_TERMINATION, () => {
-    terminationConfirmed = true
-    app.quit()
   })
 }
 

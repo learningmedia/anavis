@@ -14,6 +14,9 @@ const soundDrop = require('./bindings/sound-drop');
 const inspector = require('./components/inspector');
 const soundPlayer = require('./components/sound-player');
 const partOperations = require('./bindings/part-operations');
+const Messenger = require('../shared/messenger');
+
+Messenger.instance = new Messenger(ipcRenderer, ipcRenderer);
 
 const LESS_LOG_LEVEL_ERRORS = 1;
 
@@ -58,11 +61,9 @@ ipcRenderer.on(events.CLOSE_FILE, function () {
   file.close();
 });
 
-ipcRenderer.on(events.REQUEST_TERMINATION, function () {
-  if (confirm('Echt jetzt?')) {
-    ipcRenderer.send(events.CONFIRM_TERMINATION);
-  }
-});
+Messenger.instance.on(events.REQUEST_TERMINATION, () => {
+  return confirm('Echt jetzt?');
+})
 
 ipcRenderer.on('less', function () {
   window.less.refresh(true)
