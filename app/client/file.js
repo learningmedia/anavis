@@ -1,17 +1,20 @@
 const fs = require('fs');
 const path = require('path');
+const uuid = require('uuid');
 const ko = require('knockout');
 const mkdirp = require('mkdirp');
 const { remote } = require('electron');
 const BigNumber = require('bignumber.js');
 const koMapping = require('knockout-mapping');
 
+const utils = require('./utils');
 const folderZip = require('./common/folder-zip');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
+const readOldFormat = require('./mappings/read-old-format');
 
 function create() {
-  const documentDir = createTempDirectoryName();
+  const documentDir = utils.createTempDirectoryName();
   mkdirp.sync(documentDir);
   const content = JSON.stringify(defaultDocument.create());
   fs.writeFileSync(path.join(documentDir, 'anavis.json'), content, 'utf8');
@@ -29,8 +32,7 @@ function open() {
   remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (filenames) {
     if (filenames && filenames.length) {
       if (appViewModel.works().some(x => x._.zipFileName() === filenames[0])) return;
-      const unzipDir = createTempDirectoryName()
-      openDocument(filenames[0], unzipDir, function (error, doc) {
+      openDocument(filenames[0], function (error, doc, unzipDir) {
         const workVm = createWorkViewModelFromDocunment(doc);
         workVm._ = {
           zipFileName: ko.observable(filenames[0]),
@@ -75,23 +77,30 @@ function close() {
   }
 }
 
-function createTempDirectoryName() {
-  const userDataDir = remote.app.getPath('userData');
-  return path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
-}
-
-function openDocument(filename, unzipDir, cb) {
+function openDocument(filename, cb) {
+  const unzipDir = utils.createTempDirectoryName();
   folderZip.unzip(filename, unzipDir, function (err) {
     if (err) return cb && cb(err);
-    readDocument(unzipDir, cb);
+    const options = {
+      id: uuid.v4(),
+      name: path.parse(filename).name
+    };
+    convertLegacyFormat(unzipDir, options, function (err, newUnzipDir) {
+      if (err) return cb && cb(err);
+      readDocument(newUnzipDir, cb);
+    });
   });
+}
+
+function convertLegacyFormat(unzipDir, options, cb) {
+  readOldFormat.readLegacyAvd(unzipDir, options, cb);
 }
 
 function readDocument(unzipDir, cb) {
   const docFileName = path.join(unzipDir, 'anavis.json');
   fs.readFile(docFileName, 'utf8', function (err, content) {
     if (err) return cb && cb(err);
-    return cb && cb(null, JSON.parse(content));
+    return cb && cb(null, JSON.parse(content), unzipDir);
   });
 }
 
