@@ -2,12 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const mkdirp = require('mkdirp');
 const xml2js = require('xml2js');
 const procs = require('xml2js/lib/processors');
 
-const utils = require('../utils');
-const folderZip = require('../common/folder-zip');
 const mapper = require('./old-to-new-format-mapper');
 
 const URN_RELATIONSHIP_PACKAGE = 'urn:anavis:v1.0:packaging:relationship:package';
@@ -33,7 +30,7 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
   let docRelsFile;
   let packageRelsFile;
   let packageRelationships;
-  let documentRelationships; // eslint-disable-line no-unused-vars
+  let documentRelationships;
 
   start();
 
@@ -47,15 +44,7 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
   }
 
   function end(docObj) {
-    const doc = mapper.mapDocument(docObj, options);
-    const docJson = JSON.stringify(doc);
-    const outputPackageDir = utils.createTempDirectoryName();
-    const docFileName = path.normalize(path.join(outputPackageDir, 'anavis.json'));
-    mkdirp.sync(outputPackageDir);
-    fs.writeFileSync(docFileName, docJson, 'utf8');
-    // TODO: Copy sound files / delete old package dir ...
-
-    cb(null, outputPackageDir);
+    mapper.mapDocument(docObj, packageDir, options, cb);
   }
 
   function parsePackageRelsFile() {
@@ -63,20 +52,30 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
       if (err) return cb(err);
       xml2js.parseString(xml, processorOptions, function (err, result) {
         if (err) return cb(err);
-        packageRelationships = mapRels(result);
+        packageRelationships = mapRels(result, path.dirname(packageRelsFile));
         recognizeDocFile();
       });
     });
   }
 
-  function mapRels(rels) {
-    return rels.relationship.map(x => x.$);
+  function mapRels(rels, relsFilePath) {
+    return rels.relationship.map(x => ({
+      id: x.$.id,
+      type: x.$.type,
+      target: x.$.target ? makeRelTargetAbsolute(x.$.target, relsFilePath) : x.$.target
+    }));
+  }
+
+  function makeRelTargetAbsolute(target, relsFilePath) {
+    return target.startsWith('/')
+      ? path.join(packageDir, `.${target}`) // Absolute to package root
+      : path.resolve(path.dirname(relsFilePath), target); // Relative to directory of relsFile
   }
 
   function recognizeDocFile() {
     const docNode = packageRelationships.find(x => x.type === URN_RELATIONSHIP_PACKAGE);
     if (!docNode) return cb(new Error('Document path not found'));
-    docFile = path.join(packageDir, docNode.target);
+    docFile = docNode.target;
     fs.stat(docFile, function (err, stats) {
       if (err) return cb(err);
       if (!stats.isFile()) cb(new Error(`${docFile} is not a file!`));
@@ -98,7 +97,7 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
       if (err) return cb(err);
       xml2js.parseString(xml, processorOptions, function (err, result) {
         if (err) return cb(err);
-        documentRelationships = mapRels(result);
+        documentRelationships = mapRels(result, path.dirname(docRelsFile));
         parseDocFile();
       });
     });
@@ -125,7 +124,8 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
     return {
       work: mapWork(doc.work[0] || null),
       visualizations: (doc.visualizations || []).filter(x => x).map(x => x.visualization).reduce((x, y) => x.concat(y), []).map(x => mapVisualization(x)),
-      resources: (doc.resources || []).filter(x => x).map(x => x.resourceList).reduce((x, y) => x.concat(y), []).map(x => mapResourceList(x))
+      resources: (doc.resources || []).filter(x => x).map(x => x.resourceList).reduce((x, y) => x.concat(y), []).map(x => mapResourceList(x)),
+      rels: documentRelationships || []
     };
   }
 

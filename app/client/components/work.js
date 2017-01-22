@@ -12,9 +12,10 @@ function viewModel(params) {
     app: app,
     work: work,
     parts: work.parts,
+    annotations: work.annotations,
     sounds: work.sounds,
     getContrastColor: utils.getContrastColor,
-    onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => f.path))
+    onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })))
   };
 }
 

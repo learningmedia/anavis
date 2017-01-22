@@ -6,7 +6,7 @@ const soundController = require('../sound-controller');
 const template = fs.readFileSync(`${__dirname}/sound-player.html`, 'utf8');
 
 function viewModel(params) {
-  const sound = soundController.create(params.path);
+  const sound = soundController.create(params.path());
 
   return {
     sound,
