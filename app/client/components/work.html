@@ -5,7 +5,7 @@
   </div>
 </div>
 <!-- ko foreach: { data: annotations, as: 'annotation' } -->
-<div data-bind="text: JSON.stringify(annotation.values())"></div>
+<av-annotation params="annotation: annotation, parts: $parent.parts"></av-annotation>
 <!-- /ko -->
 <!-- ko foreach: { data: sounds, as: 'sound' } -->
 <av-sound-player params="path: sound.path, parts: $parent.parts"></av-sound-player>

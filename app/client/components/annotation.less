@@ -1,0 +1,17 @@
+.Annotation {
+  display: flex;
+  width: 100%;
+  overflow: auto;
+}
+
+.Annotation-value {
+  text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  padding: 2px;
+  background-color: @default-text-container-color;
+
+  &:nth-child(even) {
+    background-color: @default-text-container-alternate-color;
+  }
+}
