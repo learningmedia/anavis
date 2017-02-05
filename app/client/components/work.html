@@ -7,8 +7,8 @@
   </div>
 </div>
 <!-- ko foreach: { data: annotations, as: 'annotation' } -->
-<av-annotation params="annotation: annotation, parts: $parent.parts"></av-annotation>
+<av-annotation class="Work-annotation" params="annotation: annotation, parts: $parent.parts"></av-annotation>
 <!-- /ko -->
 <!-- ko foreach: { data: sounds, as: 'sound' } -->
-<av-sound-player params="path: sound.path, parts: $parent.parts"></av-sound-player>
+<av-sound-player class="Work-soundPlayer" params="path: sound.path, parts: $parent.parts"></av-sound-player>
 <!-- /ko -->

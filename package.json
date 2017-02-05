@@ -25,6 +25,7 @@
     "clean": "npm run clean:linux && npm run clean:win && npm run clean:osx",
     "pack:osx": "build --dir --mac",
     "pack:win": "build --dir --win --x64",
+    "pack:winzip": "build --win --x64",
     "pack:linux": "build --dir --linux --x64",
     "pack": "build --dir",
     "prebuild": "node build/target.js",
