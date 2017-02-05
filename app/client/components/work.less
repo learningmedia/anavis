@@ -7,23 +7,32 @@ av-work {
   vertical-align: middle;
   user-select: none;
   cursor: pointer;
+  height: 48px;
 }
 
 .Work-partOuter {
   border: 1px solid #111;
   overflow: auto;
+  display: flex;
 }
 
 .Work-partInner {
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 2px;
   background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.2) 100%);
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  flex: 1 0 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
 
   &.is-selected {
     border-color: #000;
   }
+}
+
+.Work-partName {
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
