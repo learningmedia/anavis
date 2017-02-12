@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 const procs = require('xml2js/lib/processors');
+const uuid = require('uuid');
 
+const utils = require('../utils');
+const folderZip = require('../common/folder-zip');
 const mapper = require('./old-to-new-format-mapper');
 
 const URN_RELATIONSHIP_PACKAGE = 'urn:anavis:v1.0:packaging:relationship:package';
@@ -24,7 +27,7 @@ const processorOptions = {
   emptyTag: null,
 };
 
-module.exports.readLegacyAvd = function (packageDir, options, cb) {
+module.exports.readAvdFile = function (filename, cb) {
 
   let docFile;
   let docRelsFile;
@@ -32,9 +35,23 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
   let packageRelationships;
   let documentRelationships;
 
+  const options = {
+    id: uuid.v4(),
+    name: path.parse(filename).name
+  };
+
+  const packageDir = utils.createTempDirectoryName();
+
   start();
 
   function start() {
+    folderZip.unzip(filename, packageDir, function (err) {
+      if (err) return cb && cb(err);
+      checkForLegacyFormat();
+    });
+  }
+
+  function checkForLegacyFormat() {
     packageRelsFile = path.join(packageDir, '_rels', '.rels');
     fs.stat(packageRelsFile, function (err, stats) {
       if (err && err.code === 'ENOENT') return cb(null, packageDir); // Not a legacy package, just continue...
@@ -44,7 +61,7 @@ module.exports.readLegacyAvd = function (packageDir, options, cb) {
   }
 
   function end(docObj) {
-    mapper.mapDocument(docObj, packageDir, options, cb);
+    mapper.mapDocument(docObj, packageDir, filename, options, cb);
   }
 
   function parsePackageRelsFile() {

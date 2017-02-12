@@ -5,15 +5,6 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const glob = require('glob');
 
-// const sourceDir = 'C:/Users/Erwin/Desktop/uz';
-// const targetFileName = 'C:/Users/Erwin/Desktop/Superneu.zip';
-
-// const sourceFileName = 'C:/Users/Erwin/Desktop/Arlen - Somewhere Over The Rainbow  (m. Refrain).avd';
-// const targetDir = 'C:/Users/Erwin/Desktop/uz';
-
-// zip(sourceDir, targetFileName, err => console.log(err || 'Done!'));
-// unzip(sourceFileName, targetDir, err => console.log(err || 'Done!'));
-
 function zip(sourceDir, targetFileName, cb) {
   sourceDir = sourceDir.replace(/\/?$/, '/');
   glob(`${sourceDir}**/*`, { nodir: true, dot: true }, function (err, files) {

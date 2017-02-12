@@ -6,7 +6,7 @@ const utils = require('../utils');
 
 const argbRegexp = /^(#)([0-9A-F]{2})([0-9A-F]{6})$/;
 
-function mapDocument(doc, inputPackageDir, options, cb) {
+function mapDocument(doc, inputPackageDir, avdFileName, options, cb) {
   const outputPackageDir = utils.createTempDirectoryName();
   mkdirp.sync(outputPackageDir);
 
@@ -16,7 +16,7 @@ function mapDocument(doc, inputPackageDir, options, cb) {
   result.name = options.name;
   result.parts = mapParts(doc.work);
   result.annotations = mapVisualizationsToAnnotations(doc.visualizations);
-  result.sounds = mapVisualizationsToSounds(doc.visualizations, doc.resources, doc.rels, inputPackageDir, outputPackageDir);
+  result.sounds = mapVisualizationsToSounds(doc.visualizations, doc.resources, doc.rels, inputPackageDir, outputPackageDir, avdFileName);
   
   const docJson = JSON.stringify(result);
   const docFileName = path.normalize(path.join(outputPackageDir, 'anavis.json'));
@@ -65,7 +65,7 @@ function mapAnnotationTypeName(type) {
   }
 }
 
-function mapVisualizationsToSounds(visualizations, resources, rels, inputPackageDir, outputPackageDir) {
+function mapVisualizationsToSounds(visualizations, resources, rels, inputPackageDir, outputPackageDir, avdFileName) {
   let results = [];
   let fileCopyActions = [];
   visualizations
@@ -74,7 +74,7 @@ function mapVisualizationsToSounds(visualizations, resources, rels, inputPackage
       if (!vis.soundFile || !vis.soundFile.uri) {
         results.push({ path: null, embedded: false });
       } else if (vis.soundFile.uri.startsWith('file://')) {
-        results.push({ path: makeFileUriAbsolute(vis.soundFile.uri), embedded: false });
+        results.push({ path: path.relative(makeFileUriAbsolute(vis.soundFile.uri), path.dirname(avdFileName)), embedded: false });
       } else if (vis.soundFile.uri.startsWith('resource://')) {
         const soundResource = resources.find(res => res.visualizationId === vis.id);
         const relationshipId = soundResource.items[0].relationshipId;
@@ -82,7 +82,7 @@ function mapVisualizationsToSounds(visualizations, resources, rels, inputPackage
         const inputPath = path.normalize(relation.target);
         const outputPath = makeResourceUriAbsolute(vis.soundFile.uri, outputPackageDir);
         fileCopyActions.push({ source: inputPath, destination: outputPath })
-        results.push({ path: outputPath, embedded: true });
+        results.push({ path: path.relative(outputPath, outputPackageDir), embedded: true });
       } else {
         throw new Error('Invalid sound file');
       }
