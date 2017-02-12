@@ -6,15 +6,17 @@ av-annotation {
   display: flex;
   width: 100%;
   overflow: auto;
-  min-height: 48px;
 }
 
 .Annotation-value {
   text-overflow: ellipsis;
   text-overflow: ellipsis;
   word-break: break-word;
-  padding: 2px;
+  padding: 3px 5px;
   background-color: @default-text-container-color;
+  border: none;
+  overflow-y: hidden;
+  line-height: 1.33em;
 
   &:nth-child(even) {
     background-color: @default-text-container-alternate-color;

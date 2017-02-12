@@ -14,7 +14,8 @@ function viewModel(params) {
     }
 
   return {
-    tuples: tuples
+    tuples: tuples,
+    onBlur: (vm, event) => event.target.scrollTop = 0
   };
 
 }
