@@ -42,8 +42,13 @@ function openWork(doc, unzipDir, zipFileName) {
   const workVm = createWorkViewModelFromDocument(doc);
   workVm._ = {
     zipFileName: ko.observable(zipFileName),
-    workingDirectory: ko.observable(unzipDir)
+    workingDirectory: ko.observable(unzipDir),
+    isDirty: ko.observable(false)
   };
+  workVm._.isDirty.silent = false;
+  ko.computed(() => ko.toJS(workVm)).subscribe(() => {
+    if (!workVm._.isDirty.silent) workVm._.isDirty(true);
+  });
   appViewModel.works.push(workVm);
 }
 
@@ -71,7 +76,13 @@ function save(cb) {
     });
     fs.writeFile(docFileName, JSON.stringify(workJson), 'utf8', err => {
       if (err) return cb && cb(err);
-      folderZip.zip(workingDirectory, zipFileName, cb);
+      folderZip.zip(workingDirectory, zipFileName, err2 => {
+        if (err2) return cb && cb(err2);
+        work._.isDirty.silent = true;
+        work._.isDirty(false);
+        work._.isDirty.silent = false;
+        return cb && cb();
+      });
     });
   }
 }
