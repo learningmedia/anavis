@@ -11,6 +11,8 @@ const folderZip = require('./common/folder-zip');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
 const avdReader = require('./mappings/avd-reader');
+const Messenger = require('../shared/messenger');
+const events = require('../shared/events');
 
 function create() {
   const unzipDir = utils.createTempDirectoryName();
@@ -53,7 +55,24 @@ function openWork(doc, unzipDir, zipFileName) {
 }
 
 function save(cb) {
-  const work = appViewModel.currentWork();
+  if (appViewModel.works().length === 0) {
+    return cb && cb();
+  }
+  if (appViewModel.works().length === 1) {
+    return saveWork(appViewModel.works()[0], cb);
+  }
+  const workInfos = appViewModel.works().map(work => ({
+    id: work.id(),
+    name: work.name(),
+    isDirty: work._.isDirty()
+  }));
+  Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(answer => {
+    console.log(answer);
+    return cb && cb();
+  });
+}
+
+function saveWork(work, cb) {
   if (!work) return cb && cb();
   if (!work._.zipFileName()) {
     remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
