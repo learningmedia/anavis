@@ -3,18 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>Workselector</title>
-    <!-- <link rel="stylesheet/less" href="./app.less" /> -->
+    <link rel="stylesheet/less" href="./work-selector.less" />
   </head>
-  <body>
-    <div data-bind="foreach: { data: workInfos, as: 'workInfo' }">
-      WorkInfo:
-      <br>
-      ID: <span data-bind="text: workInfo.id"></span>
-      <br>
-      Name: <span data-bind="text: workInfo.name"></span>
-      <br>
-      IsDirty: <span data-bind="text: workInfo.isDirty"></span>
-      <br>
+  <body class="WorkSelector">
+    <div class="WorkSelector-worksContainer" data-bind="foreach: { data: workInfos, as: 'workInfo' }">
+      <div class="WorkSelector-workContainer">
+        <span class="WorkSelector-checkboxContainer" data-bind="css: workInfo.isDirty ? 'WorkSelector-checkboxContainer--enabled' : 'WorkSelector-checkboxContainer--disabled'">
+          <input data-bind="enable: workInfo.isDirty" type="checkbox" name="saveWork">&nbsp;
+        </span>
+        <span class="WorkSelector-nameContainer">
+          Name:&nbsp;<span data-bind="text: workInfo.name"></span>
+        </span>
+      </div>
+    </div>
+    <div class="WorkSelector-buttonsContainer">
+      <input type="button" name="save" value="Sichern">&nbsp;<input type="button" name="cancel" value="Abbrechen">
     </div>
   </body>
   <script>
