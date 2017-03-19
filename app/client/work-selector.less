@@ -1,0 +1,69 @@
+@import (less) '../node_modules/normalize.css/normalize.css';
+
+@import "../node_modules/font-awesome/less/variables.less";
+@fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/less/mixins.less";
+@import "../node_modules/font-awesome/less/path.less";
+@import "../node_modules/font-awesome/less/core.less";
+@import "../node_modules/font-awesome/less/larger.less";
+@import "../node_modules/font-awesome/less/fixed-width.less";
+@import "../node_modules/font-awesome/less/list.less";
+@import "../node_modules/font-awesome/less/bordered-pulled.less";
+@import "../node_modules/font-awesome/less/animated.less";
+@import "../node_modules/font-awesome/less/rotated-flipped.less";
+@import "../node_modules/font-awesome/less/stacked.less";
+@import "../node_modules/font-awesome/less/icons.less";
+@import "../node_modules/font-awesome/less/screen-reader.less";
+
+html, body {
+  font-family: @default-font-family;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+@import 'variables.less';
+@import 'utilities.less';
+
+.WorkSelector {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.WorkSelector-worksContainer {
+  flex: 1 0 0%;
+  padding: 10px;
+}
+
+.WorkSelector-buttonsContainer {
+  flex: none;
+  padding: 10px;
+  text-align: right;
+}
+
+.WorkSelector-workContainer {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+.WorkSelector-checkboxContainer {
+  margin-right: 10px;
+  padding: 8px;
+  flex: none;
+
+  &.WorkSelector-checkboxContainer--enabled {
+    background-color: @enabledColor;
+  }
+  &.WorkSelector-checkboxContainer--disabled {
+    background-color: @disabledColor;
+  }
+}
+
+.WorkSelector-nameContainer {
+  flex: 1 0 0%;
+  display: flex;
+  align-items: center;
+}

@@ -6,13 +6,14 @@ const RESPONSE = 'ELECTRON-MESSENGER-RESPONSE';
 
 module.exports = class Messenger {
 
-  constructor(sender, receiver) {
+  constructor(id, sender, receiver) {
+    this.id = id;
     this.sender = sender;
     this.receiver = receiver;
     this.listenersByTopic = new Map();
     this.deferredsToSettleAfterWeGotAResponseById = new Map();
 
-    receiver.on(REQUEST, (event, args) => {
+    receiver.on(`${REQUEST}-${this.id}`, (event, args) => {
       const id = args.id;
       const topic = args.topic;
       const requestData = args.data;
@@ -23,14 +24,14 @@ module.exports = class Messenger {
           return listener(requestData);
         })
         .then(responseData => {
-          event.sender.send(RESPONSE, {
+          event.sender.send(`${RESPONSE}-${this.id}`, {
             id: id,
             topic: topic,
             data: responseData
           });
         })
         .catch(error => {
-          event.sender.send(RESPONSE, {
+          event.sender.send(`${RESPONSE}-${this.id}`, {
             id: id,
             topic: topic,
             error: error.message || error
@@ -38,7 +39,7 @@ module.exports = class Messenger {
         });
     });
 
-    receiver.on(RESPONSE, (event, args) => {
+    receiver.on(`${RESPONSE}-${this.id}`, (event, args) => {
       const id = args.id;
       const topic = args.topic;
       const responseData = args.data;
@@ -71,12 +72,17 @@ module.exports = class Messenger {
     const id = uuid.v4();
     const deferred = defer();
     this.deferredsToSettleAfterWeGotAResponseById.set(id, deferred);
-    this.sender.send(REQUEST, {
+    this.sender.send(`${REQUEST}-${this.id}`, {
       id: id,
       topic: topic,
       data: data
     });
     return deferred.promise;
+  }
+
+  dispose() {
+    this.receiver.removeAllListeners(`${REQUEST}-${this.id}`);
+    this.receiver.removeAllListeners(`${RESPONSE}-${this.id}`);
   }
 
 }

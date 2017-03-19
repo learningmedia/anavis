@@ -17,7 +17,7 @@ const annotation = require('./components/annotation');
 const partOperations = require('./bindings/part-operations');
 const Messenger = require('../shared/messenger');
 
-Messenger.instance = new Messenger(ipcRenderer, ipcRenderer);
+Messenger.mainWindowInstance = new Messenger('MAIN_WINDOW', ipcRenderer, ipcRenderer);
 
 const LESS_LOG_LEVEL_ERRORS = 1;
 
@@ -62,7 +62,7 @@ ipcRenderer.on(events.CLOSE_FILE, function () {
   file.close();
 });
 
-Messenger.instance.on(events.REQUEST_TERMINATION, () => {
+Messenger.mainWindowInstance.on(events.REQUEST_TERMINATION, () => {
   return confirm('Echt jetzt?');
 })
 

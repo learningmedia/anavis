@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Workselector</title>
+    <link rel="stylesheet/less" href="./work-selector.less" />
+  </head>
+  <body class="WorkSelector">
+    <div class="WorkSelector-worksContainer" data-bind="foreach: { data: workInfos, as: 'workInfo' }">
+      <div class="WorkSelector-workContainer">
+        <span class="WorkSelector-checkboxContainer" data-bind="css: workInfo.isDirty() ? 'WorkSelector-checkboxContainer--enabled' : 'WorkSelector-checkboxContainer--disabled'">
+          <input data-bind="enable: workInfo.isDirty, checked: workInfo.isSelected" type="checkbox" name="saveWork">&nbsp;
+        </span>
+        <span class="WorkSelector-nameContainer">
+          Name:&nbsp;<span data-bind="text: workInfo.name"></span>
+        </span>
+      </div>
+    </div>
+    <div class="WorkSelector-buttonsContainer">
+      <input type="button" name="save" value="Sichern" data-bind="click: onSaveClick">
+      &nbsp;
+      <input type="button" name="cancel" value="Abbrechen" data-bind="click: onCancelClick">
+    </div>
+  </body>
+  <script>
+    require('./work-selector.js')
+  </script>
+</html>

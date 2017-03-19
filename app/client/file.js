@@ -1,16 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 const ko = require('knockout');
+const async = require('async');
 const mkdirp = require('mkdirp');
 const { remote } = require('electron');
 const BigNumber = require('bignumber.js');
 const koMapping = require('knockout-mapping');
-
 const utils = require('./utils');
 const folderZip = require('./common/folder-zip');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
 const avdReader = require('./mappings/avd-reader');
+const Messenger = require('../shared/messenger');
+const events = require('../shared/events');
 
 function create() {
   const unzipDir = utils.createTempDirectoryName();
@@ -53,13 +55,35 @@ function openWork(doc, unzipDir, zipFileName) {
 }
 
 function save(cb) {
-  const work = appViewModel.currentWork();
+  if (appViewModel.works().length === 0) {
+    return cb && cb();
+  }
+  if (appViewModel.works().length === 1) {
+    return saveWork(appViewModel.works()[0], cb);
+  }
+  const workInfos = appViewModel.works().map(work => ({
+    id: work.id(),
+    name: work.name(),
+    isDirty: work._.isDirty()
+  }));
+  Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
+    const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
+    return saveWorks(worksToSave, cb);
+  });
+}
+
+function saveWorks(works, cb) {
+  if (!works) return cb && cb();
+  return async.series(works.map(work => saveWork.bind(null, work)), cb);
+}
+
+function saveWork(work, cb) {
   if (!work) return cb && cb();
   if (!work._.zipFileName()) {
     remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
       if (fileName) {
         work._.zipFileName(fileName);
-        save(cb);
+        saveWork(work, cb);
       } else {
         return cb && cb();
       }
