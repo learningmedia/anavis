@@ -14,6 +14,7 @@
   "main": "server/main.js",
   "electronVersion": "1.0.0",
   "dependencies": {
+    "async": "^2.1.5",
     "bignumber.js": "^2.4.0",
     "color": "^0.11.3",
     "devtron": "^1.4.0",

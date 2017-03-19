@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const ko = require('knockout');
+const async = require('async');
 const mkdirp = require('mkdirp');
 const { remote } = require('electron');
 const BigNumber = require('bignumber.js');
 const koMapping = require('knockout-mapping');
-
 const utils = require('./utils');
 const folderZip = require('./common/folder-zip');
 const appViewModel = require('./app-view-model');
@@ -66,10 +66,15 @@ function save(cb) {
     name: work.name(),
     isDirty: work._.isDirty()
   }));
-  Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(answer => {
-    console.log(answer);
-    return cb && cb();
+  Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
+    const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
+    return saveWorks(worksToSave, cb);
   });
+}
+
+function saveWorks(works, cb) {
+  if (!works) return cb && cb();
+  return async.series(works.map(work => saveWork.bind(null, work)), cb);
 }
 
 function saveWork(work, cb) {
@@ -78,7 +83,7 @@ function saveWork(work, cb) {
     remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
       if (fileName) {
         work._.zipFileName(fileName);
-        save(cb);
+        saveWork(work, cb);
       } else {
         return cb && cb();
       }

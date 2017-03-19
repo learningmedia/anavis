@@ -1,6 +1,7 @@
 'use strict'
 
 const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
+const defer = require('tiny-defer');
 const path = require('path')
 const _ = require('lodash')
 
@@ -81,32 +82,39 @@ function initialize () {
 
     Messenger.mainWindowInstance.on(events.OPEN_SELECTOR, workInfos => {
       if (workSelectorWindow) {
-        return
+        return;
       }
       workSelectorWindow = new BrowserWindow({
         parent: mainWindow, 
         modal: true, 
-        width: 400,
+        width: 600,
         height: 400
-      })
-      workSelectorWindow.loadURL(`file://${__dirname}/../client/work-selector.html`)
+      });
+      workSelectorWindow.setMenu(null);
+      const deferred = defer();
+      let workIdsToSave;
+      workSelectorWindow.loadURL(`file://${__dirname}/../client/work-selector.html`);
       const workSelectorWindowMessenger = new Messenger('WORK_SELECTOR', workSelectorWindow.webContents, ipcMain);
       workSelectorWindow.webContents.on('did-finish-load', () => {
-      workSelectorWindow.webContents.toggleDevTools()
-        workSelectorWindowMessenger.send(events.SELECT_WORKS, workInfos).then(selectedWorks => {
-          console.log('Selected Works: ', selectedWorks);
-        })
-      })
+        // workSelectorWindow.webContents.toggleDevTools();
+        workSelectorWindowMessenger.send(events.SELECT_WORKS, workInfos).then(selectedWorkIds => {
+          workIdsToSave = selectedWorkIds;
+          workSelectorWindow.close();
+        });
+      });
 
       workSelectorWindow.on('closed', () => {
-        workSelectorWindowMessenger.dispose()
-        workSelectorWindow = null
-      })
+        workSelectorWindowMessenger.dispose();
+        workSelectorWindow = null;
+        deferred.resolve(workIdsToSave);
+      });
 
       workSelectorWindow.webContents.on('crashed', err => {
         alert(err);
-      })
-    })
+      });
+
+      return deferred.promise;
+    });
 
     // Remove file:// if you need to load http URLs
     win.loadURL(`file://${__dirname}/../client/${pkg.config.url}`, {})
