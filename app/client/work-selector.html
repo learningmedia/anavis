@@ -9,7 +9,7 @@
     <div class="WorkSelector-works" data-bind="foreach: { data: workInfos, as: 'workInfo' }">
       <av-checkbox
         class="WorkSelector-work"
-        params="disabled: !workInfo.isDirty(), checked: workInfo.isSelected, text: workInfo.name() + ' - ' + workInfo.zipFileName()"
+        params="disabled: !workInfo.isDirty(), checked: workInfo.isSelected, text: workInfo.name"
         >
       </av-checkbox>
     </div>
