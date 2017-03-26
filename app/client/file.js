@@ -64,6 +64,7 @@ function save(cb) {
   const workInfos = appViewModel.works().map(work => ({
     id: work.id(),
     name: work.name(),
+    zipFileName: work._.zipFileName(),
     isDirty: work._.isDirty()
   }));
   Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {

@@ -10,6 +10,7 @@ const koMapping = require('knockout-mapping');
 
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
+const checkbox = require('./components/checkbox');
 
 Messenger.workSelectorInstance = new Messenger('WORK_SELECTOR', ipcRenderer, ipcRenderer);
 
@@ -32,7 +33,7 @@ window.ko = ko;
 [].forEach(binding => binding.register());
 
 // Register all components:
-[].forEach(component => component.register());
+[checkbox].forEach(component => component.register());
 
 const vm = {};
 vm.deferred = defer();

@@ -14,6 +14,7 @@ const soundDrop = require('./bindings/sound-drop');
 const inspector = require('./components/inspector');
 const soundPlayer = require('./components/sound-player');
 const annotation = require('./components/annotation');
+const checkbox = require('./components/checkbox');
 const partOperations = require('./bindings/part-operations');
 const Messenger = require('../shared/messenger');
 
@@ -38,7 +39,7 @@ window.ko = ko;
 [soundDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, inspector, soundPlayer, annotation].forEach(component => component.register());
+[work, inspector, soundPlayer, annotation, checkbox].forEach(component => component.register());
 
 appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
 

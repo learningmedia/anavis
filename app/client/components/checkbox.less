@@ -1,0 +1,77 @@
+// similar to http://codepen.io/KenanYusuf/pen/PZKEKd
+
+@checkbox-indicator-background-color: #AA0000;
+@checkbox-indicator-focused-background-color: #7E0000;
+@checkbox-indicator-hover-background-color: #005500;
+@checkbox-indicator-checked-background-color: #005500;
+@checkbox-indicator-focused-checked-background-color: #003500;
+@checkbox-indicator-disabled-background-color: #cccccc;
+@checkbox-indicator-tick-color: #ffffff;
+@checkbox-indicator-tick-disabled-color: #7b7b7b;
+
+av-checkbox {
+  display: inline-block;
+}
+
+.Checkbox {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+  cursor: pointer;
+
+  &.is-disabled {
+    cursor: not-allowed;
+  }
+}
+.Checkbox-input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.Checkbox-indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: @checkbox-indicator-background-color;
+}
+.Checkbox:hover > .Checkbox-indicator {
+  background-color: @checkbox-indicator-hover-background-color;
+}
+.Checkbox:hover .Checkbox-input:not([disabled]):checked ~ .Checkbox-indicator {
+  background-color: @checkbox-indicator-checked-background-color;
+}
+.Checkbox-input:focus ~ .Checkbox-indicator {
+  background-color: @checkbox-indicator-focused-background-color;
+}
+.Checkbox-input:checked ~ .Checkbox-indicator {
+  background-color: @checkbox-indicator-checked-background-color;
+}
+.Checkbox-input:checked:focus ~ .Checkbox-indicator {
+  background-color: @checkbox-indicator-focused-checked-background-color;
+}
+.Checkbox-input:disabled ~ .Checkbox-indicator {
+  background-color: @checkbox-indicator-disabled-background-color;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.Checkbox-indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid @checkbox-indicator-tick-color;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.Checkbox-input:checked ~ .Checkbox-indicator:after {
+  display: block;
+}
+.Checkbox-input:disabled ~ .Checkbox-indicator:after {
+  border-color: @checkbox-indicator-tick-disabled-color;
+}
