@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const ko = require('knockout');
+const tools = require('../../shared/tools');
 
 const template = fs.readFileSync(`${__dirname}/inspector.html`, 'utf8');
 
@@ -8,6 +9,7 @@ function viewModel(params) {
   const app = params.app;
   return {
     app: app,
+    tools: tools,
     currentTool: app.currentTool,
     isExpanded: app.isInspectorExpanded,
     fileName: ko.pureComputed(() => {
@@ -17,7 +19,7 @@ function viewModel(params) {
         return '';
       }
     }),
-    selectTool: tool => app.currentTool(tool),
+    selectTool: tool => app.currentPrimaryTool(tool),
     toggleCollapse: () => app.isInspectorExpanded(!app.isInspectorExpanded()),
     currentWork: app.currentWork,
     currentPart: app.currentPart,

@@ -8,6 +8,7 @@ const { ipcRenderer } = require('electron');
 
 const file = require('./file');
 const events = require('../shared/events');
+const shortcuts = require('./actions/shortcuts')
 const work = require('./components/work');
 const appViewModel = require('./app-view-model');
 const soundDrop = require('./bindings/sound-drop');
@@ -45,6 +46,7 @@ appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
 
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
+  shortcuts.register(window, appViewModel);
 });
 
 ipcRenderer.on(events.NEW_FILE, function () {
