@@ -3,11 +3,7 @@
 	<span data-bind="visible: $component.work._.isDirty">*</span>
 </div>
 <div class="Work" data-bind="foreach: { data: parts, as: 'part' }, soundDrop: onSoundDropped, partOperations: { work: work, app: $component.app }">
-  <div class="Work-partOuter" data-bind="style: { flex: part.length }">
-    <div class="Work-partInner" data-bind="style: { color: $component.getContrastColor(part.color()), backgroundColor: part.color }, css: { 'is-selected': $component.app.currentPart() === $data }, attr: { title: part.name }">
-      <div class="Work-partName" data-bind="text: part.name"></div>
-    </div>
-  </div>
+  <av-part params="app: $parent.app, part: part" data-bind="style: { flex: part.length }"></av-part>
 </div>
 <!-- ko foreach: { data: annotations, as: 'annotation' } -->
 <av-annotation class="Work-annotation" params="annotation: annotation, parts: $parent.parts"></av-annotation>

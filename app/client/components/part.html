@@ -1,0 +1,6 @@
+<div class="Part" data-bind="style: { flex: length }">
+  <div class="Part-inner" data-bind="style: { color: backgroundColor, backgroundColor: part.color }, css: { 'is-selected': isSelected }, attr: { title: name }">
+    <input class="Part-nameEditor" type="text" data-bind="value: part.name, visible: isInEditMode, hasFocus: isInEditMode" />
+    <div class="Part-nameDisplay" data-bind="text: part.name, visible: !isInEditMode(), event: { dblclick: onDblClick }"></div>
+  </div>
+</div>
