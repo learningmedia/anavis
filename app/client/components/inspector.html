@@ -2,7 +2,7 @@
   <div class="Inspector-group Inspector-group--tools">
     <button
       class="Inspector-button"
-      data-bind="css: { 'Inspector-button--selected': currentTool() === 'default' }, click: function () { selectTool('default'); }"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === tools.DEFAULT }, click: function () { selectTool(tools.DEFAULT); }"
       title="Normalo"
       >
       <span class="Inspector-buttonIcon Inspector-buttonIcon--default"></span>
@@ -10,7 +10,7 @@
     </button>
     <button
       class="Inspector-button"
-      data-bind="css: { 'Inspector-button--selected': currentTool() === 'scissors' }, click: function () { selectTool('scissors'); }"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === tools.SCISSORS }, click: function () { selectTool(tools.SCISSORS); }"
       title="Schere"
       >
       <span class="Inspector-buttonIcon Inspector-buttonIcon--scissors"></span>
@@ -18,7 +18,7 @@
     </button>
     <button
       class="Inspector-button"
-      data-bind="css: { 'Inspector-button--selected': currentTool() === 'glue' }, click: function () { selectTool('glue'); }"
+      data-bind="css: { 'Inspector-button--selected': currentTool() === tools.GLUE }, click: function () { selectTool(tools.GLUE); }"
       title="Kleber"
       >
       <span class="Inspector-buttonIcon Inspector-buttonIcon--glue"></span>

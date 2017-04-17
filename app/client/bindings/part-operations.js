@@ -1,5 +1,6 @@
 const ko = require('knockout');
 const uuid = require('uuid');
+const tools = require('../../shared/tools');
 
 const TOUCH_TOLERANCE_IN_PIXELS = 12;
 
@@ -57,7 +58,7 @@ function getOperationsInfo(element, event, work, app) {
 }
 
 function applyMovement(currentOperationsInfo, work, element) {
-  if (!currentOperationsInfo || !currentOperationsInfo.isBetweenTwoParts || currentOperationsInfo.currentTool !== 'default') {
+  if (!currentOperationsInfo || !currentOperationsInfo.isBetweenTwoParts || currentOperationsInfo.currentTool !== tools.DEFAULT) {
     return;
   }
   const minPartLengthInAvus = TOUCH_TOLERANCE_IN_PIXELS * currentOperationsInfo.avusPerPixel;
@@ -76,17 +77,17 @@ function applyRelease(work, element, event, app) {
   const newInfo = getOperationsInfo(element, event, work, app);
   event.stopPropagation();
 
-  if (newInfo.currentTool === 'scissors' && !newInfo.isBetweenTwoParts) {
+  if (newInfo.currentTool === tools.SCISSORS && !newInfo.isBetweenTwoParts) {
     splitPart(work, newInfo.index, newInfo.touchOffsetWithinPartInAvus);
     return;
   }
 
-  if (newInfo.currentTool === 'glue' && newInfo.isBetweenTwoParts) {
+  if (newInfo.currentTool === tools.GLUE && newInfo.isBetweenTwoParts) {
     mergeParts(work, newInfo.leftIndex, newInfo.rightIndex);
     return;
   }
 
-  if (newInfo.currentTool === 'default' && newInfo.isBetweenTwoParts) {
+  if (newInfo.currentTool === tools.DEFAULT && newInfo.isBetweenTwoParts) {
     return;
   }
 
