@@ -1,8 +1,6 @@
 const fs = require('fs');
 const ko = require('knockout');
 
-const utils = require('../utils');
-
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
 
 function viewModel(params) {
@@ -14,7 +12,6 @@ function viewModel(params) {
     parts: work.parts,
     annotations: work.annotations,
     sounds: work.sounds,
-    getContrastColor: utils.getContrastColor,
     onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })))
   };
 }
