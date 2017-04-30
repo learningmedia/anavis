@@ -156,6 +156,7 @@
     ]
   }],
   "sounds": [{
-    "uri": "embedded://Baccara - Yes Sir, I Can Boogie.mp3"
+    "path": "C:/Sounds/Baccara - Yes Sir, I Can Boogie.mp3",
+    "embedded": false
   }]
 }

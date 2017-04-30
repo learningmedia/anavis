@@ -172,7 +172,7 @@
     "id": "d451ba70-5458-4861-8cfb-b15e19ef88a4",
     "type": "sound",
     "soundFile": {
-      "uri": "resource:///Baccara - Yes Sir, I Can Boogie.mp3"
+      "uri": "file:///C:/Sounds/Baccara - Yes Sir, I Can Boogie.mp3"
     }
   }, {
     "id": "39fb6387-05d8-4419-9d5a-0127191f6277",
@@ -302,11 +302,6 @@
       }]
     }
   }],
-  "resources": [{
-    "visualizationId": "d451ba70-5458-4861-8cfb-b15e19ef88a4",
-    "items": [{
-      "name": "SoundFile",
-      "relationshipId": "R2ddc56838f76492f"
-    }]
-  }]
+  "resources": [],
+  "rels": []
 }

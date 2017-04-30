@@ -17,7 +17,7 @@ function mapDocument(doc, inputPackageDir, avdFileName, options, cb) {
   result.parts = mapParts(doc.work);
   result.annotations = mapVisualizationsToAnnotations(doc.visualizations);
   result.sounds = mapVisualizationsToSounds(doc.visualizations, doc.resources, doc.rels, inputPackageDir, outputPackageDir, avdFileName);
-  
+
   const docJson = JSON.stringify(result);
   const docFileName = path.normalize(path.join(outputPackageDir, 'anavis.json'));
   fs.writeFileSync(docFileName, docJson, 'utf8');
@@ -42,7 +42,7 @@ function toHexString(clr) {
   if (argbRegexp.test(clr)) {
     clr = clr.replace(argbRegexp, '$1$3');
   }
-  return color(clr).hexString();
+  return color(clr).hex();
 }
 
 function mapVisualizationsToAnnotations(visualizations) {

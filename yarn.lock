@@ -371,7 +371,7 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2.9.0:
+commander@2.9.0, commander@^2.8.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -652,6 +652,16 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
+electron-mocha@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/electron-mocha/-/electron-mocha-3.4.0.tgz#e4521c323bb9dff4716b969ecafadf6355143c42"
+  dependencies:
+    commander "^2.8.1"
+    electron-window "^0.8.0"
+    fs-extra "^2.1.2"
+    mocha "^3.0.0"
+    which "^1.1.1"
+
 electron-osx-sign@0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.4.tgz#afdf38450ccaebe6dabeca71fb0fad6294a8c57c"
@@ -674,6 +684,12 @@ electron-publish@17.0.3:
     electron-builder-util "~17.0.3"
     fs-extra-p "^4.1.0"
     mime "^1.3.4"
+
+electron-window@^0.8.0:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/electron-window/-/electron-window-0.8.1.tgz#16ca187eb4870b0679274fc8299c5960e6ab2c5e"
+  dependencies:
+    is-electron-renderer "^2.0.0"
 
 electron@^1.3.8:
   version "1.6.7"
@@ -1273,6 +1289,10 @@ is-dotfile@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-dotfile/-/is-dotfile-1.0.2.tgz#2c132383f39199f8edc268ca01b9b007d205cc4d"
 
+is-electron-renderer@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/is-electron-renderer/-/is-electron-renderer-2.0.1.tgz#a469d056f975697c58c98c6023eb0aa79af895a2"
+
 is-equal-shallow@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/is-equal-shallow/-/is-equal-shallow-0.1.3.tgz#2238098fc221de0bcfa5d9eac4c45d638aa1c534"
@@ -1669,7 +1689,7 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^3.1.2:
+mocha@^3.0.0, mocha@^3.1.2:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.3.0.tgz#d29b7428d3f52c82e2e65df1ecb7064e1aabbfb5"
   dependencies:
@@ -1684,6 +1704,10 @@ mocha@^3.1.2:
     lodash.create "3.1.1"
     mkdirp "0.5.1"
     supports-color "3.1.2"
+
+mockery@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/mockery/-/mockery-2.0.0.tgz#0569a11a1848461fdc347cf8cca2df2f3129bc03"
 
 ms@0.7.2:
   version "0.7.2"
@@ -2598,7 +2622,7 @@ which-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
 
-which@^1.2.8, which@^1.2.9:
+which@^1.1.1, which@^1.2.8, which@^1.2.9:
   version "1.2.14"
   resolved "https://registry.yarnpkg.com/which/-/which-1.2.14.tgz#9a87c4378f03e827cecaf1acdf56c736c01c14e5"
   dependencies:
