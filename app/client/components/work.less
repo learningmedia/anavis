@@ -2,7 +2,30 @@ av-work {
   display: block;
 }
 
-.Work {
+.Work {}
+
+.Work-header {}
+
+.Work-headerButton {
+  .fa;
+  cursor: pointer;
+  margin-right: 6px;
+
+  &.Work-headerButton--sound {
+    &:before {
+      content: @fa-var-music;
+    }
+  }
+
+  &.Work-headerButton--annotation {
+    &:before {
+      content: @fa-var-pencil-square-o;
+    }
+
+  }
+}
+
+.Work-body {
   display: flex;
   align-items: stretch;
   vertical-align: middle;
