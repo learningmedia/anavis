@@ -1,4 +1,4 @@
-<div class="Part" data-bind="attr: { 'data-part-id': id }, style: { flex: length }, event: { dblclick: onDblClick }">
+<div class="Part" data-bind="attr: { 'data-part-id': id }, event: { dblclick: onDblClick }">
   <div class="Part-inner" data-bind="style: { color: contrastColor, backgroundColor: color }, css: { 'is-selected': isSelected }, attr: { title: name }">
     <input class="Part-nameEditor" type="text" data-bind="attr: { 'data-part-name-editor': '' }, event: { keydown: onKeyDown }, value: name, visible: isInEditMode, hasFocus: isInEditMode" />
     <div class="Part-nameDisplay" data-bind="text: name, visible: !isInEditMode()"></div>
