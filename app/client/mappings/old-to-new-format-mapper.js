@@ -21,7 +21,7 @@ function mapDocument(doc, inputPackageDir, avdFileName, options, cb) {
   const docJson = JSON.stringify(result);
   const docFileName = path.normalize(path.join(outputPackageDir, 'anavis.json'));
   fs.writeFileSync(docFileName, docJson, 'utf8');
-  // TODO: Copy sound files / delete old package dir, then call cb ...
+  // TODO: Delete old package dir, then call cb ...
 
   cb(null, outputPackageDir);
 }
@@ -82,7 +82,7 @@ function mapVisualizationsToSounds(visualizations, resources, rels, inputPackage
         const inputPath = path.normalize(relation.target);
         const outputPath = makeResourceUriAbsolute(vis.soundFile.uri, outputPackageDir);
         fileCopyActions.push({ source: inputPath, destination: outputPath })
-        results.push({ path: path.relative(outputPath, outputPackageDir), embedded: true });
+        results.push({ path: path.relative(outputPackageDir, outputPath), embedded: true });
       } else {
         throw new Error('Invalid sound file');
       }
