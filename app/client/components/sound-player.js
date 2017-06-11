@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const ko = require('knockout');
 
 const soundController = require('../sound-controller');
@@ -6,11 +7,12 @@ const soundController = require('../sound-controller');
 const template = fs.readFileSync(`${__dirname}/sound-player.html`, 'utf8');
 
 function viewModel(params) {
-  const sound = soundController.create(params.path());
+  const sound = ko.observable(soundController.create(params.sound.path()));
 
   return {
     sound,
-    parts: params.parts,
+    parts: params.work.parts,
+    embedded: params.sound.embedded,
     onProgressClick: function (vm, event) {
       let playPercent;
       const element = event.target;
@@ -30,18 +32,43 @@ function viewModel(params) {
         }
         playPercent = partBeginInAvu / totalLengthInAvu;
       }
-      sound.start(playPercent * sound.length());
+      sound().start(playPercent * sound().length());
     },
     onStartClick: function () {
-      sound.start();
+      sound().start();
     },
     onStopClick: function () {
-      sound.stop();
+      sound().stop();
     },
     onPauseClick: function () {
-      sound.pause();
+      sound().pause();
+    },
+    onEmbedClick: function () {
+      const directoryName = params.work._.workingDirectory();
+      const fileName = path.basename(params.sound.path());
+      const destinationFileName = path.join(directoryName, fileName);
+      copyFileSync(params.sound.path(), destinationFileName);
+      params.sound.path(destinationFileName);
+      params.sound.embedded(true);
+      sound(soundController.create(params.sound.path()));
     }
   };
+}
+
+function copyFileSync(srcFile, destFile) {
+  const BUF_LENGTH = 64 * 1024;
+  const buff = new Buffer(BUF_LENGTH);
+  const fdr = fs.openSync(srcFile, 'r');
+  const fdw = fs.openSync(destFile, 'w');
+  let bytesRead = 1;
+  let pos = 0;
+  while (bytesRead > 0) {
+    bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+    fs.writeSync(fdw, buff, 0, bytesRead);
+    pos += bytesRead;
+  }
+  fs.closeSync(fdr);
+  fs.closeSync(fdw);
 }
 
 function register() {

@@ -1,22 +1,23 @@
 <div class="SoundPlayer">
-  <!-- ko if: sound.isLoading -->
+  <!-- ko if: sound().isLoading() -->
   LOADING
   <!-- /ko -->
-  <!-- ko if: sound.hasError -->
+  <!-- ko if: sound().hasError() -->
   ERROR
   <!-- /ko -->
-  <!-- ko if: sound.isReady -->
+  <!-- ko if: sound().isReady() -->
   <div class="SoundPlayer-progressContainer">
     <div class="SoundPlayer-progressGrid" data-bind="foreach: { data: parts, as: 'part' }">
       <span class="SoundPlayer-progressGridPart" data-bind="style: { flex: part.length }"></span>
     </div>
-    <progress class="SoundPlayer-progress" data-bind="attr: { max: sound.length, value: sound.position }, click: onProgressClick">
+    <progress class="SoundPlayer-progress" data-bind="attr: { max: sound().length, value: sound().position }, click: onProgressClick">
   </div>
   </progress>
   <div class="SoundPlayer-controller">
     <button data-bind="click: onStartClick">Start</button>
     <button data-bind="click: onStopClick">Stopp</button>
     <button data-bind="click: onPauseClick">Pause</button>
+    <button data-bind="click: onEmbedClick, visible: !embedded()">Einbetten</button>
   </div>
   <!-- /ko -->
 </div>
