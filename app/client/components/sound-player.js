@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const ko = require('knockout');
+const { remote } = require('electron');
 
 const soundController = require('../sound-controller');
 
@@ -51,6 +52,26 @@ function viewModel(params) {
       params.sound.path(destinationFileName);
       params.sound.embedded(true);
       sound(soundController.create(params.sound.path()));
+    },
+    onExtractClick: function () {
+      const extension = path.extname(params.sound.path()).replace(/^\.*/, '');
+      const filename = path.basename(params.sound.path());
+      const suggestedPath = path.join(remote.app.getPath('desktop'), filename);
+      const options = {
+        properties: ['saveFile'],
+        defaultPath: suggestedPath,
+        filters: [{ name: 'Sound file', extensions: [extension] }]
+      };
+      remote.dialog.showSaveDialog(options, function (destinationFileName) {
+        if (destinationFileName) {
+          const sourceFileName = params.sound.path();
+          copyFileSync(sourceFileName, destinationFileName);
+          params.sound.path(destinationFileName);
+          params.sound.embedded(false);
+          sound(soundController.create(params.sound.path()));
+          fs.unlinkSync(sourceFileName);
+        }
+      });
     }
   };
 }
