@@ -92,6 +92,10 @@ color-convert@^1.8.2:
   dependencies:
     color-name "^1.1.1"
 
+color-hash@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/color-hash/-/color-hash-1.0.3.tgz#c0e7952f06d022e548e65da239512bd67d3809ee"
+
 color-name@^1.0.0, color-name@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.2.tgz#5c8ab72b64bd2215d617ae9559ebb148475cf98d"
