@@ -2,6 +2,7 @@
   <div class="Work-header">
     <span class="Work-headerButton Work-headerButton--sound" data-bind="click: addSound"></span>
     <span class="Work-headerButton Work-headerButton--annotation" data-bind="click: addAnnotation"></span>
+    <span class="Work-headerButton Work-headerButton--autoColorize" data-bind="click: autoColorize"></span>
     <span data-bind="text: $component.work._.zipFileName() || 'Unbenannt'"></span>
     <span data-bind="visible: $component.work._.isDirty">*</span>
   </div>
