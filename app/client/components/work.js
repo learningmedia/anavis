@@ -3,6 +3,7 @@ const uuid = require('uuid');
 const ko = require('knockout');
 const { remote } = require('electron');
 
+const autoColorizer = require('../actions/auto-colorizer');
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
 
 function viewModel(params) {
@@ -28,6 +29,9 @@ function viewModel(params) {
         type: ko.observable('lyrics'),
         values: ko.observableArray(vm.parts().map(() => ko.observable('')))
       });
+    },
+    autoColorize: () => {
+      autoColorizer.colorize(vm.work);
     },
     onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })))
   };

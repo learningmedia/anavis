@@ -17,6 +17,7 @@
     "async": "^2.1.5",
     "bignumber.js": "^4.0.1",
     "color": "^1.0.3",
+    "color-hash": "^1.0.3",
     "devtron": "^1.4.0",
     "drag-and-drop-files": "^0.0.1",
     "electron-debug": "^1.0.1",
