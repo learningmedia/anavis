@@ -11,6 +11,12 @@ av-work {
   cursor: pointer;
   margin-right: 6px;
 
+  &.Work-headerButton--close {
+    &:before {
+      content: @fa-var-close;
+    }
+  }
+
   &.Work-headerButton--sound {
     &:before {
       content: @fa-var-music;

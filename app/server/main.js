@@ -50,6 +50,7 @@ let mainWindow
 // Other windows we may need
 let infoWindow = null
 let workSelectorWindow = null
+let msgBoxWindow = null
 
 let terminationConfirmed = false;
 
@@ -65,6 +66,7 @@ function initialize () {
     mainWindow = null
     infoWindow = null
     workSelectorWindow = null
+    msgBoxWindow = null
   }
 
   function createMainWindow () {
@@ -85,8 +87,8 @@ function initialize () {
         return;
       }
       workSelectorWindow = new BrowserWindow({
-        parent: mainWindow, 
-        modal: true, 
+        parent: mainWindow,
+        modal: true,
         width: 600,
         height: 400
       });
@@ -110,6 +112,42 @@ function initialize () {
       });
 
       workSelectorWindow.webContents.on('crashed', err => {
+        alert(err);
+      });
+
+      return deferred.promise;
+    });
+
+    Messenger.mainWindowInstance.on(events.OPEN_MESSAGE_BOX, msgBoxOptions => {
+      if (msgBoxWindow) {
+        return;
+      }
+      msgBoxWindow = new BrowserWindow({
+        parent: mainWindow,
+        modal: true,
+        width: 400,
+        height: 200
+      });
+      msgBoxWindow.setMenu(null);
+      const deferred = defer();
+      let result;
+      msgBoxWindow.loadURL(`file://${__dirname}/../client/message-box.html`);
+      const msgBoxWindowMessenger = new Messenger('MESSAGE_BOX', msgBoxWindow.webContents, ipcMain);
+      msgBoxWindow.webContents.on('did-finish-load', () => {
+        // msgBoxWindow.webContents.toggleDevTools();
+        msgBoxWindowMessenger.send(events.SHOW_MESSAGE, msgBoxOptions).then(msgBoxResult => {
+          result = msgBoxResult;
+          msgBoxWindow.close();
+        });
+      });
+
+      msgBoxWindow.on('closed', () => {
+        msgBoxWindowMessenger.dispose();
+        msgBoxWindow = null;
+        deferred.resolve(result);
+      });
+
+      msgBoxWindow.webContents.on('crashed', err => {
         alert(err);
       });
 

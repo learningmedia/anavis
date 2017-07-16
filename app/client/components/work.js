@@ -2,6 +2,7 @@ const fs = require('fs');
 const uuid = require('uuid');
 const ko = require('knockout');
 const { remote } = require('electron');
+const file = require('../file');
 
 const autoColorizer = require('../actions/auto-colorizer');
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
@@ -33,7 +34,12 @@ function viewModel(params) {
     autoColorize: () => {
       autoColorizer.colorize(vm.work);
     },
-    onSoundDropped: files => work.sounds.push.apply(work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })))
+    onSoundDropped: files => {
+      vm.work.sounds.push.apply(vm.work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })));
+    },
+    onClose: () => {
+      file.close(vm.work);
+    }
   };
 
   return vm;
