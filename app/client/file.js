@@ -111,9 +111,42 @@ function saveWork(work, cb) {
   }
 }
 
-function close() {
-  const work = appViewModel.currentWork();
-  if (work) {
+function close(workToClose) {
+  const work = workToClose || appViewModel.currentWork();
+  if (!work) return;
+  if (work._.isDirty()) {
+    const msgBoxOptions = {
+      title: 'Speichern',
+      text: 'Das Dokument wurde geändert. Möchten Sie die Änderungen vor dem Schließen speichern?',
+      buttons: [{
+        label: 'Ja',
+        value: 'yes',
+        isDefault: true
+      }, {
+        label: 'Nein',
+        value: 'no'
+      }, {
+        label: 'Abbrechen',
+        value: 'cancel'
+      }]
+    };
+    Messenger.mainWindowInstance.send(events.OPEN_MESSAGE_BOX, msgBoxOptions).then(msgBoxResult => {
+      switch (msgBoxResult) {
+        case 'yes':
+          saveWork(work, () => {
+            appViewModel.works.remove(work);
+          });
+          break;
+        case 'no':
+          appViewModel.works.remove(work);
+          break;
+        case 'cancel':
+          break;
+        default:
+          throw new Error('msgBoxResult');
+      }
+    });
+  } else {
     appViewModel.works.remove(work);
   }
 }

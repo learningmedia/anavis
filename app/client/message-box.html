@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title data-bind="text: options().title"></title>
+    <link rel="stylesheet/less" href="./message-box.less" />
+  </head>
+  <body class="MessageBox">
+    <h1 class="MessageBox-title" data-bind="text: options().title"></h1>
+    <p class="MessageBox-text" data-bind="text: options().text"></p>
+    <div class="MessageBox-buttons" data-bind="foreach: { data: options().buttons, as: 'button' }">
+      <button class="MessageBox-button" data-bind="text: button.label, click: $parent.onButtonClick"></button>
+    </div>
+  </body>
+  <script>
+    require('./message-box.js')
+  </script>
+</html>
