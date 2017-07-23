@@ -12,5 +12,6 @@ const vm = {
 
 vm.currentWork = ko.computed(() => vm.currentPart() ? vm.works().find(work => work.parts().indexOf(vm.currentPart()) !== -1) : undefined);
 vm.currentTool = ko.computed(() => vm.currentSecondaryTool() || vm.currentPrimaryTool());
+vm.isCurrentToolPrimary = ko.computed(() => vm.currentTool() === vm.currentPrimaryTool());
 
 module.exports = vm;

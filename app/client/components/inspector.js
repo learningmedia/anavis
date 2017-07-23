@@ -11,6 +11,7 @@ function viewModel(params) {
     app: app,
     tools: tools,
     currentTool: app.currentTool,
+    isCurrentToolPrimary: app.isCurrentToolPrimary,
     isExpanded: app.isInspectorExpanded,
     fileName: ko.pureComputed(() => {
       if (app.currentPart() && app.currentWork()._.zipFileName()) {
