@@ -7,6 +7,8 @@ const soundController = require('../sound-controller');
 
 const template = fs.readFileSync(`${__dirname}/sound-player.html`, 'utf8');
 
+const platformHelper = require('../common/platform-helper');
+
 function viewModel(params) {
   const sound = ko.observable(soundController.create(params.sound.path()));
 
@@ -20,7 +22,7 @@ function viewModel(params) {
       const elementWidth = element.clientWidth;
       const clickPositionX = event.pageX - (element.getBoundingClientRect().left - window.scrollX);
       playPercent = clickPositionX / elementWidth;
-      if (!event.ctrlKey) {
+      if (!platformHelper.isCtrlOrCmdPressed(event)) {
         const parts = vm.parts();
         const totalLengthInAvu = parts.reduce((sum, part) => sum + part.length(), 0);
         const clickAvu = totalLengthInAvu * playPercent;
