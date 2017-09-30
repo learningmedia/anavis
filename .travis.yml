@@ -1,0 +1,63 @@
+os:
+  - osx
+  - linux
+
+stages:
+  - compile
+  - release
+  - name: test
+    if: env(RUN_TESTS) = true
+
+jobs:
+  include:
+    - stage: compile
+      install: skip
+      before_cache:
+        - rm -rf $HOME/.cache/electron-builder/wine
+      cache:
+        directories:
+        - node_modules
+        - $HOME/.cache/electron
+        - $HOME/.cache/electron-builder
+      script:
+        - |
+          yarn && ./ci-compile
+      os: osx
+      osx_image: xcode9.0
+      language: node_js
+      node_js: "8"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+    - stage: compile
+      install: skip
+      before_cache:
+        - rm -rf $HOME/.cache/electron-builder/wine
+      cache:
+        directories:
+        - node_modules
+        - $HOME/.cache/electron
+        - $HOME/.cache/electron-builder
+      script:
+        - |
+          docker run --rm \
+            --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_|DROPBOX') \
+            -v ${PWD}:/project \
+            -v ~/.cache/electron:/root/.cache/electron \
+            -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+            electronuserland/builder:wine \
+            /bin/bash -c "yarn && ./ci-compile"
+      os: linux
+      services: docker
+      language: generic
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+    - stage: release
+      install: skip
+      script:
+        - |
+          yarn && ./ci-release
+      os: linux
+      language: node_js
+      node_js: "8"
