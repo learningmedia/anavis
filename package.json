@@ -48,6 +48,7 @@
     "extract-zip": "=1.6.5",
     "ghreleases": "^1.0.6",
     "glob": "^7.1.2",
+    "gulp": "^3.9.1",
     "markdown-escape": "^1.0.2",
     "mocha": "^3.5.3",
     "mockery": "^2.1.0",
