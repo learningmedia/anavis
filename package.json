@@ -27,7 +27,7 @@
     "build:linux": "npm run prebuild && build --linux deb AppImage --x64 && npm run postbuild",
     "build": "build",
     "postbuild": "node build/target.js --clean",
-    "postinstall": "install-app-deps"
+    "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [
     "anavis",
@@ -37,6 +37,7 @@
   "devDependencies": {
     "async": "^2.5.0",
     "chokidar": "^1.7.0",
+    "commits-between": "^0.2.0",
     "dropbox": "^2.5.12",
     "electron": "^1.7.8",
     "electron-builder": "19.16.0",
@@ -45,10 +46,13 @@
     "eslint": "^4.8.0",
     "expect.js": "^0.3.1",
     "extract-zip": "=1.6.5",
+    "ghreleases": "^1.0.6",
     "glob": "^7.1.2",
+    "markdown-escape": "^1.0.2",
     "mocha": "^3.5.3",
     "mockery": "^2.1.0",
     "rimraf": "^2.6.2",
+    "semver": "^5.4.1",
     "shelljs": "^0.7.8"
   },
   "dependencies": {}

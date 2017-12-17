@@ -1,6 +1,6 @@
 {
-  "appId": "de.anavis.local",
-  "productName": "AnaVis Local",
+  "appId": "de.anavis",
+  "productName": "AnaVis",
   "electronVersion": "1.8.1",
   "mac": {
     "target": [{ "target": "dmg", "arch": ["x64"] }],

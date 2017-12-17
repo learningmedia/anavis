@@ -1,11 +1,19 @@
 #!/usr/bin/env node
 
 require('shelljs/global');
+
 const fs = require('fs');
 const path = require('path');
+const gh = require('ghreleases');
+const semver = require('semver');
 const Dropbox = require('dropbox');
+const pkg = require('./package.json');
+const markdownEscape = require('markdown-escape');
+const commitsBetween = require('commits-between');
 
 const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_USER = process.env.GITHUB_USER;
 
 // CI=true
 // TRAVIS=true
@@ -28,46 +36,104 @@ const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
 // TRAVIS_TAG: If the current build is for a git tag, this variable is set to the tag’s name.
 
 const isPullRequest = process.env.TRAVIS_PULL_REQUEST !== 'false';
+const commitish = process.env.TRAVIS_COMMIT || null;
 const tagName = process.env.TRAVIS_TAG || null;
 const branchName = process.env.TRAVIS_BRANCH;
 const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
+const buildVersion = semver.valid(tagName);
+const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
+const prerelease = semver.prerelease(buildVersion);
 
-let buildConfigFile;
-if (branchName === 'master' && !isPullRequest && /^v\\d+\\.\\d+\\.\\d+$/.test(tagName)) {
-  //TODO: stable release
-  buildConfigFile = 'stable';
-} else if(branchName === 'master' && !isPullRequest) {
-  //TODO: beta release
-  buildConfigFile = 'beta';
-} else {
-  //TODO: build but no release
-  buildConfigFile = 'local';
+if (branchName !== 'master' || !buildVersion) {
+  console.log('Branch is not master or there is no version tag, will exit the script.');
+  process.exit(0);
 }
 
-const pkg = require('./package.json');
-const buildConfig = require(`./build/config.${buildConfigFile}.json`);
+if (mainVersion !== pkg.version) {
+  console.error(`Tag version ${buildVersion} does not correspond to package version ${pkg.version}.`);
+  process.exit(-1);
+}
 
-const buildVersion = pkg.version;
-const platforms = isOsx ? 'm' : 'lw';
+if (prerelease && prerelease[0] !== 'beta') {
+  console.error(`Tag version ${buildVersion} does not fulfill version name constraints.`);
+  process.exit(-1);
+}
+
+const buildConfigName = prerelease[0] || 'stable';
+const buildConfig = require(`./build/config.${buildConfigName}.json`);
 
 const artifactNames = {
-  linux: `${pkg.name}-${buildVersion}-x86_64.AppImage`,
-  win: `${buildConfig.productName} Setup ${buildVersion}.exe`,
-  osx: `${buildConfig.productName}-${buildVersion}.dmg`
+  linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
+  win: `${pkg.name}-${buildVersion}-windows.exe`,
+  osx: `${pkg.name}-${buildVersion}-osx.dmg`
 };
 
-console.log('HELLO FROM RELEASE SCRIPT');
+const filesToDownload = [artifactNames.osx, artifactNames.win, artifactNames.linux];
+const fileToUpload = filesToDownload.map(file => path.resolve(`./release/${file}`));
+const releaseName = `${buildConfig.productName} v${buildVersion}`;
+const githubAuth = { token: GITHUB_TOKEN, user: GITHUB_USER };
+
+async function release() {
+  await downloadArtifacts(filesToDownload, './release');
+  const latestRelease = await getLatestGithubRelease(githubAuth, 'learningmedia', 'anavis');
+  const commits = await commitsBetween({ from: latestRelease.tag_name });
+  const releaseNotes = await createReleaseNotes(commits);
+  const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes });
+  await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
+}
+
+release().catch(err => console.error(err));
 
 /// DROPBOX HELPERS //////////////////////////////////////////////////////////////////////////////
 
-function uploadArtifacts() {
-  const filesToUpload = isOsx ? [artifactNames.osx] : [artifactNames.win, artifactNames.linux];
-  return Promise.all(filesToUpload.map(file => uploadToDropbox(path.resolve(`./dist/${file}`), `/${file}`)));
+function downloadArtifacts(dropboxFiles, targetDir) {
+  const downloadDir = path.resolve(targetDir);
+  mkdir('-p', downloadDir);
+  return Promise.all(dropboxFiles.map(file => downloadFromDropbox(`/${file}`, path.join(downloadDir, file))));
 }
 
-function uploadToDropbox(source, target) {
-  console.log(`${source} -> ${target}`);
-  const fileContent = fs.readFileSync(source);
+function downloadFromDropbox(source, target) {
   const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
-  return dbx.filesUpload({ path: target, contents: fileContent });
+  return dbx.filesDownload({ path: source })
+    .then(data => fs.writeFileSync(target, data.fileBinary, 'binary'));
+}
+
+function getLatestGithubRelease(githubAuth, owner, repo) {
+  return new Promise((reject, resolve) => {
+    gh.getLatest(githubAuth, owner, repo, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
+
+function createGithubRelease(githubAuth, owner, repo, data) {
+  return new Promise((reject, resolve) => {
+    gh.create(githubAuth, owner, repo, data, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
+
+function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) {
+  return new Promise((reject, resolve) => {
+    gh.uploadAssets(githubAuth, owner, repo, releaseId, files, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
+
+function createReleaseNotes(commits) {
+  return commits.map(c => `* ${markdownEscape(c.subject)}`).join('\n');
 }
