@@ -1,11 +1,19 @@
 #!/usr/bin/env node
 
 require('shelljs/global');
+
 const fs = require('fs');
 const path = require('path');
+const gh = require('ghreleases');
+const semver = require('semver');
 const Dropbox = require('dropbox');
+const pkg = require('./package.json');
+const markdownEscape = require('markdown-escape');
+const commitsBetween = require('commits-between');
 
 const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_USER = process.env.GITHUB_USER;
 
 // CI=true
 // TRAVIS=true
@@ -28,61 +36,56 @@ const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
 // TRAVIS_TAG: If the current build is for a git tag, this variable is set to the tag’s name.
 
 const isPullRequest = process.env.TRAVIS_PULL_REQUEST !== 'false';
+const commitish = process.env.TRAVIS_COMMIT || null;
 const tagName = process.env.TRAVIS_TAG || null;
 const branchName = process.env.TRAVIS_BRANCH;
 const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
-
-let buildConfigFile;
-if (branchName === 'master' && !isPullRequest && /^v\\d+\\.\\d+\\.\\d+$/.test(tagName)) {
-  //TODO: stable release
-  buildConfigFile = 'stable';
-} else if(branchName === 'master' && !isPullRequest) {
-  //TODO: beta release
-  buildConfigFile = 'beta';
-} else {
-  //TODO: build but no release
-  buildConfigFile = 'local';
-}
-
-const pkg = require('./package.json');
-const buildConfig = require(`./build/config.${buildConfigFile}.json`);
-
 const buildVersion = pkg.version;
-const platforms = isOsx ? 'm' : 'lw';
+const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
+const prerelease = semver.prerelease(buildVersion) || [];
+const platformsToBuild = isOsx ? 'm' : 'lw';
+
+const buildConfigName = prerelease[0] || 'stable';
+const buildConfigFile = `./build/config.${buildConfigName}.json`;
+const buildConfig = require(buildConfigFile);
 
 const artifactNames = {
-  linux: `${pkg.name}-${buildVersion}-x86_64.AppImage`,
-  win: `${buildConfig.productName} Setup ${buildVersion}.exe`,
-  osx: `${buildConfig.productName}-${buildVersion}.dmg`
+  linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
+  win: `${pkg.name}-${buildVersion}-windows.exe`,
+  osx: `${pkg.name}-${buildVersion}-osx.dmg`
 };
 
-console.log(`Using build configuration: ${buildConfigFile}`);
+const filesToUpload = isOsx ? [artifactNames.osx] : [artifactNames.win, artifactNames.linux];
+
+console.log(`Using build configuration: ${buildConfigName}`);
 console.log(`Build version: ${buildVersion}`);
 
-const buildCommand = exec(`./node_modules/.bin/electron-builder -${platforms} -c ./build/config.${buildConfigFile}.json`);
+const buildCommand = exec(`./node_modules/.bin/electron-builder -${platformsToBuild} -c ./build/config.${buildConfigFile}.json`);
 if (buildCommand.code !== 0) {
   process.exit(buildCommand.code);
 }
 
-uploadArtifacts()
-  .then(() => {
-    console.log('Artifacts have been uploaded.');
-    process.exit(0);
-  })
-  .catch(error => {
-    console.error(error);
-    process.exit(-1);
-  });
+async function build() {
+  await buildForPlatforms(platformsToBuild, buildConfigFile)
+  await uploadArtifacts(filesToUpload);
+}
 
+build().catch(error => {
+  console.error(error);
+  process.exit(-1);
+});
 
-
-
+function buildForPlatforms(platforms, configFile) {
+  const buildCommand = exec(`./node_modules/.bin/electron-builder -${platforms} -c ${configFile}`);
+  if (buildCommand.code !== 0) {
+    throw new Error(`Electron builder exited with code ${buildCommand.code}`);
+  }
+}
 
 /// DROPBOX HELPERS //////////////////////////////////////////////////////////////////////////////
 
-function uploadArtifacts() {
-  const filesToUpload = isOsx ? [artifactNames.osx] : [artifactNames.win, artifactNames.linux];
-  return Promise.all(filesToUpload.map(file => uploadToDropbox(path.resolve(`./dist/${file}`), `/${file}`)));
+function uploadArtifacts(files) {
+  return Promise.all(files.map(file => uploadToDropbox(path.resolve(`./dist/${file}`), `/${file}`)));
 }
 
 function uploadToDropbox(source, target) {

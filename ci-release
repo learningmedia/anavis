@@ -42,7 +42,7 @@ const branchName = process.env.TRAVIS_BRANCH;
 const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
 const buildVersion = semver.valid(tagName);
 const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
-const prerelease = semver.prerelease(buildVersion);
+const prerelease = semver.prerelease(buildVersion) || [];
 
 if (branchName !== 'master' || !buildVersion) {
   console.log('Branch is not master or there is no version tag, will exit the script.');
@@ -60,7 +60,8 @@ if (prerelease && prerelease[0] !== 'beta') {
 }
 
 const buildConfigName = prerelease[0] || 'stable';
-const buildConfig = require(`./build/config.${buildConfigName}.json`);
+const buildConfigFile = `./build/config.${buildConfigName}.json`;
+const buildConfig = require(buildConfigFile);
 
 const artifactNames = {
   linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
@@ -82,7 +83,10 @@ async function release() {
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
 }
 
-release().catch(err => console.error(err));
+release().catch(error => {
+  console.error(error);
+  process.exit(-1);
+});
 
 /// DROPBOX HELPERS //////////////////////////////////////////////////////////////////////////////
 
