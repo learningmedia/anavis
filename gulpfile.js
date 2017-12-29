@@ -5,6 +5,7 @@ const path = require('path');
 const gulp = require('gulp');
 const gh = require('ghreleases');
 const semver = require('semver');
+const bump = require('gulp-bump');
 const Dropbox = require('dropbox');
 const pkg = require('./package.json');
 const markdownEscape = require('markdown-escape');
@@ -27,7 +28,7 @@ const buildVersion = versionFromTagName || semver.valid(pkg.version);
 const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
 const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
 const isBeta = prereleaseChannel === 'beta';
-const shouldRelease = !!versionFromTagName;
+const shouldRelease = isTravisCi && !!versionFromTagName;
 
 if (shouldRelease) {
   checkReleasePreConditions();
@@ -80,7 +81,13 @@ const buildConfig = {
   publish: null
 }
 
-gulp.task('build', async () => {
+gulp.task('version', () => {
+  return gulp.src(['package.json', 'app/package.json'], { base: '.' })
+    .pipe(bump({ version: buildVersion }))
+    .pipe(gulp.dest('.'));
+});
+
+gulp.task('build', ['version'], async () => {
   await electronBuilder.build({
     config: buildConfig,
     mac: isOsx ? ['dmg'] : null,
@@ -91,7 +98,7 @@ gulp.task('build', async () => {
     const filesToUpload = isOsx ? [artifactNames.osx] : [artifactNames.win, artifactNames.linux];
     await uploadArtifactsToDropbox(filesToUpload, './dist');
   }
-})
+});
 
 gulp.task('release', async () => {
   if (!shouldRelease) {
@@ -110,7 +117,7 @@ gulp.task('release', async () => {
   const releaseNotes = await createReleaseNotes(commits);
   const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes });
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
-})
+});
 
 /// HELPERS //////////////////////////////////////////////////////////////////////////////
 
