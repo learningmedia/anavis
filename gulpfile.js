@@ -25,7 +25,6 @@ const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
 const platformsToBuild = isOsx ? 'm' : 'lw';
 const versionFromTagName = semver.valid(tagName);
 const buildVersion = versionFromTagName || semver.valid(pkg.version);
-const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
 const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
 const isBeta = prereleaseChannel === 'beta';
 const shouldRelease = isTravisCi && !!versionFromTagName && (!prereleaseChannel || prereleaseChannel === 'beta');
@@ -135,24 +134,27 @@ function uploadToDropbox(source, target) {
 }
 
 function downloadFromDropbox(source, target) {
+  console.log(`Downloading from Dropbox: ${source}`);
   const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
   return dbx.filesDownload({ path: source })
     .then(data => fs.writeFileSync(target, data.fileBinary, 'binary'));
 }
 
 function getLatestGithubRelease(githubAuth, owner, repo) {
+  console.log('Fetching latest Github release');
   return new Promise((resolve, reject) => {
-    gh.getLatest(githubAuth, owner, repo, (err, res) => {
+    gh.list(githubAuth, owner, repo, (err, res) => {
       if (err) {
         reject(err);
       } else {
-        resolve(res);
+        resolve(res.sort((a, b) => semver.gt(a.tag_name, b.tag_name) ? -1 : 1)[0]);
       }
     });
   });
 }
 
 function createGithubRelease(githubAuth, owner, repo, data) {
+  console.log(`Creating latest Github release: ${data.name}`);
   return new Promise((resolve, reject) => {
     gh.create(githubAuth, owner, repo, data, (err, res) => {
       if (err) {
@@ -165,6 +167,7 @@ function createGithubRelease(githubAuth, owner, repo, data) {
 }
 
 function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) {
+  console.log('Uploading assets for Github release');
   return new Promise((resolve, reject) => {
     gh.uploadAssets(githubAuth, owner, repo, releaseId, files, (err, res) => {
       if (err) {
