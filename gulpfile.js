@@ -181,10 +181,6 @@ function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) 
 }
 
 function checkReleasePreConditions() {
-  if (branchName !== 'master' || !versionFromTagName) {
-    throw new Error('Branch is not master or there is no version tag, will exit the script.');
-  }
-
   if (mainVersion !== pkg.version) {
     throw new Error(`Tag version ${versionFromTagName} does not correspond to package version ${pkg.version}.`);
   }
