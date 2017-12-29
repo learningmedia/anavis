@@ -1,0 +1,11 @@
+<div class="Update" data-bind="css: { 'Update--expanded': version }">
+  <div class="Update-messageContainer">
+    <p class="Update-messageContainerText">
+      Sie arbeiten mit der <span data-bind="text: version"></span>. Es ist ein Update verfügbar, möchten Sie AnaVis jetzt updaten?
+    </p>
+  </div>
+  <div class="Update-buttonContainer">
+    <button data-bind="click: onUpdateClick">jetzt updaten</button>
+    <button data-bind="click: onCancelClick">später</button>
+  </div>
+</div>

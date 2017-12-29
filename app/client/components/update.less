@@ -1,0 +1,47 @@
+av-update {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.Update {
+  height: @update-transition-height;
+  background-color: @update-transition-background-color;
+  opacity: @update-transition-opacity;
+  color: @update-transition-color;
+  margin-top: -@update-transition-height;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: margin-top 1s ease;
+  &.Update--expanded {
+    margin-top: 0;
+    transition: margin-top 1s ease;
+  }
+}
+
+.Update-messageContainer {
+  flex: 3 0 0%;
+  display: flex;
+  align-items: center;
+}
+
+.Update-messageContainerText {
+  text-align: center;
+  flex: 1 0 0%;
+  padding: 10px;
+}
+
+.Update-buttonContainer {
+  flex: 1 0 0%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.Update-buttonContainer button {
+  width: 200px;
+  margin: 0 20px;
+}
+
