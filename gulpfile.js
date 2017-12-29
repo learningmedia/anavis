@@ -115,7 +115,7 @@ gulp.task('release', async () => {
   const latestRelease = await getLatestGithubRelease(githubAuth, 'learningmedia', 'anavis');
   const commits = await commitsBetween({ from: latestRelease.tag_name });
   const releaseNotes = await createReleaseNotes(commits);
-  const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes });
+  const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
 });
 
@@ -189,7 +189,7 @@ function checkReleasePreConditions() {
     throw new Error(`Tag version ${versionFromTagName} does not correspond to package version ${pkg.version}.`);
   }
 
-  if (prereleaseChannel !== 'beta') {
+  if (prereleaseChannel && prereleaseChannel !== 'beta') {
     throw new Error(`Tag version ${versionFromTagName} does not fulfill version name constraints.`);
   }
 }
