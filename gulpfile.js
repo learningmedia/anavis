@@ -28,11 +28,7 @@ const buildVersion = versionFromTagName || semver.valid(pkg.version);
 const mainVersion = [semver.major(buildVersion), semver.minor(buildVersion), semver.patch(buildVersion)].join('.');
 const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
 const isBeta = prereleaseChannel === 'beta';
-const shouldRelease = isTravisCi && !!versionFromTagName;
-
-if (shouldRelease) {
-  checkReleasePreConditions();
-}
+const shouldRelease = isTravisCi && !!versionFromTagName && (!prereleaseChannel || prereleaseChannel === 'beta');
 
 const artifactNames = {
   linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
@@ -145,7 +141,7 @@ function downloadFromDropbox(source, target) {
 }
 
 function getLatestGithubRelease(githubAuth, owner, repo) {
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve, reject) => {
     gh.getLatest(githubAuth, owner, repo, (err, res) => {
       if (err) {
         reject(err);
@@ -157,7 +153,7 @@ function getLatestGithubRelease(githubAuth, owner, repo) {
 }
 
 function createGithubRelease(githubAuth, owner, repo, data) {
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve, reject) => {
     gh.create(githubAuth, owner, repo, data, (err, res) => {
       if (err) {
         reject(err);
@@ -169,7 +165,7 @@ function createGithubRelease(githubAuth, owner, repo, data) {
 }
 
 function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) {
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve, reject) => {
     gh.uploadAssets(githubAuth, owner, repo, releaseId, files, (err, res) => {
       if (err) {
         reject(err);
@@ -178,16 +174,6 @@ function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) 
       }
     });
   });
-}
-
-function checkReleasePreConditions() {
-  if (mainVersion !== pkg.version) {
-    throw new Error(`Tag version ${versionFromTagName} does not correspond to package version ${pkg.version}.`);
-  }
-
-  if (prereleaseChannel && prereleaseChannel !== 'beta') {
-    throw new Error(`Tag version ${versionFromTagName} does not fulfill version name constraints.`);
-  }
 }
 
 function createReleaseNotes(commits) {
