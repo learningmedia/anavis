@@ -49,7 +49,7 @@ Messenger.workSelectorInstance.on(events.SHOW_MESSAGE, options => {
   return vm.deferred.promise;
 })
 
-ipcRenderer.on('less', function () {
+ipcRenderer.on('reload-styles', function () {
   window.less.refresh(true)
     .then(() => console.log('Styles reloaded!'))
     .catch(err => console.error(err))

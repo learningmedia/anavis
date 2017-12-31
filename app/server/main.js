@@ -5,6 +5,8 @@ const defer = require('tiny-defer');
 const path = require('path')
 const _ = require('lodash')
 
+const isLiveReload = process.env.LIVE_RELOAD === 'true';
+
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
 const pkg = require('../package.json')
@@ -190,7 +192,7 @@ function initialize () {
     })
 
     win.on('close', event => {
-      if (terminationConfirmed) return
+      if (terminationConfirmed || isLiveReload) return
       Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
         terminationConfirmed = canTerminate
         if (canTerminate) app.quit()
@@ -202,7 +204,7 @@ function initialize () {
   }
 
   app.on('before-quit', event => {
-    if (terminationConfirmed) return
+    if (terminationConfirmed || isLiveReload) return
     Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
       terminationConfirmed = canTerminate
       if (canTerminate) app.quit()
@@ -230,11 +232,11 @@ function initialize () {
       BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../chromeextensions-knockoutjs'))
 
       // Setup live reload
-      if (process.env.LIVE_RELOAD === 'true') {
+      if (isLiveReload) {
         const { client } = require('electron-connect');
         // Connect to live-reload server process
-        client.create(mainWindow).on('less', () => {
-          mainWindow.webContents.send('less');
+        client.create(mainWindow).on('reload-styles', () => {
+          mainWindow.webContents.send('reload-styles');
         });
       }
     }

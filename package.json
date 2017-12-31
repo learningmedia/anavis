@@ -17,16 +17,7 @@
   "scripts": {
     "test": "node run-specs",
     "lint": "eslint .",
-    "start": "electron ./app/server/main",
-    "watch": "node run-watch",
-    "clean": "rimraf dist",
-    "pack": "build --mac dmg --win nsis --linux AppImage --x64",
-    "prebuild": "node build/target.js",
-    "build:osx": "npm run prebuild && build --mac && npm run postbuild",
-    "build:win": "npm run prebuild && build --win --x64 && npm run postbuild",
-    "build:linux": "npm run prebuild && build --linux deb AppImage --x64 && npm run postbuild",
-    "build": "build",
-    "postbuild": "node build/target.js --clean",
+    "start": "gulp watch",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [
@@ -36,7 +27,7 @@
   ],
   "devDependencies": {
     "async": "^2.5.0",
-    "chokidar": "^1.7.0",
+    "chokidar": "^2.0.0",
     "commits-between": "^0.2.0",
     "dropbox": "^2.5.12",
     "electron": "^1.7.8",
@@ -50,6 +41,7 @@
     "glob": "^7.1.2",
     "gulp": "^3.9.1",
     "gulp-bump": "^3.0.0",
+    "gulp-util": "^3.0.8",
     "markdown-escape": "^1.0.2",
     "mocha": "^3.5.3",
     "mockery": "^2.1.0",

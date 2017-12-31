@@ -70,7 +70,7 @@ Messenger.mainWindowInstance.on(events.REQUEST_TERMINATION, () => {
   return confirm('Echt jetzt?');
 })
 
-ipcRenderer.on('less', function () {
+ipcRenderer.on('reload-styles', function () {
   window.less.refresh(true)
     .then(() => console.log('Styles reloaded!'))
     .catch(err => console.error(err))
