@@ -8,8 +8,10 @@ const semver = require('semver');
 const bump = require('gulp-bump');
 const gutil = require('gulp-util');
 const Dropbox = require('dropbox');
+const mocha = require('gulp-mocha');
 const chokidar = require('chokidar');
 const pkg = require('./package.json');
+const eslint = require('gulp-eslint');
 const markdownEscape = require('markdown-escape');
 const commitsBetween = require('commits-between');
 const electronConnect = require('electron-connect');
@@ -111,6 +113,18 @@ gulp.task('release', async () => {
   const releaseNotes = await createReleaseNotes(commits);
   const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
+});
+
+gulp.task('lint', () => {
+  return gulp.src(['**/*.js', '!node_modules/**', '!app/node_modules/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
+
+gulp.task('test', () => {
+  return gulp.src('app/{,!(node_modules)/**/}*.spec.js', { read: false })
+    .pipe(mocha({ require: './test-helper' }));
 });
 
 gulp.task('watch', done => {
