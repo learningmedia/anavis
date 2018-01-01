@@ -122,7 +122,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('test', () => {
-  return gulp.src(['**/*.js', '!node_modules/**'], { read: false })
+  return gulp.src(['**/*.spec.js', '!node_modules/**'], { read: false })
     .pipe(mocha({ require: './test-helper' }));
 });
 
