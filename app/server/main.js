@@ -9,7 +9,7 @@ const isLiveReload = process.env.LIVE_RELOAD === 'true';
 
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
-const pkg = require('../package.json')
+const pkg = require('../../package.json')
 
 // Use system log facility
 require('./lib/log')(pkg.name)

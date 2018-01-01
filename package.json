@@ -1,5 +1,6 @@
 {
   "name": "anavis",
+  "productName": "AnaVis",
   "description": "AnaVis is a tool to visualize musical form",
   "version": "0.0.0",
   "author": "The AnaVis Team <info@anavis.de>",
@@ -16,14 +17,38 @@
   "main": "app/server/main.js",
   "scripts": {
     "start": "gulp watch",
-    "test": "gulp test",
-    "postinstall": "electron-builder install-app-deps"
+    "test": "gulp test"
   },
   "keywords": [
     "anavis",
     "music",
     "analysis"
   ],
+  "dependencies": {
+    "async": "^2.1.5",
+    "bignumber.js": "^4.0.1",
+    "color": "^1.0.3",
+    "color-hash": "^1.0.3",
+    "devtron": "^1.4.0",
+    "drag-and-drop-files": "^0.0.1",
+    "electron-debug": "^1.0.1",
+    "electron-is-dev": "^0.1.2",
+    "font-awesome": "^4.7.0",
+    "glob": "^7.1.1",
+    "intempo": "^1.1.0",
+    "knockout": "^3.4.0",
+    "knockout-mapping": "^2.6.0",
+    "less": "^2.7.1",
+    "lodash": "^4.16.4",
+    "mkdirp": "^0.5.1",
+    "normalize.css": "^6.0.0",
+    "rimraf": "^2.5.4",
+    "tiny-defer": "^2.0.2",
+    "uuid": "^3.0.1",
+    "xml2js": "^0.4.17",
+    "yauzl": "^2.7.0",
+    "yazl": "^2.4.2"
+  },
   "devDependencies": {
     "async": "^2.5.0",
     "chokidar": "^2.0.0",
@@ -47,5 +72,10 @@
     "semver": "^5.4.1",
     "shelljs": "^0.7.8"
   },
-  "dependencies": {}
+  "config": {
+    "url": "index.html",
+    "update": {
+      "url": false
+    }
+  }
 }

@@ -43,8 +43,6 @@ window.ko = ko;
 // Register all components:
 [work, part, inspector, soundPlayer, annotation, checkbox].forEach(component => component.register());
 
-appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
-
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
   shortcuts.register(window, appViewModel);

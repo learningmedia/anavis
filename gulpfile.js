@@ -78,7 +78,7 @@ const buildConfig = {
 }
 
 gulp.task('version', () => {
-  return gulp.src(['package.json', 'app/package.json'], { base: '.' })
+  return gulp.src('package.json')
     .pipe(bump({ version: buildVersion }))
     .pipe(gulp.dest('.'));
 });
@@ -116,14 +116,14 @@ gulp.task('release', async () => {
 });
 
 gulp.task('lint', () => {
-  return gulp.src(['**/*.js', '!node_modules/**', '!app/node_modules/**'])
+  return gulp.src(['**/*.js', '!node_modules/**'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
 
 gulp.task('test', () => {
-  return gulp.src('app/{,!(node_modules)/**/}*.spec.js', { read: false })
+  return gulp.src(['**/*.js', '!node_modules/**'], { read: false })
     .pipe(mocha({ require: './test-helper' }));
 });
 
