@@ -1,15 +1,20 @@
 require('shelljs/global');
 
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const gh = require('ghreleases');
 const semver = require('semver');
-const bump = require('gulp-bump');
+const gutil = require('gulp-util');
 const Dropbox = require('dropbox');
+const mocha = require('gulp-mocha');
+const chokidar = require('chokidar');
 const pkg = require('./package.json');
+const eslint = require('gulp-eslint');
 const markdownEscape = require('markdown-escape');
 const commitsBetween = require('commits-between');
+const electronConnect = require('electron-connect');
 const electronBuilder = require('electron-builder');
 
 const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
@@ -17,12 +22,8 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_USER = process.env.GITHUB_USER;
 
 const isTravisCi = process.env.TRAVIS === 'true';
-const isPullRequest = process.env.TRAVIS_PULL_REQUEST !== 'false';
-const commitish = process.env.TRAVIS_COMMIT || null;
 const tagName = process.env.TRAVIS_TAG || null;
-const branchName = process.env.TRAVIS_BRANCH;
 const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
-const platformsToBuild = isOsx ? 'm' : 'lw';
 const versionFromTagName = semver.valid(tagName);
 const buildVersion = versionFromTagName || semver.valid(pkg.version);
 const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
@@ -38,7 +39,6 @@ const artifactNames = {
 const buildConfig = {
   appId: isBeta ? 'de.anavis.beta' : 'de.anavis',
   productName: isBeta ? 'AnaVis Beta' : 'AnaVis',
-  electronVersion: '1.8.1',
   mac: {
     target: [{ target: 'dmg', arch: ['x64'] }],
     category: 'public.app-category.education'
@@ -77,9 +77,9 @@ const buildConfig = {
 }
 
 gulp.task('version', () => {
-  return gulp.src(['package.json', 'app/package.json'], { base: '.' })
-    .pipe(bump({ version: buildVersion }))
-    .pipe(gulp.dest('.'));
+  pkg.version = buildVersion;
+  pkg.productName = buildConfig.productName;
+  fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + os.EOL, 'utf8');
 });
 
 gulp.task('build', ['version'], async () => {
@@ -113,6 +113,71 @@ gulp.task('release', async () => {
   const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
 });
+
+gulp.task('lint', () => {
+  return gulp.src(['**/*.js', '!node_modules/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
+
+gulp.task('test', () => {
+  return gulp.src(['**/*.spec.js', '!node_modules/**'], { read: false })
+    .pipe(mocha({ require: './test-helper' }));
+});
+
+gulp.task('watch', done => {
+  const chokidarOpts = {
+    atomic: true,
+    ignoreInitial: true,
+    awaitWriteFinish: {
+      stabilityThreshold: 250,
+      pollInterval: 50
+    }
+  };
+
+  const watchers = [];
+
+  const server = electronConnect.server.create({
+    logLevel: 0, // warn only
+    stopOnClose: true,
+    spawnOpt: {
+      stdio: 'inherit',
+      env: Object.assign({ LIVE_RELOAD: 'true' }, process.env)
+    }
+  });
+
+  const callback = procState => {
+    gutil.log(gutil.colors.yellow('[livereload]'), procState);
+    if (procState === 'stopped') {
+      watchers.forEach(w => w.close());
+      setTimeout(() => process.exit(0), 500); // Chokidar doesn't release all watchers, so force it!
+      done();
+    }
+  };
+
+  // Start browser process
+  server.start(callback);
+
+  watchers.push(chokidar.watch('app/{server,shared}/**/*.{js,json}', chokidarOpts).on('all', () => {
+    // Restart browser process
+    server.restart(callback);
+  }));
+
+  watchers.push(chokidar.watch('app/client/**/*.{html,js,json}', chokidarOpts).on('all', () => {
+    // Reload renderer process(es)
+    server.reload();
+    callback('reload');
+  }));
+
+  watchers.push(chokidar.watch('app/client/**/*.{css,less}', chokidarOpts).on('all', () => {
+    // Send signal to reload the stylesheets
+    server.broadcast('reload-styles');
+    callback('styles');
+  }));
+});
+
+gulp.task('default', ['watch']);
 
 /// HELPERS //////////////////////////////////////////////////////////////////////////////
 
@@ -180,5 +245,5 @@ function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) 
 }
 
 function createReleaseNotes(commits) {
-  return commits.map(c => `* ${markdownEscape(c.subject)}`).join('\n');
+  return commits.map(c => `* ${markdownEscape(c.subject)}`).join(os.EOL);
 }
