@@ -1,11 +1,11 @@
 require('shelljs/global');
 
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const gh = require('ghreleases');
 const semver = require('semver');
-const bump = require('gulp-bump');
 const gutil = require('gulp-util');
 const Dropbox = require('dropbox');
 const mocha = require('gulp-mocha');
@@ -77,9 +77,9 @@ const buildConfig = {
 }
 
 gulp.task('version', () => {
-  return gulp.src('package.json')
-    .pipe(bump({ version: buildVersion }))
-    .pipe(gulp.dest('.'));
+  pkg.version = buildVersion;
+  pkg.productName = buildConfig.productName;
+  fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + os.EOL, 'utf8');
 });
 
 gulp.task('build', ['version'], async () => {
@@ -245,5 +245,5 @@ function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) 
 }
 
 function createReleaseNotes(commits) {
-  return commits.map(c => `* ${markdownEscape(c.subject)}`).join('\n');
+  return commits.map(c => `* ${markdownEscape(c.subject)}`).join(os.EOL);
 }
