@@ -39,7 +39,6 @@ const artifactNames = {
 const buildConfig = {
   appId: isBeta ? 'de.anavis.beta' : 'de.anavis',
   productName: isBeta ? 'AnaVis Beta' : 'AnaVis',
-  electronVersion: '1.8.1',
   mac: {
     target: [{ target: 'dmg', arch: ['x64'] }],
     category: 'public.app-category.education'
