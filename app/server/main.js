@@ -3,13 +3,13 @@
 const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
 const defer = require('tiny-defer');
 const path = require('path')
-const _ = require('lodash')
 
 const isLiveReload = process.env.LIVE_RELOAD === 'true';
 
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
 const pkg = require('../../package.json')
+const config = require('../config.json')
 
 // Use system log facility
 require('./lib/log')(pkg.name)
@@ -21,16 +21,8 @@ process.on('uncaughtException', (error) => {
   app.quit()
 })
 
-// Load build target configuration file
-try {
-  var config = require('../config.json')
-  _.merge(pkg.config, config)
-} catch (e) {
-  console.warn('No config file loaded, using defaults')
-}
-
-const isDev = (require('electron-is-dev') || pkg.config.debug)
-global.appSettings = pkg.config
+const isDev = (require('electron-is-dev') || config.debug)
+global.appSettings = config
 
 if (isDev) {
   console.info('Running in development')
@@ -38,12 +30,10 @@ if (isDev) {
   console.info('Running in production')
 }
 
-console.debug(JSON.stringify(pkg.config))
-
 // Adds debug features like hotkeys for triggering dev tools and reload
 // (disabled in production, unless the menu item is displayed)
 require('electron-debug')({
-  enabled: pkg.config.debug || isDev || false
+  enabled: config.debug || isDev || false
 })
 
 // Prevent window being garbage collected
@@ -76,7 +66,7 @@ function createMainWindow () {
     'height': 768,
     'title': app.getName(),
     'webPreferences': {
-      'nodeIntegration': pkg.config.nodeIntegration || true, // Disabling node integration allows to use libraries such as jQuery/React, etc
+      'nodeIntegration': true, // Disabling node integration allows to use libraries such as jQuery/React, etc
       'preload': path.resolve(path.join(__dirname, 'preload.js'))
     }
   })
@@ -156,7 +146,7 @@ function createMainWindow () {
   });
 
   // Remove file:// if you need to load http URLs
-  win.loadURL(`file://${__dirname}/../client/${pkg.config.url}`, {})
+  win.loadURL(`file://${__dirname}/../client/index.html`, {})
 
   win.on('closed', onClosed)
 

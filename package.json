@@ -39,7 +39,6 @@
     "knockout": "~3.4.2",
     "knockout-mapping": "~2.6.0",
     "less": "~2.7.3",
-    "lodash": "~4.17.4",
     "mkdirp": "~0.5.1",
     "normalize.css": "~7.0.0",
     "rimraf": "~2.6.2",
@@ -68,11 +67,5 @@
     "mockery": "~2.1.0",
     "semver": "~5.4.1",
     "shelljs": "~0.7.8"
-  },
-  "config": {
-    "url": "index.html",
-    "update": {
-      "url": false
-    }
   }
 }
