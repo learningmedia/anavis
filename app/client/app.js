@@ -44,8 +44,6 @@ window.ko = ko;
 // Register all components:
 [work, part, inspector, soundPlayer, annotation, checkbox, update].forEach(component => component.register());
 
-appViewModel.deselectAll = () => appViewModel.currentPart(undefined);
-
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
   shortcuts.register(window, appViewModel);
@@ -71,7 +69,7 @@ Messenger.mainWindowInstance.on(events.REQUEST_TERMINATION, () => {
   return confirm('Echt jetzt?');
 })
 
-ipcRenderer.on('less', function () {
+ipcRenderer.on('reload-styles', function () {
   window.less.refresh(true)
     .then(() => console.log('Styles reloaded!'))
     .catch(err => console.error(err))
