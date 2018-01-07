@@ -1,11 +1,13 @@
-<div class="Update" data-bind="css: { 'Update--expanded': version }">
+<div class="Update" data-bind="css: { 'Update--expanded': updateAvailable }, if: latestRelease">
   <div class="Update-messageContainer">
     <p class="Update-messageContainerText">
-      Sie arbeiten mit der <span data-bind="text: version"></span>. Es ist ein Update verfügbar, möchten Sie AnaVis jetzt updaten?
+      Sie arbeiten mit Version <span data-bind="text: currentVersion"></span>.
+      Sie können auf Version <span data-bind="text: latestRelease().version"></span> updaten.
+      Möchten Sie die AnaVis-Downloadseite aufrufen?
     </p>
   </div>
   <div class="Update-buttonContainer">
-    <button data-bind="click: onUpdateClick">jetzt updaten</button>
-    <button data-bind="click: onCancelClick">später</button>
+    <button class="Update-button" data-bind="click: onUpdateClick">ja</button>
+    <button class="Update-button" data-bind="click: onCancelClick">später</button>
   </div>
 </div>
