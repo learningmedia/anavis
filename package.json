@@ -42,6 +42,8 @@
     "mkdirp": "~0.5.1",
     "normalize.css": "~7.0.0",
     "rimraf": "~2.6.2",
+    "semver": "~5.4.1",
+    "superagent": "~3.8.2",
     "tiny-defer": "~2.0.2",
     "uuid": "~3.1.0",
     "xml2js": "~0.4.19",
@@ -64,7 +66,6 @@
     "gulp-util": "~3.0.8",
     "markdown-escape": "~1.0.2",
     "mockery": "~2.1.0",
-    "semver": "~5.4.1",
     "shelljs": "~0.7.8"
   }
 }
