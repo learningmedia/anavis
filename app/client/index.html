@@ -5,7 +5,7 @@
     <title>AnaVis</title>
     <link rel="stylesheet/less" href="./app.less" />
   </head>
-  <body class="App" data-bind="css: 'u-' + $data.currentTool()">
+  <body class="App" data-bind="css: 'u-' + $data.currentTool(), fileDrop: onFileDropped">
     <section class="App-workspace">
       <aside class="App-toolbar">
         <av-toolbar params="app: $data"></av-toolbar>

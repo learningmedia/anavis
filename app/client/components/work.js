@@ -1,11 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 const uuid = require('uuid');
 const ko = require('knockout');
 const { remote } = require('electron');
 const file = require('../file');
+const systemSounds = require('../system-sounds');
 
 const autoColorizer = require('../actions/auto-colorizer');
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
+
+const allowedSoundExtensions = ['.mp3', '.ogg', '.wav'];
 
 function viewModel(params) {
   const app = params.app;
@@ -35,7 +39,10 @@ function viewModel(params) {
       autoColorizer.colorize(vm.work);
     },
     onSoundDropped: files => {
-      vm.work.sounds.push.apply(vm.work.sounds, files.map(f => ({ path: ko.observable(f.path), embedded: ko.observable(false) })));
+      const filePaths = files.map(f => f.path);
+      const extensions = filePaths.map(p => (path.extname(p) || '').toLowerCase());
+      if (extensions.some(ext => !allowedSoundExtensions.includes(ext))) return systemSounds.beep();
+      vm.work.sounds.push.apply(vm.work.sounds, filePaths.map(p => ({ path: ko.observable(p), embedded: ko.observable(false) })));
     },
     onClose: () => {
       file.close(vm.work);
@@ -46,7 +53,11 @@ function viewModel(params) {
 }
 
 function openSoundDialog(cb) {
-  remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'Sound file', extensions: ['mp3', 'ogg', 'wav'] }] }, filenames => {
+  const filters = [{
+    name: 'Sound file',
+    extensions: allowedSoundExtensions.map(ext => ext.replace(/^\./, ''))
+  }];
+  remote.dialog.showOpenDialog({ properties: ['openFile'], filters: filters }, filenames => {
     return filenames && filenames.length && cb && cb(filenames);
   });
 }
