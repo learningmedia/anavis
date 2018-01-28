@@ -3,19 +3,41 @@ module.exports = class PlaySoundHandler {
     this.appViewModel = appViewModel;
   }
 
-  onKeyDown() {
-    console.log('key down invoked');
-  }
+  onKeyDown() {}
 
   onKeyUp() {
-    const workId = this.appViewModel.currentWork().id();
-    const element = document.querySelector(`[data-work-id='${workId}']`);
-    const soundPlayerVm = ko.dataFor(element.querySelector('av-sound-player > div'));
-    soundPlayerVm.onStartClick();
-    console.log('key up invoked')
+    const firstPlayingController = this.getFirstPlayingSoundController()
+    if (firstPlayingController) {
+      firstPlayingController.onPauseClick();
+      return;
+    }
+
+    const firstPlayableController = this.getFirstPlayableSoundControllerOfCurrentWork() || this.getFirstPlayableSoundController();
+    if (firstPlayableController) {
+      firstPlayableController.onStartClick();
+    }
   }
 
-  check() {
-    console.log('check invoked');
+  getFirstPlayingSoundController() {
+    const allSoundControllers = Array.from(document.body.querySelectorAll('av-sound-player > div')).map(elem => ko.dataFor(elem));
+    return allSoundControllers.filter(vm => vm.sound().state() === states.PLAYING)[0];
+  }
+
+  getFirstPlayableSoundControllerOfCurrentWork() {
+    const currentWorkId = this.getCurrentWorkId();
+    if (!currentWorkId) return undefined;
+    const element = document.querySelector(`[data-work-id='${currentWorkId}']`);
+    if (!element) return undefined;
+    return this.getFirstPlayableSoundController(element);
+  }
+
+  getFirstPlayableSoundController(parentElement) {
+    const allSoundControllers = Array.from((parentElement || document.body).querySelectorAll('av-sound-player > div')).map(elem => ko.dataFor(elem));
+    return allSoundControllers.filter(vm => vm.sound().state() === states.STOPPED || vm.sound().state() === states.PAUSING)[0];
+  }
+
+  getCurrentWorkId() {
+    const work = this.appViewModel.currentWork();
+    return work ? work.id() : undefined;
   }
 }
