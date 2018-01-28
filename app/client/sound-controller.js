@@ -1,16 +1,8 @@
 const fs = require('fs');
 const ko = require('knockout');
-const intempo = require('intempo');
-
 const utils = require('./utils');
-
-const states = {
-  LOADING: 'LOADING',
-  STOPPED: 'STOPPED',
-  PLAYING: 'PLAYING',
-  PAUSING: 'PAUSING',
-  ERROR: 'ERROR'
-};
+const intempo = require('intempo');
+const states = require('./sound-controller-states');
 
 function create(path, id) {
   let player;
