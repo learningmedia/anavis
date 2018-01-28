@@ -1,3 +1,6 @@
+const ko = require('knockout');
+const states = require('../sound-controller-states');
+
 module.exports = class PlaySoundHandler {
   constructor(appViewModel) {
     this.appViewModel = appViewModel;

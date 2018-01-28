@@ -1,10 +1,10 @@
-require('shelljs/global');
 
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const gh = require('ghreleases');
+const shell = require('shelljs');
 const semver = require('semver');
 const gutil = require('gulp-util');
 const Dropbox = require('dropbox');
@@ -188,7 +188,7 @@ function uploadArtifactsToDropbox(fileNames, sourceDir) {
 
 function downloadArtifactsFromDropbox(fileNames, targetDir) {
   const absoluteDir = path.resolve(targetDir);
-  mkdir('-p', absoluteDir);
+  shell.mkdir('-p', absoluteDir);
   return Promise.all(fileNames.map(file => downloadFromDropbox(`/${file}`, path.join(absoluteDir, file))));
 }
 

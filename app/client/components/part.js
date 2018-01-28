@@ -18,10 +18,12 @@ function viewModel(params) {
   vm.isInEditMode = ko.observable(false);
   vm.onDblClick = () => vm.isInEditMode(true);
   vm.onKeyDown = (viewModel, event) => {
+    let offset;
+    let vmOfNextDomElement;
     switch (event.key) {
       case 'Tab':
-        const offset = event.shiftKey ? -1 : 1;
-        const vmOfNextDomElement = getNeighbouringPartViewModel(work, part, offset);
+        offset = event.shiftKey ? -1 : 1;
+        vmOfNextDomElement = getNeighbouringPartViewModel(work, part, offset);
         if (vmOfNextDomElement) {
           vmOfNextDomElement.isInEditMode(true);
           return false;

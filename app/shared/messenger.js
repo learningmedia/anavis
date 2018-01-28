@@ -35,13 +35,12 @@ module.exports = class Messenger {
             id: id,
             topic: topic,
             error: error.message || error
-          });          
+          });
         });
     });
 
     receiver.on(`${RESPONSE}-${this.id}`, (event, args) => {
       const id = args.id;
-      const topic = args.topic;
       const responseData = args.data;
       const responseError = args.error;
       const deferred = this.deferredsToSettleAfterWeGotAResponseById.get(id);

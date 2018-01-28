@@ -22,13 +22,13 @@ function getLatestRelease() {
         url: latest.html_url
       };
     })
-    .catch(err => {
+    .catch(() => {
       return null;
     });
 }
 
 
-function viewModel(params) {
+function viewModel() {
   const vm = {};
 
   vm.currentVersion = pkg.version;

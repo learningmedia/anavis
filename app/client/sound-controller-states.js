@@ -1,4 +1,4 @@
-module.exports = states = {
+module.exports = {
   LOADING: 'LOADING',
   STOPPED: 'STOPPED',
   PLAYING: 'PLAYING',
