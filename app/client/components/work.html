@@ -7,7 +7,7 @@
     <span data-bind="text: $component.work._.zipFileName() || 'Unbenannt'"></span>
     <span data-bind="visible: $component.work._.isDirty">*</span>
   </div>
-  <div class="Work-body" data-bind="foreach: { data: parts, as: 'part' }, soundDrop: onSoundDropped, partOperations: { work: work, app: $component.app }">
+  <div class="Work-body" data-bind="foreach: { data: parts, as: 'part' }, fileDrop: onSoundDropped, partOperations: { work: work, app: $component.app }">
     <av-part params="app: $parent.app, work: $parent.work, part: part" data-bind="style: { flex: part.length }"></av-part>
   </div>
   <!-- ko foreach: { data: annotations, as: 'annotation' } -->

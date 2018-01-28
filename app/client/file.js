@@ -36,6 +36,14 @@ function open() {
   });
 }
 
+function openAll(paths) {
+  paths.forEach(path => {
+    openDocument(path, function (error, doc, unzipDir) {
+      openWork(doc, unzipDir, path);
+    });
+  });
+}
+
 function openWork(doc, unzipDir, zipFileName) {
   doc.sounds.forEach(s => {
     if (s.embedded) s.path = path.resolve(unzipDir, s.path);
@@ -181,4 +189,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-module.exports = { create, open, save, close };
+module.exports = { create, open, openAll, save, close };

@@ -12,7 +12,7 @@ const shortcuts = require('./actions/shortcuts')
 const work = require('./components/work');
 const part = require('./components/part');
 const appViewModel = require('./app-view-model');
-const soundDrop = require('./bindings/sound-drop');
+const fileDrop = require('./bindings/file-drop');
 const inspector = require('./components/inspector');
 const soundPlayer = require('./components/sound-player');
 const annotation = require('./components/annotation');
@@ -39,10 +39,15 @@ require('less/dist/less.js')
 window.ko = ko;
 
 // Register all bindings:
-[soundDrop, partOperations].forEach(binding => binding.register());
+[fileDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
 [work, part, inspector, soundPlayer, annotation, checkbox, update].forEach(component => component.register());
+
+// Add specific functions to the app vm:
+appViewModel.onFileDropped = files => {
+  file.openAll(files.map(f => f.path));
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   ko.applyBindings(appViewModel, document.getElementsByTagName('html')[0]);
