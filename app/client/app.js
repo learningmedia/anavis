@@ -3,12 +3,14 @@ require('./notifications.js')
 require('./actions/zoom.js')
 require('./context-menu.js')
 
+const path = require('path');
 const ko = require('knockout');
 const { ipcRenderer } = require('electron');
 
 const file = require('./file');
 const events = require('../shared/events');
-const shortcuts = require('./actions/shortcuts')
+const shortcuts = require('./actions/shortcuts');
+const systemSounds = require('./system-sounds');
 const work = require('./components/work');
 const part = require('./components/part');
 const appViewModel = require('./app-view-model');
@@ -46,7 +48,10 @@ window.ko = ko;
 
 // Add specific functions to the app vm:
 appViewModel.onFileDropped = files => {
-  file.openAll(files.map(f => f.path));
+  const filePaths = files.map(f => f.path);
+  const extensions = filePaths.map(p => (path.extname(p) || '').toLowerCase());
+  if (extensions.some(ext => !['.avd'].includes(ext))) return systemSounds.beep();
+  file.openAll(filePaths);
 };
 
 document.addEventListener('DOMContentLoaded', function() {
