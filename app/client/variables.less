@@ -1,35 +1,32 @@
 @default-font: caption;
-@default-text-color: #2B2B2B;
-@default-window-background-color: #F1F1F1;
+@default-text-color: @mdc-black-darker;
+@default-text-color-light: lighten(@mdc-black-darker, 15%);
+@default-window-background-color: @mdc-grey-100;
 
-@workspace-background-color: #FFFFFF;
+@workspace-background-color: @mdc-grey-50;
 
 @transition-duration: 0.2s;
 @very-small-screen: 250px;
 @default-work-padding: 10px;
-@selected-work-background-color: #D3D3D3;
 
-@default-glossy-shadow: 0 5px 5px rgba(255, 255, 255, .3) inset, 0 -5px 5px rgba(255, 255, 255, .3) inset;
+@selected-work-background-color: fade(@mdc-amber-A700, 20%);
+@selected-work-border-color: fade(@mdc-amber-A700, 30%);
 
-@default-text-container-color: #eee;
-@default-text-container-alternate-color: #ccc;
+@default-glossy-shadow: 0 5px 5px @mdc-white-light inset, 0 -5px 5px @mdc-white-light inset;
+
+@default-text-container-color: @mdc-grey-200;
+@default-text-container-alternate-color: @mdc-grey-300;
 
 @inspector-area-color: @default-text-color;
-@inspector-area-background-color: #f5f5f5;
-@inspector-area-border-color: darken(@inspector-area-background-color, 10%);
-@inspector-button-highlight-color: darken(@inspector-area-background-color, 10%);
-@inspector-button-secondary-color: rgba(255, 0, 0, .75);
-@inspector-area-input-border-color: #222;
-@inspector-area-input-background-color: #D3D3D3;
-@inspector-area-input-color: #000;
+@inspector-area-background-color: @mdc-grey-200;
+@inspector-area-border-color: @mdc-grey-300;
+@inspector-button-highlight-color: @mdc-black-lighter;
+@inspector-button-secondary-color: @mdc-amber-900;
 @inspector-area-button-height: 42px;
 @inspector-width-expanded: 200px;
 @inspector-width-collapsed: @inspector-area-button-height;
 
-@enabledColor: darkgreen;
-@disabledColor: maroon;
-
 @update-transition-height: 150px;
-@update-transition-background-color: maroon;
-@update-transition-color: white;
+@update-transition-background-color: @mdc-green-300;
+@update-transition-color: @mdc-black-darker;
 @update-transition-opacity: 0.8;

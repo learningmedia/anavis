@@ -1,0 +1,50 @@
+@icon-close-color: @mdc-red-900;
+@icon-music-color: @mdc-light-blue-800;
+@icon-pencil-square-o-color: @mdc-brown-600;
+@icon-paint-brush-color: @mdc-green-700;
+
+.m-icon {
+  .fa;
+}
+
+.m-icon-close {
+  .m-icon;
+  &:before {
+    content: @fa-var-close;
+    color: @icon-close-color;
+  }
+}
+
+.m-icon-music {
+  .m-icon;
+  transform: translateY(-1px) translateX(-1px);
+  &:before {
+    content: @fa-var-music;
+    color: @icon-music-color;
+  }
+}
+
+.m-icon-pencil-square-o {
+  .m-icon;
+  transform: translateY(1px) translateX(2px);
+  &:before {
+    content: @fa-var-pencil-square-o;
+    color: @icon-pencil-square-o-color;
+  }
+}
+
+.m-icon-paint-brush {
+  .m-icon;
+  transform: translateX(-1px);
+  &:before {
+    content: @fa-var-paint-brush;
+    color: @icon-paint-brush-color;
+  }
+}
+
+.m-darken-on-hover {
+  filter: brightness(120%);
+  &:hover {
+    filter: brightness(100%);
+  }
+}

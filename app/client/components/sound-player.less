@@ -1,4 +1,7 @@
 @sound-player-height: 16px;
+@sound-player-border-color: @mdc-grey-400;
+@sound-player-background-color: lighten(@sound-player-border-color, 10%);
+@sound-player-progress-bar-color: fade(@mdc-blue-400, 33%);
 
 av-sound-player {
   display: block;
@@ -13,17 +16,18 @@ av-sound-player {
 }
 
 .SoundPlayer-progressGrid {
-  background-color: silver;
+  background-color: @sound-player-background-color;
   box-shadow: @default-glossy-shadow;
   height: @sound-player-height;
   position: absolute;
   width: 100%;
   font-size: 8px;
   display: flex;
+  border: 1px solid @sound-player-border-color;
 }
 
 .SoundPlayer-progressGridPart {
-  border-left: 1px black solid;
+  border-left: 1px @sound-player-border-color solid;
   display: block;
 
   &:first-child {
@@ -47,7 +51,7 @@ av-sound-player {
   }
 
   &::-webkit-progress-value {
-    background-color: fade(black, 25%);
+    background-color: @sound-player-progress-bar-color;
   }
 }
 

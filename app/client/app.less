@@ -27,8 +27,10 @@ html, body {
   box-sizing: inherit;
 }
 
+@import 'color-palette.less';
 @import 'variables.less';
 @import 'utilities.less';
+@import 'mixins.less';
 
 @import './components/work.less';
 @import './components/part.less';
@@ -55,10 +57,13 @@ html, body {
 .App-work {
   display: block;
   padding: @default-work-padding;
+  padding: 20px;
+  border: 1px solid transparent;
 }
 
 .App-work.is-selected {
   background-color: @selected-work-background-color;
+  border-color: @selected-work-border-color;
 }
 
 .App-inspectorArea {

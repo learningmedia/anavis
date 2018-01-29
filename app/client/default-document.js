@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const autoColorizerMappings = require('./actions/auto-colorizer-mappings.json');
 
 function create() {
   return {
@@ -9,7 +10,7 @@ function create() {
       {
         id: uuid.v4(),
         name: 'unbekannt',
-        color: '#000080',
+        color: autoColorizerMappings['unbekannt'],
         length: 1000
       }
     ],

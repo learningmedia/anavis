@@ -1,3 +1,5 @@
+@annotation-border-color: @mdc-grey-400;
+
 av-annotation {
   display: block;
 }
@@ -6,6 +8,7 @@ av-annotation {
   display: flex;
   width: 100%;
   overflow: auto;
+  border: 1px solid @annotation-border-color;
 }
 
 .Annotation-value {
@@ -16,6 +19,11 @@ av-annotation {
   border: none;
   overflow-y: hidden;
   line-height: 1.33em;
+  border-left: 1px @annotation-border-color solid;
+
+  &:first-child {
+    border-left: none;
+  }
 
   &:nth-child(even) {
     background-color: @default-text-container-alternate-color;
