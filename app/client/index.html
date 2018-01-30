@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>AnaVis</title>
-    <link rel="stylesheet/less" href="./app.less" />
+    <link rel="stylesheet/less" href="./main.less" />
   </head>
   <body class="App" data-bind="css: 'u-' + $data.currentTool(), fileDrop: onFileDropped">
     <section class="App-workspace">
@@ -16,14 +16,14 @@
         </div>
       </main>
     </section>
-    <section class="App-update">
-      <av-update params="version: 'v0.6'"></av-update>
+    <section>
+      <av-update-notification></av-update-notification>
     </section>
     <section class="App-inspectorArea" data-bind="css: 'App-inspectorArea--' + (isInspectorExpanded() ? 'expanded' : 'collapsed')">
       <av-inspector params="app: $data"></av-inspector>
     </section>
   </body>
   <script>
-    require('./app.js')
+    require('./app.js');
   </script>
 </html>

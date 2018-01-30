@@ -1,7 +1,10 @@
-@icon-close-color: @mdc-red-900;
-@icon-music-color: @mdc-light-blue-800;
-@icon-pencil-square-o-color: @mdc-brown-600;
-@icon-paint-brush-color: @mdc-green-700;
+@import './font-awesome';
+@import './palettes/colors';
+
+@icon-close-color: @color-red-900;
+@icon-music-color: @color-light-blue-800;
+@icon-pencil-square-o-color: @color-brown-600;
+@icon-paint-brush-color: @color-green-700;
 
 .m-icon {
   .fa;
@@ -39,6 +42,41 @@
   &:before {
     content: @fa-var-paint-brush;
     color: @icon-paint-brush-color;
+  }
+}
+
+.m-icon-mouse-pointer {
+  .m-icon;
+  &:before {
+    content: @fa-var-mouse-pointer;
+  }
+}
+
+.m-icon-unlink {
+  .m-icon;
+  &:before {
+    content: @fa-var-unlink;
+  }
+}
+
+.m-icon-link {
+  .m-icon;
+  &:before {
+    content: @fa-var-link;
+  }
+}
+
+.m-icon-angle-double-right {
+  .m-icon;
+  &:before {
+    content: @fa-var-angle-double-right;
+  }
+}
+
+.m-icon-angle-double-left {
+  .m-icon;
+  &:before {
+    content: @fa-var-angle-double-left;
   }
 }
 

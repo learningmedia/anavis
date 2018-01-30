@@ -1,7 +1,7 @@
-require('./ex-links.js')
-require('./notifications.js')
-require('./actions/zoom.js')
-require('./context-menu.js')
+require('./ex-links.js');
+require('./notifications.js');
+require('./actions/zoom.js');
+require('./context-menu.js');
 
 const path = require('path');
 const ko = require('knockout');
@@ -19,7 +19,7 @@ const inspector = require('./components/inspector');
 const soundPlayer = require('./components/sound-player');
 const annotation = require('./components/annotation');
 const checkbox = require('./components/checkbox');
-const update = require('./components/update');
+const updateNotification = require('./components/update-notification');
 const partOperations = require('./bindings/part-operations');
 const Messenger = require('../shared/messenger');
 
@@ -32,6 +32,7 @@ window.less = {
   env: 'production',
   async: true,
   fileAsync: true,
+  relativeUrls: true,
   logLevel: LESS_LOG_LEVEL_ERRORS
 };
 
@@ -44,7 +45,7 @@ window.ko = ko;
 [fileDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, part, inspector, soundPlayer, annotation, checkbox, update].forEach(component => component.register());
+[work, part, inspector, soundPlayer, annotation, checkbox, updateNotification].forEach(component => component.register());
 
 // Add specific functions to the app vm:
 appViewModel.onFileDropped = files => {

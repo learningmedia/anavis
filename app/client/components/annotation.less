@@ -1,4 +1,9 @@
-@annotation-border-color: @mdc-grey-400;
+@import '../styles/palettes/colors';
+@import '../styles/variables';
+
+@annotation-border-color: @default-text-container-border-color;
+@annotation-background-color: @default-text-container-background-color;
+@annotation-background-color-alternate: @default-text-container-background-color-alternate;
 
 av-annotation {
   display: block;
@@ -15,7 +20,7 @@ av-annotation {
   text-overflow: ellipsis;
   word-break: break-word;
   padding: 0; // Does not work: 3px 5px;
-  background-color: @default-text-container-color;
+  background-color: @annotation-background-color;
   border: none;
   overflow-y: hidden;
   line-height: 1.33em;
@@ -26,6 +31,6 @@ av-annotation {
   }
 
   &:nth-child(even) {
-    background-color: @default-text-container-alternate-color;
+    background-color: @annotation-background-color-alternate;
   }
 }

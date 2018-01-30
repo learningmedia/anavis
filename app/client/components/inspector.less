@@ -1,3 +1,13 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+@inspector-color: @default-text-color;
+@inspector-background-color: @default-menu-background-color;
+@inspector-border-color: @default-menu-border-color;
+@inspector-button-highlight-color: @default-menu-background-color-selected;
+@inspector-button-secondary-color: @default-menu-background-color-accent;
+@inspector-button-size: @default-inspector-width-collapsed;
+
 av-inspector {
   display: flex;
   flex-direction: column;
@@ -8,9 +18,9 @@ av-inspector {
   display: flex;
   flex-direction: column;
   flex: 1 1 0%;
-  background-color: @inspector-area-background-color;
-  color: @inspector-area-color;
-  border-left: 1px solid @inspector-area-border-color;
+  color: @inspector-color;
+  background-color: @inspector-background-color;
+  border-left: 1px solid @inspector-border-color;
 
   input[type=text] {
     width: 100%;
@@ -45,7 +55,7 @@ av-inspector {
   color: inherit;
   cursor: pointer;
   width: 100%;
-  height: @inspector-area-button-height;
+  height: @inspector-button-size;
   text-align: left;
   outline: none;
 
@@ -61,41 +71,32 @@ av-inspector {
 }
 
 .Inspector-buttonIcon {
-  .fa;
-  width: @inspector-width-collapsed;
-  height: @inspector-width-collapsed;
+  width: @inspector-button-size;
+  height: @inspector-button-size;
 
   &.Inspector-buttonIcon--default {
+    .m-icon-mouse-pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:before {
-      content: @fa-var-mouse-pointer;
-    }
   }
   &.Inspector-buttonIcon--scissors {
+    .m-icon-unlink;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:before {
-      content: @fa-var-unlink;
-    }
   }
   &.Inspector-buttonIcon--glue {
+    .m-icon-link;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:before {
-      content: @fa-var-link;
-    }
   }
   &.Inspector-buttonIcon--toggle {
+    .m-icon-angle-double-right;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:before {
-      content: @fa-var-angle-double-right;
-    }
   }
 }
 
@@ -121,7 +122,10 @@ av-inspector {
   .Inspector-buttonTitle, .Inspector-group--partDetails {
     display: none;
   }
-  .Inspector-buttonIcon--toggle:before {
-    content: @fa-var-angle-double-left;
+  .Inspector-buttonIcon--toggle {
+    .m-icon-angle-double-left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

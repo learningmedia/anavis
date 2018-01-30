@@ -1,44 +1,13 @@
-@import (less) '../../node_modules/normalize.css/normalize.css';
+@import './styles/variables.less';
+@import './styles/utilities.less'; // Used in combination with .App for tools!
 
-@import '../../node_modules/font-awesome/less/variables.less';
-@fa-font-path: '../../node_modules/font-awesome/fonts';
-@import '../../node_modules/font-awesome/less/mixins.less';
-@import '../../node_modules/font-awesome/less/path.less';
-@import '../../node_modules/font-awesome/less/core.less';
-@import '../../node_modules/font-awesome/less/larger.less';
-@import '../../node_modules/font-awesome/less/fixed-width.less';
-@import '../../node_modules/font-awesome/less/list.less';
-@import '../../node_modules/font-awesome/less/bordered-pulled.less';
-@import '../../node_modules/font-awesome/less/animated.less';
-@import '../../node_modules/font-awesome/less/rotated-flipped.less';
-@import '../../node_modules/font-awesome/less/stacked.less';
-@import '../../node_modules/font-awesome/less/icons.less';
-@import '../../node_modules/font-awesome/less/screen-reader.less';
-
-html, body {
-  box-sizing: border-box;
-  background-color: @default-window-background-color;
-  color: @default-text-color;
-  font: @default-font;
-  margin: 0;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-@import 'color-palette.less';
-@import 'variables.less';
-@import 'utilities.less';
-@import 'mixins.less';
-
-@import './components/work.less';
-@import './components/part.less';
-@import './components/inspector.less';
-@import './components/sound-player.less';
-@import './components/annotation.less';
-@import './components/checkbox.less';
-@import './components/update.less';
+@app-workspace-background-color: @default-background-color-light;
+@app-work-padding: 10px;
+@app-work-selected-background-color: fade(@color-amber-A700, 20%);
+@app-work-selected-border-color: fade(@color-amber-A700, 30%);
+@app-inspector-area-width-expanded: @default-inspector-width-expanded;
+@app-inspector-area-width-collapsed: @default-inspector-width-collapsed;
+@app-inspector-area-transition-duration: @default-transition-duration;
 
 .App {
   display: flex;
@@ -48,7 +17,7 @@ html, body {
 .App-workspace {
   flex: 1 0 0%;
   overflow: hidden;
-  background-color: @workspace-background-color;
+  background-color: @app-workspace-background-color;
 }
 
 .App-works {
@@ -56,29 +25,29 @@ html, body {
 
 .App-work {
   display: block;
-  padding: @default-work-padding;
+  padding: @app-work-padding;
   padding: 20px;
   border: 1px solid transparent;
 }
 
 .App-work.is-selected {
-  background-color: @selected-work-background-color;
-  border-color: @selected-work-border-color;
+  background-color: @app-work-selected-background-color;
+  border-color: @app-work-selected-border-color;
 }
 
 .App-inspectorArea {
   flex: none;
   display: flex;
   overflow: hidden;
-  transition: width @transition-duration ease;
+  transition: width @app-inspector-area-transition-duration ease;
 
   &.App-inspectorArea--expanded {
-    width: @inspector-width-expanded;
-    transition: width @transition-duration ease;
+    width: @app-inspector-area-width-expanded;
+    transition: width @app-inspector-area-transition-duration ease;
   }
 
   &.App-inspectorArea--collapsed {
-    width: @inspector-width-collapsed;
-    transition: width @transition-duration ease;
+    width: @app-inspector-area-width-collapsed;
+    transition: width @app-inspector-area-transition-duration ease;
   }
 }

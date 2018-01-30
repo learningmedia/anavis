@@ -1,7 +1,11 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
 @sound-player-height: 16px;
-@sound-player-border-color: @mdc-grey-400;
-@sound-player-background-color: lighten(@sound-player-border-color, 10%);
-@sound-player-progress-bar-color: fade(@mdc-blue-400, 33%);
+@sound-player-border-color: @default-control-border-color;
+@sound-player-background-color: @default-control-background-color;
+@sound-player-progress-bar-color: @default-control-highlight-overlay-color;
+@sound-player-shadow: @default-glossy-shadow;
 
 av-sound-player {
   display: block;
@@ -17,7 +21,7 @@ av-sound-player {
 
 .SoundPlayer-progressGrid {
   background-color: @sound-player-background-color;
-  box-shadow: @default-glossy-shadow;
+  box-shadow: @sound-player-shadow;
   height: @sound-player-height;
   position: absolute;
   width: 100%;

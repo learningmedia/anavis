@@ -21,6 +21,7 @@ window.less = {
   env: 'production',
   async: true,
   fileAsync: true,
+  relativeUrls: true,
   logLevel: LESS_LOG_LEVEL_ERRORS
 };
 
