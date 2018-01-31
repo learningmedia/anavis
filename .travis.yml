@@ -46,7 +46,7 @@ jobs:
             -v ~/.cache/electron:/root/.cache/electron \
             -v ~/.cache/electron-builder:/root/.cache/electron-builder \
             electronuserland/electron-builder:wine \
-            /bin/bash -c "yarn && ./node_modules/.bin/gulp build"
+            /bin/bash -c "npm i -g yarn && yarn && ./node_modules/.bin/gulp build"
       os: linux
       services: docker
       language: generic
