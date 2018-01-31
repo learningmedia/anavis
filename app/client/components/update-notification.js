@@ -5,12 +5,12 @@ const { shell } = require('electron');
 const superagent = require('superagent');
 const pkg = require('../../../package.json');
 
-const template = fs.readFileSync(`${__dirname}/update.html`, 'utf8');
+const template = fs.readFileSync(`${__dirname}/update-notification.html`, 'utf8');
 
 const githubReleasePage = 'https://api.github.com/repos/learningmedia/anavis/releases';
 
 function byVersionDesc(a, b) {
-  return semver.gt(a.tag_name, b.tag_name) ? -1 : 1
+  return semver.gt(a.tag_name, b.tag_name) ? -1 : 1;
 }
 
 function getLatestRelease() {
@@ -26,7 +26,6 @@ function getLatestRelease() {
       return null;
     });
 }
-
 
 function viewModel() {
   const vm = {};
@@ -50,7 +49,7 @@ function viewModel() {
 }
 
 function register() {
-  ko.components.register('av-update', {
+  ko.components.register('av-update-notification', {
     viewModel: viewModel,
     template: template
   });

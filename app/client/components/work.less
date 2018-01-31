@@ -1,38 +1,42 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+@work-body-height: 48px;
+
 av-work {
   display: block;
 }
 
 .Work {}
 
-.Work-header {}
+.Work-header {
+  font-size: 0.9em;
+  font-weight: bold;
+  font-style: italic;
+  border-bottom: 1px solid @default-text-color-light;
+  margin-bottom: 6px;
+  color: @default-text-color-light;
+}
 
 .Work-headerButton {
-  .fa;
+  .m-darken-on-hover;
   cursor: pointer;
-  margin-right: 6px;
+  margin-right: 5px;
 
   &.Work-headerButton--close {
-    &:before {
-      content: @fa-var-close;
-    }
+    .m-icon-close;
   }
 
   &.Work-headerButton--sound {
-    &:before {
-      content: @fa-var-music;
-    }
+    .m-icon-music;
   }
 
   &.Work-headerButton--annotation {
-    &:before {
-      content: @fa-var-pencil-square-o;
-    }
+    .m-icon-pencil-square-o;
   }
 
   &.Work-headerButton--autoColorize {
-    &:before {
-      content: @fa-var-paint-brush;
-    }
+    .m-icon-paint-brush;
   }
 }
 
@@ -42,9 +46,9 @@ av-work {
   vertical-align: middle;
   user-select: none;
   cursor: pointer;
-  height: 48px;
+  height: @work-body-height;
 }
 
 .Work-annotation, .Work-soundPlayer {
-  margin-top: 10px;
+  margin-top: 12px;
 }

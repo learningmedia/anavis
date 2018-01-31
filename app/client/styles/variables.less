@@ -1,0 +1,33 @@
+@import './palettes/colors';
+@import './palettes/typography';
+
+@default-font: caption;
+@default-font-size: @font-size-500;
+@default-text-color: @color-black-darker;
+@default-text-color-light: lighten(@color-black-darker, 15%);
+@default-background-color: @color-grey-100;
+@default-background-color-light: @color-grey-50;
+@default-control-border-color: @color-grey-400;
+@default-control-background-color: lighten(@default-control-border-color, 10%);
+@default-control-highlight-overlay-color: fade(@color-blue-400, 33%);
+
+@default-transition-duration: 0.2s;
+
+@default-glossy-shadow: 0 5px 5px @color-white-light inset, 0 -5px 5px @color-white-light inset;
+
+@default-menu-background-color: @color-grey-200;
+@default-menu-background-color-selected: @color-black-lighter;
+@default-menu-background-color-accent: @color-amber-900;
+@default-menu-border-color: @color-grey-300;
+
+@default-text-container-background-color: @color-grey-200;
+@default-text-container-background-color-alternate: @color-grey-300;
+@default-text-container-border-color: @color-grey-400;
+
+@default-inspector-width-expanded: 200px;
+@default-inspector-width-collapsed: 42px;
+
+@default-notification-height: 150px;
+@default-notification-background-color: @color-green-400;
+@default-notification-color: @color-black-darker;
+@default-notification-opacity: 0.8;

@@ -1,0 +1,88 @@
+@import './font-awesome';
+@import './palettes/colors';
+
+@icon-close-color: @color-red-900;
+@icon-music-color: @color-light-blue-800;
+@icon-pencil-square-o-color: @color-brown-600;
+@icon-paint-brush-color: @color-green-700;
+
+.m-icon {
+  .fa;
+}
+
+.m-icon-close {
+  .m-icon;
+  &:before {
+    content: @fa-var-close;
+    color: @icon-close-color;
+  }
+}
+
+.m-icon-music {
+  .m-icon;
+  transform: translateY(-1px) translateX(-1px);
+  &:before {
+    content: @fa-var-music;
+    color: @icon-music-color;
+  }
+}
+
+.m-icon-pencil-square-o {
+  .m-icon;
+  transform: translateY(1px) translateX(2px);
+  &:before {
+    content: @fa-var-pencil-square-o;
+    color: @icon-pencil-square-o-color;
+  }
+}
+
+.m-icon-paint-brush {
+  .m-icon;
+  transform: translateX(-1px);
+  &:before {
+    content: @fa-var-paint-brush;
+    color: @icon-paint-brush-color;
+  }
+}
+
+.m-icon-mouse-pointer {
+  .m-icon;
+  &:before {
+    content: @fa-var-mouse-pointer;
+  }
+}
+
+.m-icon-unlink {
+  .m-icon;
+  &:before {
+    content: @fa-var-unlink;
+  }
+}
+
+.m-icon-link {
+  .m-icon;
+  &:before {
+    content: @fa-var-link;
+  }
+}
+
+.m-icon-angle-double-right {
+  .m-icon;
+  &:before {
+    content: @fa-var-angle-double-right;
+  }
+}
+
+.m-icon-angle-double-left {
+  .m-icon;
+  &:before {
+    content: @fa-var-angle-double-left;
+  }
+}
+
+.m-darken-on-hover {
+  filter: brightness(120%);
+  &:hover {
+    filter: brightness(100%);
+  }
+}

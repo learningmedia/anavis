@@ -1,4 +1,11 @@
-av-update {
+@import '../styles/variables';
+
+@update-notification-height: @default-notification-height;
+@update-notification-background-color: @default-notification-background-color;
+@update-notification-color: @default-notification-color;
+@update-notification-opacity: @default-notification-opacity;
+
+av-update-notification {
   position: absolute;
   top: 0;
   left: 0;
@@ -6,11 +13,11 @@ av-update {
 }
 
 .Update {
-  height: @update-transition-height;
-  background-color: @update-transition-background-color;
-  opacity: @update-transition-opacity;
-  color: @update-transition-color;
-  margin-top: -@update-transition-height;
+  height: @update-notification-height;
+  background-color: @update-notification-background-color;
+  opacity: @update-notification-opacity;
+  color: @update-notification-color;
+  margin-top: -@update-notification-height;
   display: flex;
   flex-direction: column;
   overflow: hidden;

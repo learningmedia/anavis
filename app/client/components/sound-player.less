@@ -1,4 +1,11 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
 @sound-player-height: 16px;
+@sound-player-border-color: @default-control-border-color;
+@sound-player-background-color: @default-control-background-color;
+@sound-player-progress-bar-color: @default-control-highlight-overlay-color;
+@sound-player-shadow: @default-glossy-shadow;
 
 av-sound-player {
   display: block;
@@ -13,17 +20,18 @@ av-sound-player {
 }
 
 .SoundPlayer-progressGrid {
-  background-color: silver;
-  box-shadow: @default-glossy-shadow;
+  background-color: @sound-player-background-color;
+  box-shadow: @sound-player-shadow;
   height: @sound-player-height;
   position: absolute;
   width: 100%;
   font-size: 8px;
   display: flex;
+  border: 1px solid @sound-player-border-color;
 }
 
 .SoundPlayer-progressGridPart {
-  border-left: 1px black solid;
+  border-left: 1px @sound-player-border-color solid;
   display: block;
 
   &:first-child {
@@ -47,7 +55,7 @@ av-sound-player {
   }
 
   &::-webkit-progress-value {
-    background-color: fade(black, 25%);
+    background-color: @sound-player-progress-bar-color;
   }
 }
 
