@@ -1,3 +1,4 @@
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/learningmedia/anavis.png?columns=all)](https://waffle.io/learningmedia/anavis?utm_source=badge)
 # AnaVis
 
 AnaVis is a tool to visualize musical form.
