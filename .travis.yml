@@ -45,7 +45,7 @@ jobs:
             -v ${PWD}:/project \
             -v ~/.cache/electron:/root/.cache/electron \
             -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-            electronuserland/builder:wine \
+            electronuserland/electron-builder:wine \
             /bin/bash -c "yarn && ./node_modules/.bin/gulp build"
       os: linux
       services: docker
