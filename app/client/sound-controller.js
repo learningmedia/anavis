@@ -2,7 +2,10 @@ const fs = require('fs');
 const ko = require('knockout');
 const utils = require('./utils');
 const intempo = require('intempo');
+const Logger = require('../shared/logger');
 const states = require('./sound-controller-states');
+
+const logger = new Logger(__filename);
 
 function create(path, id) {
   let player;
@@ -47,7 +50,7 @@ function create(path, id) {
         vm.state(states.PAUSING);
         break;
       default:
-        console.error(`Unknown Intempo state: ${newState}`);
+        logger.error(`Unknown Intempo state: ${newState}`);
         vm.state(states.ERROR);
         break;
     }
@@ -55,7 +58,7 @@ function create(path, id) {
 
   function onNewBuffer(err, buffer) {
     if (err) {
-      console.error(err);
+      logger.error(err);
       vm.state(states.ERROR);
       return;
     }
@@ -69,11 +72,11 @@ function create(path, id) {
       .then(p => {
         player = p;
         vm.length(player.duration);
-        vm.state(states.STOPPED)
+        vm.state(states.STOPPED);
       })
       .catch(error => {
-        console.error(error);
-        vm.state(states.ERROR)
+        logger.error(error);
+        vm.state(states.ERROR);
       });
   }
 

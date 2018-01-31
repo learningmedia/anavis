@@ -1,6 +1,9 @@
 const electron = require('electron')
-const { Menu, MenuItem } = electron.remote
+const Logger = require('../shared/logger')
 
+const logger = new Logger(__filename)
+
+const { Menu, MenuItem } = electron.remote
 const menu = new Menu()
 
 // Some default OS items
@@ -15,9 +18,9 @@ menu.append(new MenuItem({type: 'separator'}))
 menu.append(new MenuItem({
   label: 'MenuItem1',
   click (menuItem, browserWindow, event) {
-    console.log('Item 1 clicked')
-    console.log(menuItem)
-    console.log(event) // no event.target available!
+    logger.silly('Item 1 clicked')
+    logger.silly(menuItem)
+    logger.silly(event) // no event.target available!
   }
 }))
 

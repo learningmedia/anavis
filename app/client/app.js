@@ -9,6 +9,7 @@ const { ipcRenderer } = require('electron');
 
 const file = require('./file');
 const events = require('../shared/events');
+const Logger = require('../shared/logger');
 const shortcuts = require('./actions/shortcuts');
 const systemSounds = require('./system-sounds');
 const work = require('./components/work');
@@ -23,6 +24,8 @@ const updateNotification = require('./components/update-notification');
 const partOperations = require('./bindings/part-operations');
 const Messenger = require('../shared/messenger');
 
+const logger = new Logger(__filename);
+
 Messenger.mainWindowInstance = new Messenger('MAIN_WINDOW', ipcRenderer, ipcRenderer);
 
 const LESS_LOG_LEVEL_ERRORS = 1;
@@ -36,7 +39,7 @@ window.less = {
   logLevel: LESS_LOG_LEVEL_ERRORS
 };
 
-require('less/dist/less.js')
+require('less/dist/less.js');
 
 // Enable KO development tools
 window.ko = ko;
@@ -78,10 +81,10 @@ ipcRenderer.on(events.CLOSE_FILE, function () {
 
 Messenger.mainWindowInstance.on(events.REQUEST_TERMINATION, () => {
   return confirm('Echt jetzt?');
-})
+});
 
 ipcRenderer.on('reload-styles', function () {
   window.less.refresh(true)
-    .then(() => console.log('Styles reloaded!'))
-    .catch(err => console.error(err))
+    .then(() => logger.info('Styles reloaded!'))
+    .catch(err => logger.error(err));
 });
