@@ -1,40 +1,39 @@
 'use strict'
 
 const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
+const electronDebug = require('electron-debug');
+const isDev = require('electron-is-dev');
 const defer = require('tiny-defer');
-const path = require('path')
-
-const isLiveReload = process.env.LIVE_RELOAD === 'true';
+const path = require('path');
 
 const Messenger = require('../shared/messenger');
+const Logger = require('../shared/logger');
 const events = require('../shared/events');
 const pkg = require('../../package.json')
 const config = require('../config.json')
 
-// Use system log facility
-require('./lib/log')(pkg.name)
+const isLiveReload = process.env.LIVE_RELOAD === 'true';
+
+const logger = new Logger(__filename);
+
+// Adds debug features like hotkeys for triggering dev tools and reload
+// (disabled in production, unless the menu item is displayed)
+electronDebug({ enabled: isDev })
 
 // Manage unhandled exceptions as early as possible
 process.on('uncaughtException', (error) => {
-  console.error(`Caught unhandled exception: ${error}`)
+  logger.error(error)
   dialog.showErrorBox('Caught unhandled exception', error.message || 'Unknown error message')
   app.quit()
 })
 
-const isDev = (require('electron-is-dev') || config.debug)
 global.appSettings = config
 
 if (isDev) {
-  console.info('Running in development')
+  logger.info('Running in development')
 } else {
-  console.info('Running in production')
+  logger.info('Running in production')
 }
-
-// Adds debug features like hotkeys for triggering dev tools and reload
-// (disabled in production, unless the menu item is displayed)
-require('electron-debug')({
-  enabled: config.debug || isDev || false
-})
 
 // Prevent window being garbage collected
 let mainWindow
@@ -152,7 +151,7 @@ function createMainWindow () {
 
   win.on('unresponsive', function () {
     // In the real world you should display a box and do something
-    console.warn('The window is not responding')
+    logger.warn('The window is not responding')
   })
 
   win.webContents.on('did-fail-load', (error, errorCode, errorDescription) => {
@@ -160,7 +159,7 @@ function createMainWindow () {
 
     if (errorCode === -105) {
       errorMessage = errorDescription || '[Connection Error] The host name could not be resolved, check your network connection'
-      console.log(errorMessage)
+      logger.log(errorMessage)
     } else {
       errorMessage = errorDescription || 'Unknown error'
     }
@@ -173,7 +172,7 @@ function createMainWindow () {
 
   win.webContents.on('crashed', () => {
     // In the real world you should display a box and do something
-    console.error('The browser window has just crashed')
+    logger.error('The browser window has just crashed')
   })
 
   win.webContents.on('did-finish-load', () => {
