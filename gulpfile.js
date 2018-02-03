@@ -1,17 +1,20 @@
-
 const os = require('os');
 const fs = require('fs');
+const del = require('del');
 const path = require('path');
 const gulp = require('gulp');
+const Jimp = require('jimp');
 const gh = require('ghreleases');
-const shell = require('shelljs');
 const semver = require('semver');
 const gutil = require('gulp-util');
+const shelljs = require('shelljs');
 const Dropbox = require('dropbox');
 const mocha = require('gulp-mocha');
+const shell = require('gulp-shell');
 const chokidar = require('chokidar');
 const pkg = require('./package.json');
 const eslint = require('gulp-eslint');
+const runSequence = require('run-sequence');
 const markdownEscape = require('markdown-escape');
 const commitsBetween = require('commits-between');
 const electronConnect = require('electron-connect');
@@ -41,14 +44,17 @@ const buildConfig = {
   productName: isBeta ? 'AnaVis Beta' : 'AnaVis',
   mac: {
     target: [{ target: 'dmg', arch: ['x64'] }],
-    category: 'public.app-category.education'
+    category: 'public.app-category.education',
+    icon: './build/icons/mac/icon.icns'
   },
   linux: {
     target: [{ target: 'AppImage', arch: ['x64'] }],
-    category: 'Education'
+    category: 'Education',
+    icon: './build/icons/png/'
   },
   win: {
-    target: [{ target: 'nsis', arch: ['x64'] }]
+    target: [{ target: 'nsis', arch: ['x64'] }],
+    icon: './build/icons/win/icon.ico'
   },
   dmg: {
     artifactName: artifactNames.osx,
@@ -74,7 +80,9 @@ const buildConfig = {
     artifactName: artifactNames.linux
   },
   publish: null
-}
+};
+
+gulp.task('clean', () => del(['build', 'dist']));
 
 gulp.task('version', () => {
   pkg.version = buildVersion;
@@ -82,7 +90,23 @@ gulp.task('version', () => {
   fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + os.EOL, 'utf8');
 });
 
-gulp.task('build', ['version'], async () => {
+gulp.task('build-dir', () => {
+  shelljs.mkdir('-p', './build/');
+});
+
+gulp.task('icons', ['build-dir'], shell.task('electron-icon-maker --input=./assets/icon.png --output=./build'));
+
+gulp.task('dmg-background', ['build-dir'], done => {
+  return new Jimp(540, 380, 0xBBDEFBFF, (err, image) => err ? done(err) : image.write('./build/background.png', done));
+});
+
+gulp.task('assets', ['icons', 'dmg-background']);
+
+gulp.task('prepare-build', done => {
+  runSequence('clean', 'version', 'assets', done);
+});
+
+gulp.task('build', ['prepare-build'], async () => {
   await electronBuilder.build({
     config: buildConfig,
     mac: isOsx ? ['dmg'] : null,
@@ -110,7 +134,7 @@ gulp.task('release', async () => {
   const latestRelease = await getLatestGithubRelease(githubAuth, 'learningmedia', 'anavis');
   const commits = await commitsBetween({ from: latestRelease.tag_name });
   const releaseNotes = await createReleaseNotes(commits);
-  const release = await createGithubRelease(githubAuth,'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
+  const release = await createGithubRelease(githubAuth, 'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
   await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
 });
 
@@ -188,7 +212,7 @@ function uploadArtifactsToDropbox(fileNames, sourceDir) {
 
 function downloadArtifactsFromDropbox(fileNames, targetDir) {
   const absoluteDir = path.resolve(targetDir);
-  shell.mkdir('-p', absoluteDir);
+  shelljs.mkdir('-p', absoluteDir);
   return Promise.all(fileNames.map(file => downloadFromDropbox(`/${file}`, path.join(absoluteDir, file))));
 }
 

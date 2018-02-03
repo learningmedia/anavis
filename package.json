@@ -55,19 +55,23 @@
   "devDependencies": {
     "chokidar": "~2.0.0",
     "commits-between": "~0.2.0",
+    "del": "~3.0.0",
     "dropbox": "~2.5.13",
     "electron": "~1.7.10",
     "electron-builder": "~19.50.0",
     "electron-connect": "~0.6.2",
+    "electron-icon-maker": "~0.0.4",
     "expect.js": "~0.3.1",
     "extract-zip": "~1.6.6",
     "ghreleases": "~1.0.6",
     "gulp": "~3.9.1",
     "gulp-eslint": "~4.0.0",
     "gulp-mocha": "~5.0.0",
+    "gulp-shell": "~0.6.5",
     "gulp-util": "~3.0.8",
     "markdown-escape": "~1.0.2",
     "mockery": "~2.1.0",
+    "run-sequence": "~2.2.1",
     "shelljs": "~0.7.8"
   }
 }
