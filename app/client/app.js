@@ -23,6 +23,7 @@ const checkbox = require('./components/checkbox');
 const updateNotification = require('./components/update-notification');
 const partOperations = require('./bindings/part-operations');
 const Messenger = require('../shared/messenger');
+const splashScreen = require('./components/splash-screen');
 
 const logger = new Logger(__filename);
 
@@ -48,7 +49,7 @@ window.ko = ko;
 [fileDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, part, inspector, soundPlayer, annotation, checkbox, updateNotification].forEach(component => component.register());
+[work, part, inspector, soundPlayer, annotation, checkbox, updateNotification, splashScreen].forEach(component => component.register());
 
 // Add specific functions to the app vm:
 appViewModel.onFileDropped = files => {

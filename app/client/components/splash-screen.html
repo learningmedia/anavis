@@ -1,0 +1,16 @@
+<div class="SplashScreen" data-bind="css: { 'SplashScreen--hidden': isHidden }">
+  <div class="SplashScreen-header">
+    <h1 class="SplashScreen-headerTitle" data-bind="text: anaVis"></h1>
+    <span class="SplashScreen-closeButton" data-bind="click: onClose"></span>
+  </div>
+  <div class="SplashScreen-content">
+    <div class="SplashScreen-contentRow">
+      <button class="SplashScreen-buttonIcon SplashScreen-buttonIcon--new" data-bind="click: onCreate">&nbsp;&nbsp;&nbsp;neue Datei</button>
+      <span class="SplashScreen-separator"></span>
+      <button class="SplashScreen-buttonIcon SplashScreen-buttonIcon--open" data-bind="click: onOpen">&nbsp;&nbsp;&nbsp;Datei öffnen...</button>
+    </div>
+  </div>
+  <div class="SplashScreen-footer">
+    <p>MIT Andreas Helmberger und Ulrich Kaiser</p>
+  </div>
+</div>

@@ -1,3 +1,5 @@
+// https://fontawesome.com/icons?d=gallery&m=free
+
 @import './font-awesome';
 @import './palettes/colors';
 
@@ -84,5 +86,23 @@
   filter: brightness(120%);
   &:hover {
     filter: brightness(100%);
+  }
+}
+
+.m-icon-file-open {
+  .m-icon;
+  &:before {
+    content: @fa-var-file;
+    font-size: 20px;
+    color: @color-yellow-900;
+  }
+}
+
+.m-icon-file-new {
+  .m-icon;
+  &:before {
+    content: @fa-var-file;
+    font-size: 20px;
+    color: @color-light-blue-600;
   }
 }
