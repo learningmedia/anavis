@@ -6,6 +6,9 @@
     <link rel="stylesheet/less" href="./main.less" />
   </head>
   <body class="App" data-bind="css: 'u-' + $data.currentTool(), fileDrop: onFileDropped">
+    <section>
+      <av-splash-screen></av-splash-screen>
+    </section>
     <section class="App-workspace">
       <aside class="App-toolbar">
         <av-toolbar params="app: $data"></av-toolbar>

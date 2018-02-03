@@ -1,0 +1,91 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+@splash-screen-background-color: @default-menu-background-color;
+@splash-screen-border-color: @default-menu-border-color;
+@splash-screen-header-background-color: @default-menu-background-color-selected;
+@splash-screen-footer-background-color: @default-menu-background-color-blank;
+
+av-splash-screen {
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.SplashScreen {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 50%;
+  height: 100%;
+  padding: 0;
+  &.SplashScreen--hidden {
+    display: none;
+  }
+}
+
+.SplashScreen-header {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid @splash-screen-border-color;
+  border-bottom: 0;
+  padding: 12px 0;
+  background-color: @splash-screen-header-background-color;
+}
+
+.SplashScreen-headerTitle {
+  margin: 0;
+  padding-left: 160px;
+}
+
+.SplashScreen-closeButton {
+  .m-icon-close;
+  .m-darken-on-hover;
+  padding-right: 12px;
+  cursor: pointer;
+}
+
+.SplashScreen-content {
+  display: flex;
+  flex: 1 0 0%;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid @splash-screen-border-color;
+  border-bottom: 0;
+  background-color: @splash-screen-background-color;
+}
+
+.SplashScreen-contentRow {
+  flex: 1 0 0%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.SplashScreen-buttonIcon {
+  border: 0;
+  background-color: @splash-screen-background-color;
+  padding-top: 20px;
+  &.SplashScreen-buttonIcon--new {
+    .m-icon-file-new;
+  }
+  &.SplashScreen-buttonIcon--open {
+    .m-icon-file-open;
+  }
+}
+
+.SplashScreen-separator {
+  padding: 1px;
+  background-color: @splash-screen-border-color;
+}
+
+.SplashScreen-footer {
+  flex: none;
+  text-align: center;
+  padding: 0 12px;
+  background-color: @splash-screen-footer-background-color;
+  border: 1px solid @splash-screen-border-color;
+}
