@@ -4,10 +4,19 @@
     <span class="SplashScreen-closeButton" data-bind="click: onClose"></span>
   </div>
   <div class="SplashScreen-content">
-    <div class="SplashScreen-contentRow">
-      <button class="SplashScreen-buttonIcon SplashScreen-buttonIcon--new" data-bind="click: onCreate">&nbsp;&nbsp;&nbsp;neue Datei</button>
-      <span class="SplashScreen-separator"></span>
-      <button class="SplashScreen-buttonIcon SplashScreen-buttonIcon--open" data-bind="click: onOpen">&nbsp;&nbsp;&nbsp;Datei öffnen...</button>
+    <div class="SplashScreen-actions">
+      <button class="SplashScreen-button" data-bind="click: onCreate">
+        <span class="SplashScreen-buttonIcon SplashScreen-buttonIcon--new"></span>&nbsp;&nbsp;&nbsp;neue Datei</button>
+      <br>
+      <button class="SplashScreen-button" data-bind="click: onOpen">
+        <span class="SplashScreen-buttonIcon SplashScreen-buttonIcon--open"></span>&nbsp;&nbsp;&nbsp;Datei öffnen...</button>
+    </div>
+    <span class="SplashScreen-separator"></span>
+    <div class="SplashScreen-recentUsedFiles">
+      <p>Zuletzt geöffnet:</p>
+      <ul data-bind="foreach: { data: recentUsedFiles, as: 'file' }">
+        <li><a data-bind="text: $parent.getFilename(file), click: $parent.onOpenRecentFile"></a></li>
+      </ul>
     </div>
   </div>
   <div class="SplashScreen-footer">

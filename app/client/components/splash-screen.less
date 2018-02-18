@@ -51,23 +51,26 @@ av-splash-screen {
 .SplashScreen-content {
   display: flex;
   flex: 1 0 0%;
-  align-items: flex-start;
+  flex-direction: row;
   padding: 12px;
   border: 1px solid @splash-screen-border-color;
   border-bottom: 0;
   background-color: @splash-screen-background-color;
 }
 
-.SplashScreen-contentRow {
+.SplashScreen-actions {
   flex: 1 0 0%;
-  display: flex;
-  justify-content: space-around;
-  padding-top: 20px;
+  margin-left: 20px;
+}
+
+.SplashScreen-button {
+  background: none;
+  border: none;
+  outline: none;
 }
 
 .SplashScreen-buttonIcon {
-  border: 0;
-  background-color: @splash-screen-background-color;
+  display: block;
   padding-top: 20px;
   &.SplashScreen-buttonIcon--new {
     .m-icon-file-new;
@@ -78,8 +81,14 @@ av-splash-screen {
 }
 
 .SplashScreen-separator {
-  padding: 1px;
+  flex: none;
+  width: 2px;
   background-color: @splash-screen-border-color;
+}
+
+.SplashScreen-recentUsedFiles {
+  flex: 1 0 0%;
+  padding-left: 20px;
 }
 
 .SplashScreen-footer {

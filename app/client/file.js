@@ -13,6 +13,7 @@ const defaultDocument = require('./default-document');
 const avdReader = require('./mappings/avd-reader');
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
+const config = require('../shared/config');
 
 function create() {
   const unzipDir = utils.createTempDirectoryName();
@@ -36,12 +37,14 @@ function open() {
   });
 }
 
-function openAll(paths) {
-  paths.forEach(path => {
-    openDocument(path, function (error, doc, unzipDir) {
-      openWork(doc, unzipDir, path);
-    });
+function openSingle(path) {
+  openDocument(path, function (error, doc, unzipDir) {
+    openWork(doc, unzipDir, path);
   });
+}
+
+function openAll(paths) {
+  paths.forEach(path => openSingle(path));
 }
 
 function openWork(doc, unzipDir, zipFileName) {
@@ -60,6 +63,9 @@ function openWork(doc, unzipDir, zipFileName) {
     if (!workVm._.isDirty.silent) workVm._.isDirty(true);
   });
   appViewModel.works.push(workVm);
+  if (zipFileName) {
+    config.pushValue('recentUsedFiles', zipFileName);
+  }
 }
 
 function save(cb) {
@@ -113,6 +119,7 @@ function saveWork(work, cb) {
         work._.isDirty.silent = true;
         work._.isDirty(false);
         work._.isDirty.silent = false;
+        config.pushValue('recentUsedFiles', zipFileName);
         return cb && cb();
       });
     });
@@ -189,4 +196,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-module.exports = { create, open, openAll, save, close };
+module.exports = { create, open, openSingle, openAll, save, close };
