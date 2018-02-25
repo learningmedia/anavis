@@ -11,20 +11,14 @@ function viewModel(params) {
   const vm = {
     anaVis: `${pkg.productName} ${pkg.version}`,
     recentUsedFiles: ko.observableArray(config.getValue('recentUsedFiles').slice().reverse()),
-    onClose: () => {
-      params.app.isSplashScreenVisible(false);
-    },
     onOpen: () => {
       file.open();
-      params.app.isSplashScreenVisible(false);
     },
     onCreate: () => {
       file.create();
-      params.app.isSplashScreenVisible(false);
     },
     onOpenRecentFile: (recentFile) => {
       file.openSingle(recentFile);
-      params.app.isSplashScreenVisible(false);
     },
     getFilename: (file) => {
       return path.basename(file);
