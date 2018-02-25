@@ -74,6 +74,9 @@ function viewModel(params) {
           fs.unlinkSync(sourceFileName);
         }
       });
+    },
+    dispose: function () {
+      sound().stop();
     }
   };
 }
