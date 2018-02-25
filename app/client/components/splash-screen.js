@@ -7,25 +7,24 @@ const config = require('../../shared/config');
 
 const template = fs.readFileSync(`${__dirname}/splash-screen.html`, 'utf8');
 
-function viewModel() {
+function viewModel(params) {
   const vm = {
     anaVis: `${pkg.productName} ${pkg.version}`,
     recentUsedFiles: ko.observableArray(config.getValue('recentUsedFiles').slice().reverse()),
-    isHidden: ko.observable(false),
     onClose: () => {
-      vm.isHidden(true);
+      params.app.isSplashScreenVisible(false);
     },
     onOpen: () => {
       file.open();
-      vm.isHidden(true);
+      params.app.isSplashScreenVisible(false);
     },
     onCreate: () => {
       file.create();
-      vm.isHidden(true);
+      params.app.isSplashScreenVisible(false);
     },
     onOpenRecentFile: (recentFile) => {
       file.openSingle(recentFile);
-      vm.isHidden(true);
+      params.app.isSplashScreenVisible(false);
     },
     getFilename: (file) => {
       return path.basename(file);
