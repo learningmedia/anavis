@@ -143,8 +143,6 @@ function register() {
   };
 }
 
-////// TODO EXTRACT ///////////////////////////////
-
 function splitPart(work, partIndex, splitPoint) {
   const oldPartsArray = work.parts();
   const partToSplit = oldPartsArray[partIndex];
@@ -184,4 +182,4 @@ function newId() {
   return uuid.v4();
 }
 
-module.exports = { register };
+module.exports = { register, splitPart, mergeParts, clonePart };
