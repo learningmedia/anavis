@@ -12,41 +12,31 @@ module.exports = class CutWorkHandler {
   onKeyDown() {}
 
   onKeyUp() {
-    const lengthOfParts = this.appViewModel.currentWork().parts().reduce((sum, part) => {
+    const firstPlayingController = handlerHelper.getFirstPlayingSoundController();
+    const currentWork = this.appViewModel.currentWork();
+    if (!firstPlayingController || !currentWork) return;
+
+    const workIndex = this.appViewModel.works().indexOf(currentWork);
+    const factor = firstPlayingController.sound().position() / firstPlayingController.sound().length();
+    const parts = this.appViewModel.currentWork().parts();
+    const lengthOfParts = parts.reduce((sum, part) => {
       return sum + part.length();
     }, 0);
-    const firstPlayingController = handlerHelper.getFirstPlayingSoundController()
-    if (firstPlayingController) {
-      const factor = firstPlayingController.sound().position() / firstPlayingController.sound().length();
-      const splitPoint = lengthOfParts * factor;
+    const splitPoint = lengthOfParts * factor;
 
-      const parts = this.appViewModel.currentWork().parts();
-      if(splitPoint < parts[0].length()) {
-        partOperations.splitPart(this.appViewModel.currentWork(), 0, splitPoint);
-      }
-      // let index = 1;
-      // let currentPartsLength = 0;
-      // let lookUp = 0;
-      // for (var i = 1; i < parts.length; i++) {
+    let splitPartIndex = 0;
+    let lengthOfPartsWithoutSplitPart = 0;
+    let lengthOfCurrentPart = 0;
 
-      // }
-      // let part = parts[index];
-      // let partSplitPoint = splitPoint - currentPartsLength;
-      // let s = `Index: ${index}, CurrentPartsLength: ${currentPartsLength}, partSplitPoint: ${partSplitPoint}`;
-      // console.log(s);
-      // partOperations.splitPart(this.appViewModel.currentWork(), index, partSplitPoint);
-      return;
+    for (let i = 0; i < parts.length; i++) {
+      lengthOfCurrentPart = parts[i].length();
+      splitPartIndex = i;
+      if (lengthOfPartsWithoutSplitPart + lengthOfCurrentPart > splitPoint) break;
+      lengthOfPartsWithoutSplitPart += lengthOfCurrentPart;
     }
 
-    const firstPlayableController = handlerHelper.getFirstPlayableSoundControllerOfCurrentWork() || handlerHelper.getFirstPlayableSoundController(handlerHelper.getCurrentWorkId(this.appViewModel));
-    if (firstPlayableController) {
-      console.log(firstPlayableController.sound().position());
-      // console.log(this.appViewModel.currentWork().parts().reduce((acc, cv) => {
-      //   acc + cv;
-      // }));
-    }
+    let partSplitPoint = splitPoint - lengthOfPartsWithoutSplitPart;
+    partOperations.splitPart(this.appViewModel.currentWork(), splitPartIndex, partSplitPoint);
+    this.appViewModel.currentPart(this.appViewModel.works()[workIndex].parts()[splitPartIndex + 1]);
   }
 }
-// splitPart(work, partIndex, splitPoint)
-// mergeParts(work, leftIndex, rightIndex)
-// clonePart(part)

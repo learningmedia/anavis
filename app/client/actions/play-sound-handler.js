@@ -16,7 +16,7 @@ module.exports = class PlaySoundHandler {
       return;
     }
 
-    const firstPlayableController = handlerHelper.getFirstPlayableSoundControllerOfCurrentWork() || handlerHelper.getFirstPlayableSoundController(handlerHelper.getCurrentWorkId(this.appViewModel));
+    const firstPlayableController = handlerHelper.getFirstPlayableSoundControllerOfCurrentWork(this.appViewModel) || handlerHelper.getFirstPlayableSoundController();
     if (firstPlayableController) {
       firstPlayableController.onStartClick();
     }
