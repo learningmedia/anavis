@@ -1,5 +1,6 @@
 const ToolHandler = require('./tool-handler');
 const PlaySoundHandler = require('./play-sound-handler');
+const CutWorkHandler = require('./cut-work-handler')
 const SelectWithArrowsHandler = require('./select-with-arrows-handler');
 const tools = require('../../shared/tools');
 
@@ -8,6 +9,7 @@ function register(element, appViewModel) {
   shortcuts.set('N', new ToolHandler(appViewModel, tools.DEFAULT));
   shortcuts.set('S', new ToolHandler(appViewModel, tools.SCISSORS));
   shortcuts.set('K', new ToolHandler(appViewModel, tools.GLUE));
+  shortcuts.set('C', new CutWorkHandler(appViewModel));
   shortcuts.set(' ', new PlaySoundHandler(appViewModel));
   shortcuts.set('Up', new SelectWithArrowsHandler(appViewModel, 'up'));
   shortcuts.set('Down', new SelectWithArrowsHandler(appViewModel, 'down'));

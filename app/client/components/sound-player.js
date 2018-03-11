@@ -2,15 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const ko = require('knockout');
 const { remote } = require('electron');
-
 const soundController = require('../sound-controller');
+const platformHelper = require('../common/platform-helper');
 
 const template = fs.readFileSync(`${__dirname}/sound-player.html`, 'utf8');
 
-const platformHelper = require('../common/platform-helper');
-
 function viewModel(params) {
-  const sound = ko.observable(soundController.create(params.sound.path()));
+  const sound = params.sound._.controller;
 
   return {
     sound,

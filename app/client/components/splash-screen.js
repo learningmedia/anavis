@@ -7,7 +7,7 @@ const config = require('../../shared/config');
 
 const template = fs.readFileSync(`${__dirname}/splash-screen.html`, 'utf8');
 
-function viewModel(params) {
+function viewModel() {
   const vm = {
     anaVis: `${pkg.productName} ${pkg.version}`,
     recentUsedFiles: ko.observableArray(config.getValue('recentUsedFiles').slice().reverse()),

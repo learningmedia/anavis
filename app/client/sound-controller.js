@@ -7,6 +7,8 @@ const states = require('./sound-controller-states');
 
 const logger = new Logger(__filename);
 
+const audioContext = new AudioContext();
+
 function create(path, id) {
   let player;
   const vm = {};
@@ -65,6 +67,7 @@ function create(path, id) {
 
     utils.blobToBuffer(new Blob([buffer]))
       .then(arrbuf => intempo.loadPlayer({
+        audioContext: audioContext,
         arraybuffer: arrbuf,
         stateChangedCallback: onIntempoStateChanged,
         positionChangedCallback: vm.position
