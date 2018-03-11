@@ -10,6 +10,7 @@ const utils = require('./utils');
 const folderZip = require('./common/folder-zip');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
+const soundController = require('./sound-controller');
 const avdReader = require('./mappings/avd-reader');
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
@@ -62,6 +63,11 @@ function openWork(doc, unzipDir, zipFileName) {
   ko.computed(() => ko.toJS(workVm)).subscribe(() => {
     if (!workVm._.isDirty.silent) workVm._.isDirty(true);
   });
+  workVm.sounds().forEach(s => {
+    s._ = {
+      controller: ko.observable(soundController.create(s.path()))
+    };
+  })
   appViewModel.works.push(workVm);
   if (zipFileName) {
     config.pushValue('recentUsedFiles', zipFileName);
@@ -109,6 +115,7 @@ function saveWork(work, cb) {
     const workJson = JSON.parse(ko.toJSON(work));
     delete workJson['_'];
     workJson.sounds.forEach(s => {
+      delete s['_'];
       if (s.embedded) s.path = path.relative(workingDirectory, s.path);
       else s.path = path.relative(path.dirname(zipFileName), s.path);
     });

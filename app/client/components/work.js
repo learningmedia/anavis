@@ -5,8 +5,9 @@ const ko = require('knockout');
 const { remote } = require('electron');
 const file = require('../file');
 const systemSounds = require('../system-sounds');
-
+const soundController = require('../sound-controller');
 const autoColorizer = require('../actions/auto-colorizer');
+
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
 
 const allowedSoundExtensions = ['.mp3', '.ogg', '.wav'];
@@ -42,7 +43,7 @@ function viewModel(params) {
       const filePaths = files.map(f => f.path);
       const extensions = filePaths.map(p => (path.extname(p) || '').toLowerCase());
       if (extensions.some(ext => !allowedSoundExtensions.includes(ext))) return systemSounds.beep();
-      vm.work.sounds.push.apply(vm.work.sounds, filePaths.map(p => ({ path: ko.observable(p), embedded: ko.observable(false) })));
+      vm.work.sounds.push.apply(vm.work.sounds, filePaths.map(p => createSound(p)));
     },
     onClose: () => {
       file.close(vm.work);
@@ -50,6 +51,16 @@ function viewModel(params) {
   };
 
   return vm;
+}
+
+function createSound(path) {
+  return {
+    path: ko.observable(path),
+    embedded: ko.observable(false),
+    _: {
+      controller: ko.observable(soundController.create(path))
+    }
+  };
 }
 
 function openSoundDialog(cb) {

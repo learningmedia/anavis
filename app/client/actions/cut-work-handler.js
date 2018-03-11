@@ -1,8 +1,4 @@
-const ko = require('knockout');
-const states = require('../sound-controller-states');
-const handlerHelper = require('./handler-helper');
 const partOperations = require('../bindings/part-operations');
-
 
 module.exports = class CutWorkHandler {
   constructor(appViewModel) {
@@ -12,13 +8,13 @@ module.exports = class CutWorkHandler {
   onKeyDown() {}
 
   onKeyUp() {
-    const firstPlayingController = handlerHelper.getFirstPlayingSoundController();
-    const currentWork = this.appViewModel.currentWork();
-    if (!firstPlayingController || !currentWork) return;
+    const soundInfo = this.appViewModel.firstPlayingSoundInfo();
+    if (!soundInfo) return;
 
-    const workIndex = this.appViewModel.works().indexOf(currentWork);
-    const factor = firstPlayingController.sound().position() / firstPlayingController.sound().length();
-    const parts = this.appViewModel.currentWork().parts();
+    const controller = soundInfo.sound._.controller();
+    const work = soundInfo.work;
+    const factor = controller.position() / controller.length();
+    const parts = work.parts();
     const lengthOfParts = parts.reduce((sum, part) => {
       return sum + part.length();
     }, 0);
@@ -36,7 +32,6 @@ module.exports = class CutWorkHandler {
     }
 
     let partSplitPoint = splitPoint - lengthOfPartsWithoutSplitPart;
-    partOperations.splitPart(this.appViewModel.currentWork(), splitPartIndex, partSplitPoint);
-    this.appViewModel.currentPart(this.appViewModel.works()[workIndex].parts()[splitPartIndex + 1]);
+    partOperations.splitPart(work, splitPartIndex, partSplitPoint);
   }
 }

@@ -1,5 +1,3 @@
-const ko = require('knockout');
-const states = require('../sound-controller-states');
 const handlerHelper = require('./handler-helper');
 
 module.exports = class PlaySoundHandler {
@@ -10,15 +8,15 @@ module.exports = class PlaySoundHandler {
   onKeyDown() {}
 
   onKeyUp() {
-    const firstPlayingController = handlerHelper.getFirstPlayingSoundController()
+    const firstPlayingController = handlerHelper.getFirstPlayingSoundController(this.appViewModel)
     if (firstPlayingController) {
-      firstPlayingController.onPauseClick();
+      firstPlayingController.pause();
       return;
     }
 
-    const firstPlayableController = handlerHelper.getFirstPlayableSoundControllerOfCurrentWork(this.appViewModel) || handlerHelper.getFirstPlayableSoundController();
+    const firstPlayableController = handlerHelper.getFirstPlayableSoundControllerOfCurrentWork(this.appViewModel) || handlerHelper.getFirstPlayableSoundController(this.appViewModel);
     if (firstPlayableController) {
-      firstPlayableController.onStartClick();
+      firstPlayableController.start();
     }
   }
 }
