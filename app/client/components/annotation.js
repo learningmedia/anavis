@@ -4,11 +4,13 @@ const ko = require('knockout');
 const template = fs.readFileSync(`${__dirname}/annotation.html`, 'utf8');
 
 function viewModel(params) {
+  const subscriptions = [];
+
   const valuesPerPart = params.parts()
     .map((part, index) => {
       return {
         part: part,
-        text: ko.observable(ko.unwrap(params.annotation.values()[index]))
+        text: createTextObservable(ko.unwrap(params.annotation.values()[index]))
       };
     })
     .reduce((table, item) => {
@@ -20,7 +22,7 @@ function viewModel(params) {
     return params.parts().map(part => {
       let text = valuesPerPart[part.id()];
       if (!text) {
-        text = ko.observable('');
+        text = createTextObservable('');
         valuesPerPart[part.id()] = text;
       }
 
@@ -31,9 +33,20 @@ function viewModel(params) {
     })
   });
 
+  function createTextObservable(initialValue) {
+    const text = ko.observable(initialValue);
+    subscriptions.push(text.subscribe(copyValuesFromTuplesToAnnotation));
+    return text;
+  }
+
+  function copyValuesFromTuplesToAnnotation() {
+    params.annotation.values(params.parts().map(part => valuesPerPart[part.id()]()));
+  }
+
   return {
     tuples: tuples,
-    onBlur: (vm, event) => event.target.scrollTop = 0
+    onBlur: (vm, event) => event.target.scrollTop = 0,
+    dispose: () => subscriptions.forEach(sub => sub.dispose())
   };
 }
 
