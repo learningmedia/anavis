@@ -13,8 +13,8 @@
     <span class="SplashScreen-separator"></span>
     <div class="SplashScreen-recentUsedFiles">
       <p>Zuletzt geöffnet:</p>
-      <ul data-bind="foreach: { data: recentUsedFiles, as: 'file' }">
-        <li><a data-bind="text: $parent.getFilename(file), click: $parent.onOpenRecentFile"></a></li>
+      <ul class="SplashScreen-lastEntries" data-bind="foreach: { data: recentUsedFiles, as: 'file' }">
+        <li><a class="SplashScreen-entryLink" data-bind="text: $parent.getFilename(file), click: $parent.onOpenRecentFile, attr: { title: file }"></a></li>
       </ul>
     </div>
   </div>

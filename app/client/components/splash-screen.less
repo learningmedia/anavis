@@ -77,6 +77,20 @@ av-splash-screen {
 .SplashScreen-recentUsedFiles {
   flex: 1 0 0%;
   padding-left: 20px;
+  min-width: 0;
+  overflow-y: scroll;
+}
+
+.SplashScreen-entryLink {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;  
+}
+
+.SplashScreen-lastEntries {
+  list-style: none;
+  padding-left: 0;
 }
 
 .SplashScreen-footer {

@@ -10,7 +10,7 @@ const template = fs.readFileSync(`${__dirname}/splash-screen.html`, 'utf8');
 function viewModel() {
   const vm = {
     anaVis: `${pkg.productName} ${pkg.version}`,
-    recentUsedFiles: ko.observableArray(config.getValue('recentUsedFiles').slice().reverse()),
+    recentUsedFiles: ko.observableArray(config.getValue('recentUsedFiles').slice(-100).reverse()),
     onOpen: () => {
       file.open();
     },
@@ -21,7 +21,7 @@ function viewModel() {
       file.openSingle(recentFile);
     },
     getFilename: (file) => {
-      return path.basename(file);
+      return path.basename(file).replace(/\.avd$/i, '');
     }
   };
 
