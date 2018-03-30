@@ -106,3 +106,44 @@
     color: @color-light-blue-600;
   }
 }
+
+.m-icon-wrench {
+  .m-icon;
+  &:before {
+    content: @fa-var-wrench;
+    font-size: 20px;
+    color: @color-light-blue-600;
+  }
+}
+
+.m-bubble(@arrow-size, @background-color, @border-color) {
+  position: relative;
+  background: @background-color;
+  border: 1px solid @border-color;
+
+  &:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 @arrow-size @arrow-size;
+    border-color: @background-color transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -@arrow-size;
+    left: @arrow-size;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 @arrow-size @arrow-size;
+    border-color: @border-color transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    top: -(@arrow-size + 1px);
+    left: @arrow-size;
+  }
+}

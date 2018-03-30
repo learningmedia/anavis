@@ -1,0 +1,34 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+@arrow-size: 5px;
+@background-color: @default-background-color-light;
+@border-color: @default-flyout-menu-border-color;
+
+av-flyout-menu {
+  display: block;
+}
+
+.FlyoutMenu {
+  width: 20px;
+}
+
+.FlyoutMenu-trigger {
+  .m-icon-wrench;
+  .m-darken-on-hover;
+  cursor: pointer;
+}
+
+.FlyoutMenu-flyoutContainer {
+  position: relative;
+  height: 0px;
+}
+
+.FlyoutMenu-flyout {
+  .m-bubble(@arrow-size, @background-color, @border-color);
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  box-shadow: 2px 2px 5px 0px @default-flyout-menu-shadow-color;
+  padding: 5px 2px;
+}

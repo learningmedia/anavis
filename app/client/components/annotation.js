@@ -4,6 +4,7 @@ const ko = require('knockout');
 const template = fs.readFileSync(`${__dirname}/annotation.html`, 'utf8');
 
 function viewModel(params) {
+  const work = params.work;
   const subscriptions = [];
 
   const valuesPerPart = params.parts()
@@ -43,9 +44,14 @@ function viewModel(params) {
     params.annotation.values(params.parts().map(part => valuesPerPart[part.id()]()));
   }
 
+  function deleteAnnotation() {
+    work.annotations.remove(params.annotation);
+  }
+
   return {
     tuples: tuples,
     onBlur: (vm, event) => event.target.scrollTop = 0,
+    onDeleteClick: () => deleteAnnotation(),
     dispose: () => subscriptions.forEach(sub => sub.dispose())
   };
 }

@@ -10,9 +10,11 @@
     <div class="SoundPlayer-progressGrid" data-bind="foreach: { data: parts, as: 'part' }">
       <span class="SoundPlayer-progressGridPart" data-bind="style: { flex: part.length }"></span>
     </div>
-    <progress class="SoundPlayer-progress" data-bind="attr: { max: sound().length, value: sound().position }, click: onProgressClick">
+    <progress class="SoundPlayer-progress" data-bind="attr: { max: sound().length, value: sound().position }, click: onProgressClick"></progress>
   </div>
-  </progress>
+  <av-flyout-menu class="SoundPlayer-flyOutMenu">
+    <av-flyout-menu-item params="label: 'Löschen', onClick: onDeleteClick"></av-flyout-menu-item>
+  </av-flyout-menu>
   <div class="SoundPlayer-controller">
     <button data-bind="click: onStartClick">Start</button>
     <button data-bind="click: onStopClick">Stopp</button>

@@ -8,6 +8,7 @@
 @default-background-color: @color-grey-100;
 @default-background-color-light: @color-grey-50;
 @default-control-border-color: @color-grey-400;
+@default-control-border-color-dark: @color-grey-600;
 @default-control-background-color: lighten(@default-control-border-color, 10%);
 @default-control-highlight-overlay-color: fade(@color-blue-400, 33%);
 
@@ -32,3 +33,10 @@
 @default-notification-background-color: @color-green-400;
 @default-notification-color: @color-black-darker;
 @default-notification-opacity: 0.8;
+
+@default-flyout-menu-border-color: @default-control-border-color-dark;
+@default-flyout-menu-shadow-color: @color-black-dark;
+@default-flyout-menu-background-color: @default-background-color-light;
+@default-flyout-menu-background-color-hover: darken(@default-background-color-light, 10);
+
+@default-flyout-menu-indent: -6px;

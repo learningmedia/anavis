@@ -1,3 +1,8 @@
-<div class="Annotation" data-bind="foreach: { data: tuples, as: 'tuple' }">
-  <textarea class="Annotation-value" rows="1" data-bind="style: { flex: tuple.length }, event: { blur: $component.onBlur }, value: tuple.text"></textarea>
+<div class="Annotation">
+  <div class="Annotation-values" data-bind="foreach: { data: tuples, as: 'tuple' }">
+    <textarea class="Annotation-value" rows="1" data-bind="style: { flex: tuple.length }, event: { blur: $component.onBlur }, value: tuple.text"></textarea>
+  </div>
+  <av-flyout-menu class="Annotation-flyOutMenu">
+    <av-flyout-menu-item params="label: 'Löschen', onClick: onDeleteClick"></av-flyout-menu-item>
+  </av-flyout-menu>
 </div>
