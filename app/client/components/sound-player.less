@@ -6,12 +6,14 @@
 @sound-player-background-color: @default-control-background-color;
 @sound-player-progress-bar-color: @default-control-highlight-overlay-color;
 @sound-player-shadow: @default-glossy-shadow;
+@sound-player-flyout-menu: @default-flyout-menu-indent;
 
 av-sound-player {
   display: block;
 }
 
 .SoundPlayer {
+  position: relative;
 }
 
 .SoundPlayer-progressContainer {
@@ -58,6 +60,11 @@ av-sound-player {
   &::-webkit-progress-value {
     background-color: @sound-player-progress-bar-color;
   }
+}
+
+.SoundPlayer-flyOutMenu {
+  position: absolute;
+  top: @sound-player-flyout-menu;
 }
 
 .SoundPlayer-controller {

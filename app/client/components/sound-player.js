@@ -73,10 +73,15 @@ function viewModel(params) {
         }
       });
     },
+    onDeleteClick: () => deleteSound(params.work, params.sound),
     dispose: function () {
       sound().stop();
     }
   };
+}
+
+function deleteSound(work, sound){
+  work.sounds.remove(sound);
 }
 
 function copyFileSync(srcFile, destFile) {

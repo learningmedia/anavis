@@ -11,7 +11,7 @@
     <av-part params="app: $parent.app, work: $parent.work, part: part" data-bind="style: { flex: part.length }"></av-part>
   </div>
   <!-- ko foreach: { data: annotations, as: 'annotation' } -->
-  <av-annotation class="Work-annotation" params="annotation: annotation, parts: $parent.parts"></av-annotation>
+  <av-annotation class="Work-annotation" params="annotation: annotation, parts: $parent.parts, work: $parent.work"></av-annotation>
   <!-- /ko -->
   <!-- ko foreach: { data: sounds, as: 'sound' } -->
   <av-sound-player class="Work-soundPlayer" params="sound: sound, work: $parent.work"></av-sound-player>

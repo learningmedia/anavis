@@ -4,16 +4,26 @@
 @annotation-border-color: @default-text-container-border-color;
 @annotation-background-color: @default-text-container-background-color;
 @annotation-background-color-alternate: @default-text-container-background-color-alternate;
+@annotation-flyout-menu: @default-flyout-menu-indent;
 
 av-annotation {
   display: block;
 }
 
 .Annotation {
-  display: flex;
   width: 100%;
-  overflow: auto;
+  position: relative;
+}
+
+.Annotation-flyOutMenu {
+  position: absolute;
+  top: @annotation-flyout-menu;
+}
+
+.Annotation-values {
   border: 1px solid @annotation-border-color;
+  overflow: auto;
+  display: flex;
 }
 
 .Annotation-value {
