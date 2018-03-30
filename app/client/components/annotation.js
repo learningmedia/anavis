@@ -46,6 +46,7 @@ function viewModel(params) {
   return {
     tuples: tuples,
     onBlur: (vm, event) => event.target.scrollTop = 0,
+    onDeleteClick: () => console.log('Gelöscht'),
     dispose: () => subscriptions.forEach(sub => sub.dispose())
   };
 }
