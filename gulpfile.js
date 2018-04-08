@@ -145,6 +145,8 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
+gulp.task('serve', shell.task('electron app/server/main.js'));
+
 gulp.task('test', () => {
   return gulp.src(['**/*.spec.js', '!node_modules/**'], { read: false })
     .pipe(mocha({ require: './test-helper' }));

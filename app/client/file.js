@@ -81,14 +81,19 @@ function save(cb) {
   if (appViewModel.works().length === 1) {
     return saveWork(appViewModel.works()[0], cb);
   }
+  saveAll(cb);
+}
+
+function saveAll(cb) {
   const workInfos = appViewModel.works().map(work => ({
     id: work.id(),
     name: work.name() + (work._.zipFileName() ? ` - ${work._.zipFileName()}` : ''),
     isDirty: work._.isDirty()
   }));
   Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
+    if (!workIdsToSave) return cb && cb(false);
     const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
-    return saveWorks(worksToSave, cb);
+    return saveWorks(worksToSave, () => cb && cb(true));
   });
 }
 
@@ -203,4 +208,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-module.exports = { create, open, openSingle, openAll, save, close };
+module.exports = { create, open, openSingle, openAll, save, saveAll, close };

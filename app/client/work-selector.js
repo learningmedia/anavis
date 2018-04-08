@@ -47,7 +47,7 @@ vm.onSaveClick = () => {
   vm.deferred.resolve(workIdsToSave);
 };
 vm.onCancelClick = () => {
-  vm.deferred.resolve([]);
+  vm.deferred.resolve(false);
 };
 
 document.addEventListener('DOMContentLoaded', function () {
