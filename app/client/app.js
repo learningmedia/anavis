@@ -83,7 +83,9 @@ ipcRenderer.on(events.CLOSE_FILE, function () {
 });
 
 Messenger.mainWindowInstance.on(events.REQUEST_TERMINATION, () => {
-  return confirm('Echt jetzt?');
+  return new Promise(resolve => {
+    file.saveAll(result => resolve(result && confirm('Echt jetzt?')));
+  });
 });
 
 ipcRenderer.on('reload-styles', function () {
