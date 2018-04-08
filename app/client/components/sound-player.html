@@ -1,4 +1,7 @@
 <div class="SoundPlayer">
+  <av-flyout-menu class="SoundPlayer-flyOutMenu">
+    <av-flyout-menu-item params="label: 'Löschen', onClick: onDeleteClick"></av-flyout-menu-item>
+  </av-flyout-menu>
   <!-- ko if: sound().isLoading() -->
   LOADING
   <!-- /ko -->
@@ -12,9 +15,6 @@
     </div>
     <progress class="SoundPlayer-progress" data-bind="attr: { max: sound().length, value: sound().position }, click: onProgressClick"></progress>
   </div>
-  <av-flyout-menu class="SoundPlayer-flyOutMenu">
-    <av-flyout-menu-item params="label: 'Löschen', onClick: onDeleteClick"></av-flyout-menu-item>
-  </av-flyout-menu>
   <div class="SoundPlayer-controller">
     <button data-bind="click: onStartClick">Start</button>
     <button data-bind="click: onStopClick">Stopp</button>
