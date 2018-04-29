@@ -142,7 +142,7 @@ function createMainWindow () {
   })
 
   win.on('close', event => {
-    if (terminationConfirmed) return
+    if (terminationConfirmed || isLiveReload) return
     Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
       terminationConfirmed = canTerminate
       if (canTerminate) app.quit()
@@ -154,7 +154,7 @@ function createMainWindow () {
 }
 
 app.on('before-quit', event => {
-  if (terminationConfirmed) return
+  if (terminationConfirmed || isLiveReload) return
   Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
     terminationConfirmed = canTerminate
     if (canTerminate) app.quit()
