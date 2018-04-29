@@ -1,0 +1,82 @@
+@import '../styles/variables';
+
+@help-screen-header-and-footer-color: @default-help-screen-header-and-footer-color;
+@help-screen-header-and-footer-background-color: @default-help-screen-header-and-footer-background-color;
+@help-screen-text: @default-text-color;
+
+av-help-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: @help-screen-header-and-footer-background-color;
+  color: @help-screen-header-and-footer-color;
+}
+
+.HelpScreen {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 50%;
+  padding: 0;
+}
+
+.HelpScreen-header {
+  flex: none;
+  border-bottom: 0;
+  padding: 12px 0;
+}
+
+.HelpScreen-headerTitle {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.HelpScreen-content {
+  display: flex;
+  flex: 1 0 0%;
+  flex-direction: row;
+  padding: 12px;
+  border-bottom: 0;
+  background-color: white;
+  color: @help-screen-text;
+}
+
+.HelpScreen-contentRow {
+  flex: 1 0 0%;
+  padding: 10px;
+}
+
+.HelpScreen-contentRowHeader {
+  margin-top: 6px;
+}
+
+.HelpScreen-headerCellLeft {
+  padding:10px;
+  text-align: left;
+  width: 40%;
+}
+
+.HelpScreen-headerCellRight {
+  padding: 10px;
+  text-align: left;
+  width: 60%;
+}
+
+.HelpScreen-singleHeaderCell {
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.HelpScreen-helpCell {
+  padding: 10px;
+}
+
+.HelpScreen-footer {
+  flex: none;
+  text-align: center;
+  padding: 0 12px;
+}

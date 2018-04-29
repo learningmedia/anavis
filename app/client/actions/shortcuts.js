@@ -2,6 +2,7 @@ const ToolHandler = require('./tool-handler');
 const PlaySoundHandler = require('./play-sound-handler');
 const CutWorkHandler = require('./cut-work-handler')
 const SelectWithArrowsHandler = require('./select-with-arrows-handler');
+const HelpScreenHandler = require('./help-screen-handler');
 const tools = require('../../shared/tools');
 
 function register(element, appViewModel) {
@@ -13,6 +14,7 @@ function register(element, appViewModel) {
   shortcuts.set(' ', new PlaySoundHandler(appViewModel));
   shortcuts.set('Up', new SelectWithArrowsHandler(appViewModel, 'up'));
   shortcuts.set('Down', new SelectWithArrowsHandler(appViewModel, 'down'));
+  shortcuts.set('H', new HelpScreenHandler(appViewModel));
 
   element.addEventListener('keydown', function (event) {
     if (isFromEditable(event)) return;
