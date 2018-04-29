@@ -1,0 +1,20 @@
+<aside class="WorkSelector">
+  <div class="WorkSelector-header">
+    Einige Analysen sind noch nicht gespeichert.
+  </div>
+  <div class="WorkSelector-description">
+    Um das Programm dennoch zu beenden, wählen Sie bitte durch Klick auf das rote Feld diejenigen Anaylsen aus, die Sie vor dem Beenden noch speichern möchten und klicken Sie dann auf "Sichern", oder klicken Sie auf "Abbrechen", um zum Programm zurückzukehren, ohne dieses zu beenden.
+  </div>
+  <div class="WorkSelector-works" data-bind="foreach: { data: workInfos, as: 'workInfo' }">
+    <av-checkbox
+      class="WorkSelector-work"
+      params="disabled: !workInfo.isDirty(), checked: workInfo.isSelected, text: workInfo.name"
+      >
+    </av-checkbox>
+  </div>
+  <div class="WorkSelector-buttonsContainer">
+    <input type="button" name="save" value="Sichern" data-bind="click: onSaveClick">
+    &nbsp;
+    <input type="button" name="cancel" value="Abbrechen" data-bind="click: onCancelClick">
+  </div>
+</aside>

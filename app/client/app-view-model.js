@@ -8,7 +8,8 @@ const vm = {
   currentPart: ko.observable(),
   currentPrimaryTool: ko.observable(tools.DEFAULT),
   currentSecondaryTool: ko.observable(null),
-  isInspectorExpanded: ko.observable(false)
+  isInspectorExpanded: ko.observable(false),
+  appOverlays: ko.observableArray()
 };
 
 vm.currentWork = ko.computed(() => vm.currentPart() ? vm.works().find(work => work.parts().indexOf(vm.currentPart()) !== -1) : undefined);

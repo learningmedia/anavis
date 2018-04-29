@@ -1,0 +1,37 @@
+@import '../styles/variables.less';
+
+@work-selector-background-color: @default-background-color-light;
+
+.WorkSelector {
+  display: flex;
+  flex-direction: column;
+  background-color: @work-selector-background-color;
+  min-width: 250px;
+  max-width: 700px;
+}
+
+.WorkSelector-header {
+  flex: none;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.WorkSelector-description {
+  flex: none;
+  padding: 10px;
+}
+
+.WorkSelector-works {
+  flex: 1 0 0%;
+  padding: 10px;
+}
+
+.WorkSelector-work {
+  display: block;
+}
+
+.WorkSelector-buttonsContainer {
+  flex: none;
+  padding: 10px;
+  text-align: right;
+}

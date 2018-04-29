@@ -8,6 +8,7 @@ const BigNumber = require('bignumber.js');
 const koMapping = require('knockout-mapping');
 const utils = require('./utils');
 const folderZip = require('./common/folder-zip');
+const workSelector = require('./components/work-selector');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
 const soundController = require('./sound-controller');
@@ -92,10 +93,13 @@ function saveAll(cb) {
   }));
 
   if (workInfos.length && workInfos.some(info => info.isDirty)) {
-    Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
-      if (!workIdsToSave) return cb && cb(false);
-      const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
-      return saveWorks(worksToSave, () => cb && cb(true));
+    workSelector.show({
+      workInfos: workInfos,
+      callback: workIdsToSave => {
+        if (!workIdsToSave) return cb && cb(false);
+        const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
+        return saveWorks(worksToSave, () => cb && cb(true));
+      }
     });
   } else {
     async.nextTick(() => cb && cb(true));
