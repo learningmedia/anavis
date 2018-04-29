@@ -24,6 +24,7 @@ vm.firstPlayingSoundInfo = ko.computed(() => {
 vm.currentTool = ko.computed(() => vm.currentSecondaryTool() || vm.currentPrimaryTool());
 vm.isCurrentToolPrimary = ko.computed(() => vm.currentTool() === vm.currentPrimaryTool());
 vm.isSplashScreenVisible = ko.computed(() => vm.works().length === 0);
+vm.isHelpScreenVisible = ko.observable(false);
 
 vm.deselectAll = () => vm.currentPart(undefined);
 
