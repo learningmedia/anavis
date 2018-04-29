@@ -1,0 +1,14 @@
+<aside class="WorkSelector">
+  <div class="WorkSelector-works" data-bind="foreach: { data: workInfos, as: 'workInfo' }">
+    <av-checkbox
+      class="WorkSelector-work"
+      params="disabled: !workInfo.isDirty(), checked: workInfo.isSelected, text: workInfo.name"
+      >
+    </av-checkbox>
+  </div>
+  <div class="WorkSelector-buttonsContainer">
+    <input type="button" name="save" value="Sichern" data-bind="click: onSaveClick">
+    &nbsp;
+    <input type="button" name="cancel" value="Abbrechen" data-bind="click: onCancelClick">
+  </div>
+</aside>

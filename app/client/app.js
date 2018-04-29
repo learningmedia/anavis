@@ -26,6 +26,7 @@ const Messenger = require('../shared/messenger');
 const splashScreen = require('./components/splash-screen');
 const flyoutMenu = require('./components/flyout-menu.js')
 const flyoutMenuItem = require('./components/flyout-menu-item.js')
+const workSelector = require('./components/work-selector.js')
 
 const logger = new Logger(__filename);
 
@@ -51,7 +52,7 @@ window.ko = ko;
 [fileDrop, partOperations].forEach(binding => binding.register());
 
 // Register all components:
-[work, part, inspector, soundPlayer, annotation, checkbox, updateNotification, splashScreen, flyoutMenu, flyoutMenuItem].forEach(component => component.register());
+[work, part, inspector, soundPlayer, annotation, checkbox, updateNotification, splashScreen, flyoutMenu, flyoutMenuItem, workSelector].forEach(component => component.register());
 
 // Add specific functions to the app vm:
 appViewModel.onFileDropped = files => {

@@ -40,7 +40,6 @@ let mainWindow
 
 // Other windows we may need
 let infoWindow = null
-let workSelectorWindow = null
 let msgBoxWindow = null
 
 let terminationConfirmed = false;
@@ -55,7 +54,6 @@ function onClosed () {
   // for multiple windows store them in an array
   mainWindow = null
   infoWindow = null
-  workSelectorWindow = null
   msgBoxWindow = null
 }
 
@@ -71,42 +69,6 @@ function createMainWindow () {
   })
 
   Messenger.mainWindowInstance = new Messenger('MAIN_WINDOW', win.webContents, ipcMain);
-
-  Messenger.mainWindowInstance.on(events.OPEN_SELECTOR, workInfos => {
-    if (workSelectorWindow) {
-      return;
-    }
-    workSelectorWindow = new BrowserWindow({
-      parent: mainWindow,
-      modal: true,
-      width: 600,
-      height: 400
-    });
-    workSelectorWindow.setMenu(null);
-    const deferred = defer();
-    let workIdsToSave;
-    workSelectorWindow.loadURL(`file://${__dirname}/../client/work-selector.html`);
-    const workSelectorWindowMessenger = new Messenger('WORK_SELECTOR', workSelectorWindow.webContents, ipcMain);
-    workSelectorWindow.webContents.on('did-finish-load', () => {
-      // workSelectorWindow.webContents.toggleDevTools();
-      workSelectorWindowMessenger.send(events.SELECT_WORKS, workInfos).then(selectedWorkIds => {
-        workIdsToSave = selectedWorkIds;
-        workSelectorWindow.close();
-      });
-    });
-
-    workSelectorWindow.on('closed', () => {
-      workSelectorWindowMessenger.dispose();
-      workSelectorWindow = null;
-      deferred.resolve(workIdsToSave);
-    });
-
-    workSelectorWindow.webContents.on('crashed', err => {
-      alert(err);
-    });
-
-    return deferred.promise;
-  });
 
   Messenger.mainWindowInstance.on(events.OPEN_MESSAGE_BOX, msgBoxOptions => {
     if (msgBoxWindow) {
@@ -180,7 +142,7 @@ function createMainWindow () {
   })
 
   win.on('close', event => {
-    if (terminationConfirmed || isLiveReload) return
+    if (terminationConfirmed) return
     Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
       terminationConfirmed = canTerminate
       if (canTerminate) app.quit()
@@ -192,7 +154,7 @@ function createMainWindow () {
 }
 
 app.on('before-quit', event => {
-  if (terminationConfirmed || isLiveReload) return
+  if (terminationConfirmed) return
   Messenger.mainWindowInstance.send(events.REQUEST_TERMINATION).then(canTerminate => {
     terminationConfirmed = canTerminate
     if (canTerminate) app.quit()
