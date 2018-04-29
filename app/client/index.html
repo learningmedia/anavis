@@ -25,6 +25,9 @@
     <section class="App-inspectorArea" data-bind="css: 'App-inspectorArea--' + (isInspectorExpanded() ? 'expanded' : 'collapsed')">
       <av-inspector params="app: $data"></av-inspector>
     </section>
+    <section class="App-overlays" data-bind="visible: appOverlays().length, foreach: { data: appOverlays, as: 'overlay' }">
+      <div class="App-overlay" data-bind="component: overlay.component, style: { 'justify-content': overlay.justify || 'center', 'align-items': overlay.align || 'center' }"></div>
+    </section>
   </body>
   <script>
     require('./app.js');

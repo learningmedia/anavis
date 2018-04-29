@@ -8,6 +8,7 @@
 @app-inspector-area-width-expanded: @default-inspector-width-expanded;
 @app-inspector-area-width-collapsed: @default-inspector-width-collapsed;
 @app-inspector-area-transition-duration: @default-transition-duration;
+@app-overlay-background-color: @default-overlay-background-color;
 
 .App {
   display: flex;
@@ -50,4 +51,23 @@
     width: @app-inspector-area-width-collapsed;
     transition: width @app-inspector-area-transition-duration ease;
   }
+}
+
+.App-overlays {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @app-overlay-background-color;
+}
+
+.App-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background-color: transparent;
 }

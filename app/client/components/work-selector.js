@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ko = require('knockout');
 const koMapping = require('knockout-mapping');
+const appViewModel = require('../app-view-model');
 
 const template = fs.readFileSync(`${__dirname}/work-selector.html`, 'utf8');
 
@@ -29,29 +30,30 @@ function register() {
   });
 }
 
-function show(params) {
-  const outerDiv = document.createElement('div');
-  const innerDiv = document.createElement('div');
-  outerDiv.setAttribute('data-bind', 'if: component');
-  innerDiv.setAttribute('data-bind', 'component: component');
-  outerDiv.appendChild(innerDiv);
-  document.body.insertBefore(outerDiv, document.body.firstChild);
+let isShown = false;
 
-  const vm = {
-    component: ko.observable({
+function show(params) {
+  if (isShown) return;
+
+  const overlay = {
+    component: {
       name: 'av-work-selector',
       params: {
         workInfos: params.workInfos,
         callback: val => {
-          vm.component(null); // Let knockout do the disposal
-          document.body.removeChild(outerDiv);
-          return params.callback && params.callback(val); // Do the real callback!
+          isShown = false;
+          appViewModel.appOverlays.remove(overlay);
+          return params.callback && params.callback(val);
         }
       }
-    })
-  };
+    },
+    align: 'center',
+    justify: 'center'
+  }
 
-  ko.applyBindings(vm, outerDiv);
+  appViewModel.appOverlays.push(overlay);
+
+  isShown = true;
 }
 
 module.exports = { register, show };
