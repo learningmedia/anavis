@@ -90,11 +90,16 @@ function saveAll(cb) {
     name: work.name() + (work._.zipFileName() ? ` - ${work._.zipFileName()}` : ''),
     isDirty: work._.isDirty()
   }));
-  Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
-    if (!workIdsToSave) return cb && cb(false);
-    const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
-    return saveWorks(worksToSave, () => cb && cb(true));
-  });
+
+  if (workInfos.length && workInfos.some(info => info.isDirty)) {
+    Messenger.mainWindowInstance.send(events.OPEN_SELECTOR, workInfos).then(workIdsToSave => {
+      if (!workIdsToSave) return cb && cb(false);
+      const worksToSave = appViewModel.works().filter(work => workIdsToSave.includes(work.id()));
+      return saveWorks(worksToSave, () => cb && cb(true));
+    });
+  } else {
+    async.nextTick(() => cb && cb(true));
+  }
 }
 
 function saveWorks(works, cb) {
