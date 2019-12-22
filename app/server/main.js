@@ -12,6 +12,8 @@ const events = require('../shared/events');
 const pkg = require('../../package.json')
 const config = require('../config.json')
 
+const commandLine = require('./command-line');
+
 const isLiveReload = process.env.LIVE_RELOAD === 'true';
 
 const logger = new Logger(__filename);
@@ -46,8 +48,12 @@ let terminationConfirmed = false;
 
 app.setName(pkg.productName)
 
-var shouldQuit = makeSingleInstance()
-if (shouldQuit) return app.quit()
+const cliArgs = commandLine.checkCommandLine();
+
+if (!cliArgs) {
+  var shouldQuit = makeSingleInstance()
+  if (shouldQuit) return app.quit()
+}
 
 function onClosed () {
   // Dereference used windows
@@ -175,6 +181,14 @@ app.on('activate', () => {
 })
 
 app.on('ready', () => {
+  if (cliArgs) {
+    return commandLine.runCommand(cliArgs, err => {
+      // eslint-disable-next-line no-console
+      if (err) console.error(err);
+      return app.exit(err ? -1 : 0);
+    });
+  }
+
   Menu.setApplicationMenu(createMenu())
   mainWindow = createMainWindow()
 

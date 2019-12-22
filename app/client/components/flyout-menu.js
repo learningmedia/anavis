@@ -3,7 +3,7 @@ const ko = require('knockout');
 
 const template = fs.readFileSync(`${__dirname}/flyout-menu.html`, 'utf8');
 
-function viewModel(params) {
+function viewModel() {
   const vm = {};
   vm.isFlyoutVisible = ko.observable(false);
   vm.toggleFlyout = () => vm.isFlyoutVisible(!vm.isFlyoutVisible());

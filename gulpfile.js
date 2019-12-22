@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const os = require('os');
 const fs = require('fs');
 const del = require('del');

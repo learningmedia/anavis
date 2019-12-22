@@ -1,7 +1,4 @@
-const path = require('path');
 const color = require('color');
-const { remote } = require('electron');
-
 
 function getContrastColor(col) {
   return color(col).light() ? '#000' : '#FFF';
@@ -21,13 +18,7 @@ function blobToBuffer(blob) {
   });
 }
 
-function createTempDirectoryName() {
-  const userDataDir = remote.app.getPath('userData');
-  return path.join(userDataDir, 'temp-docs', `doc_${Date.now()}`);
-}
-
 module.exports = {
-  createTempDirectoryName,
   getContrastColor,
   blobToBuffer
 };

@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const color = require('color');
 const mkdirp = require('mkdirp');
-const utils = require('../utils');
+const fileUtils = require('../file-utils');
 
 const argbRegexp = /^(#)([0-9A-F]{2})([0-9A-F]{6})$/;
 
 function mapDocument(doc, inputPackageDir, avdFileName, options, cb) {
-  const outputPackageDir = utils.createTempDirectoryName();
+  const outputPackageDir = fileUtils.createTempDirectoryName();
   mkdirp.sync(outputPackageDir);
 
   const result = {};

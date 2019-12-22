@@ -6,19 +6,19 @@ const mkdirp = require('mkdirp');
 const { remote } = require('electron');
 const BigNumber = require('bignumber.js');
 const koMapping = require('knockout-mapping');
-const utils = require('./utils');
-const folderZip = require('./common/folder-zip');
 const workSelector = require('./components/work-selector');
 const appViewModel = require('./app-view-model');
 const defaultDocument = require('./default-document');
 const soundController = require('./sound-controller');
-const avdReader = require('./mappings/avd-reader');
+const fileUtils = require('../shared/file-utils');
+const folderZip = require('../shared/folder-zip');
+const docLoader = require('../shared/doc-loader');
 const Messenger = require('../shared/messenger');
 const events = require('../shared/events');
 const config = require('../shared/config');
 
 function create() {
-  const unzipDir = utils.createTempDirectoryName();
+  const unzipDir = fileUtils.createTempDirectoryName();
   mkdirp.sync(unzipDir);
   const content = JSON.stringify(defaultDocument.create());
   fs.writeFileSync(path.join(unzipDir, 'anavis.json'), content, 'utf8');
@@ -188,18 +188,11 @@ function close(workToClose) {
 }
 
 function openDocument(avdFileName, cb) {
-  avdReader.readAvdFile(avdFileName, function (err, unzipDir) {
-    if (err) return cb && cb(err);
-    readDocument(unzipDir, cb);
-  });
+  return docLoader.openDocument(avdFileName, cb);
 }
 
 function readDocument(unzipDir, cb) {
-  const docFileName = path.join(unzipDir, 'anavis.json');
-  fs.readFile(docFileName, 'utf8', function (err, content) {
-    if (err) return cb && cb(err);
-    return cb && cb(null, JSON.parse(content), unzipDir);
-  });
+  return docLoader.readDocument(unzipDir, cb);
 }
 
 function createWorkViewModelFromDocument(doc) {

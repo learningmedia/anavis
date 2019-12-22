@@ -6,8 +6,8 @@ const xml2js = require('xml2js');
 const procs = require('xml2js/lib/processors');
 const uuid = require('uuid');
 
-const utils = require('../utils');
-const folderZip = require('../common/folder-zip');
+const fileUtils = require('../file-utils');
+const folderZip = require('../folder-zip');
 const mapper = require('./old-to-new-format-mapper');
 
 const URN_RELATIONSHIP_PACKAGE = 'urn:anavis:v1.0:packaging:relationship:package';
@@ -40,7 +40,7 @@ module.exports.readAvdFile = function (filename, cb) {
     name: path.parse(filename).name
   };
 
-  const packageDir = utils.createTempDirectoryName();
+  const packageDir = fileUtils.createTempDirectoryName();
 
   start();
 

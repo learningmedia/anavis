@@ -1,7 +1,5 @@
 const fs = require('fs');
 const ko = require('knockout');
-const path = require('path');
-const file = require('../file');
 
 const template = fs.readFileSync(`${__dirname}/help-screen.html`, 'utf8');
 
