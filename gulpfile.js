@@ -221,6 +221,7 @@ function downloadArtifactsFromDropbox(fileNames, targetDir) {
 }
 
 function uploadToDropbox(source, target) {
+  console.log(`Uploading to Dropbox: ${target}`);
   const fileContent = fs.readFileSync(source);
   const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
   return dbx.filesUpload({ path: target, contents: fileContent });
