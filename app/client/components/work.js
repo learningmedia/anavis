@@ -10,7 +10,7 @@ const autoColorizer = require('../actions/auto-colorizer');
 
 const template = fs.readFileSync(`${__dirname}/work.html`, 'utf8');
 
-const allowedSoundExtensions = ['.mp3', '.ogg', '.wav'];
+const allowedSoundExtensions = ['.mp3', '.ogg', '.wav', '.flac'];
 
 function viewModel(params) {
   const app = params.app;
