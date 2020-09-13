@@ -36,12 +36,14 @@ const GITHUB_USER = process.env.GITHUB_USER;
 
 const isTravisCi = process.env.TRAVIS === 'true';
 const tagName = process.env.TRAVIS_TAG || null;
-const isOsx = process.env.TRAVIS_OS_NAME === 'osx';
+const isOsx = os.platform() === 'darwin';
+const isWin = os.platform() === 'win32';
+const isLinux = os.platform() === 'linux';
 const versionFromTagName = semver.valid(tagName);
 const buildVersion = versionFromTagName || semver.valid(pkg.version);
 const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
 const isBeta = prereleaseChannel === 'beta';
-const shouldRelease = isTravisCi && !!versionFromTagName && (!prereleaseChannel || prereleaseChannel === 'beta');
+const shouldRelease = isTravisCi && !!versionFromTagName && (!prereleaseChannel || isBeta);
 
 const artifactNames = {
   linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
@@ -120,11 +122,11 @@ gulp.task('build', ['prepare-build'], async () => {
   await electronBuilder.build({
     config: buildConfig,
     mac: isOsx ? ['dmg'] : null,
-    win: isOsx ? null : ['nsis'],
-    linux: isOsx ? null : ['AppImage']
+    win: isWin ? ['nsis'] : null,
+    linux: isLinux ? ['AppImage'] : null
   });
   if (shouldRelease) {
-    const filesToUpload = isOsx ? [artifactNames.osx] : [artifactNames.win, artifactNames.linux];
+    const filesToUpload = [isOsx && artifactNames.osx, isWin && artifactNames.win, isLinux && artifactNames.linux].filter(x => !!x);
     await uploadArtifactsToDropbox(filesToUpload, './dist');
   }
 });

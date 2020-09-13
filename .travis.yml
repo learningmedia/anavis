@@ -1,67 +1,49 @@
 os:
   - osx
   - linux
+  - windows
+
+env:
+  - YARN_GPG=no # prevent timeouts on successful Windows builds
 
 stages:
   - compile
   - release
   - name: test
-    if: env(RUN_TESTS) = true
+    if: env(RUN_TESTS) = true # disable Travis default test stage
 
 jobs:
   include:
     - stage: compile
       install: skip
-      before_cache:
-        - rm -rf $HOME/.cache/electron-builder/wine
-      cache:
-        directories:
-        - node_modules
-        - $HOME/.cache/electron
-        - $HOME/.cache/electron-builder
-      script:
-        - |
-          yarn && ./node_modules/.bin/gulp build
       os: osx
       osx_image: xcode9.0
       language: node_js
       node_js: "10"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+      script:
+        - yarn
+        - ./node_modules/.bin/gulp build
     - stage: compile
       install: skip
-      before_cache:
-        - rm -rf $HOME/.cache/electron-builder/wine
-      cache:
-        directories:
-        - node_modules
-        - $HOME/.cache/electron
-        - $HOME/.cache/electron-builder
-      script:
-        - |
-          docker run --rm \
-            $(env | \
-              grep -Eo '^[^\s=]*(NODE_|ELECTRON_|YARN_|NPM_|TRAVIS|DROPBOX|GITHUB)[^\s=]*' | \
-              sed '/^$/d;s/^/-e /' | \
-              paste -sd ' ' \
-            ) \
-            -v ${PWD}:/project \
-            -v ~/.cache/electron:/root/.cache/electron \
-            -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-            electronuserland/electron-builder:wine \
-            /bin/bash -c "npm i -g yarn && yarn && ./node_modules/.bin/gulp build"
-      os: linux
-      services: docker
-      language: generic
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-    - stage: release
-      install: skip
-      script:
-        - |
-          yarn && ./node_modules/.bin/gulp release
       os: linux
       language: node_js
-      node_js: "8"
+      node_js: "10"
+      script:
+        - yarn
+        - ./node_modules/.bin/gulp build
+    - stage: compile
+      install: skip
+      os: windows
+      language: node_js
+      node_js: "10"
+      script:
+        - yarn
+        - ./node_modules/.bin/gulp build
+    - stage: release
+      install: skip
+      os: linux
+      language: node_js
+      node_js: "10"
+      script:
+        - yarn
+        - ./node_modules/.bin/gulp release
