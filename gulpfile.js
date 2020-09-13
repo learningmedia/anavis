@@ -1,5 +1,13 @@
 /* eslint-disable no-console */
 
+/*
+    TODO: Update to gulp ^4.0, then remove
+    "resolutions": {
+      "natives": "1.1.6"
+    },
+    from package.json
+*/
+
 const os = require('os');
 const fs = require('fs');
 const del = require('del');
