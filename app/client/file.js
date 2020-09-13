@@ -28,15 +28,16 @@ function create() {
 }
 
 function open() {
-  remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (filenames) {
-    if (filenames && filenames.length) {
-      if (appViewModel.works().some(x => x._.zipFileName() === filenames[0])) return;
-      const zipFileName = filenames[0];
-      openDocument(zipFileName, function (error, doc, unzipDir) {
-        openWork(doc, unzipDir, zipFileName);
-      });
-    }
-  });
+  remote.dialog.showOpenDialog({ properties: ['openFile', 'dontAddToRecent'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] })
+    .then(({ filePaths }) => {
+      if (filePaths && filePaths.length) {
+        if (appViewModel.works().some(x => x._.zipFileName() === filePaths[0])) return;
+        const zipFileName = filePaths[0];
+        openDocument(zipFileName, function (error, doc, unzipDir) {
+          openWork(doc, unzipDir, zipFileName);
+        });
+      }
+    });
 }
 
 function openSingle(path) {
@@ -114,14 +115,19 @@ function saveWorks(works, cb) {
 function saveWork(work, cb) {
   if (!work) return cb && cb();
   if (!work._.zipFileName()) {
-    remote.dialog.showSaveDialog({ properties: ['saveFile'], filters: [{ name: 'AnaVis document', extensions: ['avd'] }] }, function (fileName) {
-      if (fileName) {
-        work._.zipFileName(fileName);
-        saveWork(work, cb);
-      } else {
-        return cb && cb();
-      }
-    });
+    const options = {
+      properties: ['createDirectory', 'showOverwriteConfirmation', 'dontAddToRecent'],
+      filters: [{ name: 'AnaVis document', extensions: ['avd'] }]
+    };
+    remote.dialog.showSaveDialog(options)
+      .then(({ filePath }) => {
+        if (filePath) {
+          work._.zipFileName(filePath.toLowerCase().endsWith('.avd') ? filePath : `${filePath}.avd`);
+          saveWork(work, cb);
+        } else {
+          return cb && cb();
+        }
+      });
   } else {
     const zipFileName = work._.zipFileName();
     const workingDirectory = work._.workingDirectory();

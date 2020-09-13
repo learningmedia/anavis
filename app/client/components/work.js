@@ -68,9 +68,10 @@ function openSoundDialog(cb) {
     name: 'Sound file',
     extensions: allowedSoundExtensions.map(ext => ext.replace(/^\./, ''))
   }];
-  remote.dialog.showOpenDialog({ properties: ['openFile'], filters: filters }, filenames => {
-    return filenames && filenames.length && cb && cb(filenames);
-  });
+  remote.dialog.showOpenDialog({ properties: ['openFile', 'dontAddToRecent'], filters: filters })
+    .then(({ filePaths }) => {
+      return filePaths && filePaths.length && cb && cb(filePaths);
+    });
 }
 
 function register() {

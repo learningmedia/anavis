@@ -70,7 +70,8 @@ function createMainWindow () {
     'title': app.getName(),
     'webPreferences': {
       'nodeIntegration': true, // Disabling node integration allows to use libraries such as jQuery/React, etc
-      'preload': path.resolve(path.join(__dirname, 'preload.js'))
+      'preload': path.resolve(path.join(__dirname, 'preload.js')),
+      'enableRemoteModule': true
     }
   })
 
@@ -193,7 +194,8 @@ app.on('ready', () => {
   mainWindow = createMainWindow()
 
   if (isDev) {
-    BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../chromeextensions-knockoutjs'))
+    const session = mainWindow.webContents.session;
+    session.loadExtension(path.resolve(__dirname, '../../chromeextensions-knockoutjs'))
 
     // Setup live reload
     if (isLiveReload) {
@@ -203,6 +205,18 @@ app.on('ready', () => {
         mainWindow.webContents.send('reload-styles');
       });
     }
+  }
+})
+
+// The main window will be restored and focused instead of a second window
+// opened when a person attempts to launch a second instance.
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+
+    mainWindow.show();
   }
 })
 
@@ -224,18 +238,10 @@ ipcMain.on('open-info-window', () => {
 
 // Make this app a single instance app.
 //
-// The main window will be restored and focused instead of a second window
-// opened when a person attempts to launch a second instance.
-//
 // Returns true if the current version of the app should quit instead of
 // launching.
 function makeSingleInstance () {
-  return app.makeSingleInstance(() => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-    }
-  })
+  return !app.requestSingleInstanceLock();
 }
 
 function createMenu () {

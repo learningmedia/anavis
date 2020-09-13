@@ -58,20 +58,21 @@ function viewModel(params) {
       const filename = path.basename(params.sound.path());
       const suggestedPath = path.join(remote.app.getPath('desktop'), filename);
       const options = {
-        properties: ['saveFile'],
+        properties: ['createDirectory', 'showOverwriteConfirmation', 'dontAddToRecent'],
         defaultPath: suggestedPath,
         filters: [{ name: 'Sound file', extensions: [extension] }]
       };
-      remote.dialog.showSaveDialog(options, function (destinationFileName) {
-        if (destinationFileName) {
-          const sourceFileName = params.sound.path();
-          copyFileSync(sourceFileName, destinationFileName);
-          params.sound.path(destinationFileName);
-          params.sound.embedded(false);
-          sound(soundController.create(params.sound.path()));
-          fs.unlinkSync(sourceFileName);
-        }
-      });
+      remote.dialog.showSaveDialog(options)
+        .then(({ filePath }) => {
+          if (filePath) {
+            const sourceFileName = params.sound.path();
+            copyFileSync(sourceFileName, filePath);
+            params.sound.path(filePath);
+            params.sound.embedded(false);
+            sound(soundController.create(params.sound.path()));
+            fs.unlinkSync(sourceFileName);
+          }
+        });
     },
     onDeleteClick: () => deleteSound(params.work, params.sound),
     dispose: function () {
