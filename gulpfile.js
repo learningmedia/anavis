@@ -1,32 +1,21 @@
-/* eslint-disable no-console */
-
-/*
-    TODO: Update to gulp ^4.0, then remove
-    "resolutions": {
-      "natives": "1.1.6"
-    },
-    from package.json
-*/
-
 const os = require('os');
-const fs = require('fs');
 const del = require('del');
 const path = require('path');
-const gulp = require('gulp');
 const Jimp = require('jimp');
 const gh = require('ghreleases');
 const semver = require('semver');
-const gutil = require('gulp-util');
-const shelljs = require('shelljs');
+const mkdirp = require('mkdirp');
+const fs = require('fs/promises');
 const Dropbox = require('dropbox');
 const mocha = require('gulp-mocha');
 const shell = require('gulp-shell');
 const chokidar = require('chokidar');
 const pkg = require('./package.json');
 const eslint = require('gulp-eslint');
-const runSequence = require('run-sequence');
+const fancyLog = require('fancy-log');
 const markdownEscape = require('markdown-escape');
 const commitsBetween = require('commits-between');
+const { src, parallel, series } = require('gulp');
 const electronConnect = require('electron-connect');
 const electronBuilder = require('electron-builder');
 
@@ -45,6 +34,13 @@ const prereleaseChannel = (semver.prerelease(buildVersion) || [])[0];
 const isBeta = prereleaseChannel === 'beta';
 const shouldRelease = isTravisCi && !!versionFromTagName && (!prereleaseChannel || isBeta);
 
+const BUILD_DIR = './build';
+const DIST_DIR = './dist';
+const RELEASE_DIR = './release';
+
+const GITHUB_ORGA_NAME = 'learningmedia';
+const GITHUB_REPO_NAME = 'anavis';
+
 const artifactNames = {
   linux: `${pkg.name}-${buildVersion}-linux-x86_64.AppImage`,
   win: `${pkg.name}-${buildVersion}-windows.exe`,
@@ -57,16 +53,16 @@ const buildConfig = {
   mac: {
     target: [{ target: 'dmg', arch: ['x64'] }],
     category: 'public.app-category.education',
-    icon: './build/icons/mac/icon.icns'
+    icon: `${BUILD_DIR}/icons/mac/icon.icns`
   },
   linux: {
     target: [{ target: 'AppImage', arch: ['x64'] }],
     category: 'Education',
-    icon: './build/icons/png/'
+    icon: `${BUILD_DIR}/icons/png/`
   },
   win: {
     target: [{ target: 'nsis', arch: ['x64'] }],
-    icon: './build/icons/win/icon.ico'
+    icon: `${BUILD_DIR}/icons/win/icon.ico`
   },
   dmg: {
     artifactName: artifactNames.osx,
@@ -94,31 +90,27 @@ const buildConfig = {
   publish: null
 };
 
-gulp.task('clean', () => del(['build', 'dist']));
+const tasks = module.exports = {};
 
-gulp.task('version', () => {
+tasks.clean = () => del([BUILD_DIR, DIST_DIR]);
+
+tasks.version = async () => {
   pkg.version = buildVersion;
   pkg.productName = buildConfig.productName;
-  fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + os.EOL, 'utf8');
+  await fs.writeFile('./package.json', JSON.stringify(pkg, null, 2) + os.EOL, 'utf8');
+};
+
+tasks.icons = series(ensureBuildDir, shell.task(`electron-icon-maker --input=./assets/icon.png --output=${BUILD_DIR}`));
+
+tasks.dmgBackground = series(ensureBuildDir, done => {
+  return new Jimp(540, 380, 0xBBDEFBFF, (err, image) => err ? done(err) : image.write(`${BUILD_DIR}/background.png`, done));
 });
 
-gulp.task('build-dir', () => {
-  shelljs.mkdir('-p', './build/');
-});
+tasks.assets = parallel(tasks.icons, tasks.dmgBackground);
 
-gulp.task('icons', ['build-dir'], shell.task('electron-icon-maker --input=./assets/icon.png --output=./build'));
+tasks.prepareBuild = series(tasks.clean, tasks.version, tasks.assets);
 
-gulp.task('dmg-background', ['build-dir'], done => {
-  return new Jimp(540, 380, 0xBBDEFBFF, (err, image) => err ? done(err) : image.write('./build/background.png', done));
-});
-
-gulp.task('assets', ['icons', 'dmg-background']);
-
-gulp.task('prepare-build', done => {
-  runSequence('clean', 'version', 'assets', done);
-});
-
-gulp.task('build', ['prepare-build'], async () => {
+tasks.build = series(tasks.prepareBuild, async () => {
   await electronBuilder.build({
     config: buildConfig,
     mac: isOsx ? ['dmg'] : null,
@@ -127,44 +119,45 @@ gulp.task('build', ['prepare-build'], async () => {
   });
   if (shouldRelease) {
     const filesToUpload = [isOsx && artifactNames.osx, isWin && artifactNames.win, isLinux && artifactNames.linux].filter(x => !!x);
-    await uploadArtifactsToDropbox(filesToUpload, './dist');
+    await uploadArtifactsToDropbox(filesToUpload, DIST_DIR);
   }
 });
 
-gulp.task('release', async () => {
+tasks.release = async () => {
   if (!shouldRelease) {
-    console.log('No release, nothing to do here.');
+    fancyLog.info('No release, nothing to do here.');
     return;
   }
 
   const filesToDownload = [artifactNames.osx, artifactNames.win, artifactNames.linux];
-  const fileToUpload = filesToDownload.map(file => path.resolve(`./release/${file}`));
+  const fileToUpload = filesToDownload.map(file => path.resolve(`${RELEASE_DIR}/${file}`));
   const releaseName = `${buildConfig.productName} v${buildVersion}`;
   const githubAuth = { token: GITHUB_TOKEN, user: GITHUB_USER };
 
-  await downloadArtifactsFromDropbox(filesToDownload, './release');
-  const latestRelease = await getLatestGithubRelease(githubAuth, 'learningmedia', 'anavis');
+  await downloadArtifactsFromDropbox(filesToDownload, RELEASE_DIR);
+  const latestRelease = await getLatestGithubRelease(githubAuth, GITHUB_ORGA_NAME, GITHUB_REPO_NAME);
   const commits = await commitsBetween({ from: latestRelease.tag_name });
   const releaseNotes = await createReleaseNotes(commits);
-  const release = await createGithubRelease(githubAuth, 'learningmedia', 'anavis', { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta });
-  await uploadAssetsToGithubRelease(githubAuth, 'learningmedia', 'anavis', release.id, fileToUpload);
-});
+  const releaseOptions = { tag_name: tagName, name: releaseName, body: releaseNotes, prerelease: isBeta };
+  const release = await createGithubRelease(githubAuth, GITHUB_ORGA_NAME, GITHUB_REPO_NAME, releaseOptions);
+  await uploadAssetsToGithubRelease(githubAuth, GITHUB_ORGA_NAME, GITHUB_REPO_NAME, release.id, fileToUpload);
+};
 
-gulp.task('lint', () => {
-  return gulp.src(['**/*.js', '!node_modules/**'])
+tasks.lint = () => {
+  return src(['**/*.js', '!node_modules/**'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
-});
+};
 
-gulp.task('serve', shell.task('electron app/server/main.js'));
+tasks.serve = shell.task('electron app/server/main.js');
 
-gulp.task('test', () => {
-  return gulp.src(['**/*.spec.js', '!node_modules/**'], { read: false })
+tasks.test = () => {
+  return src(['**/*.spec.js', '!node_modules/**'], { read: false })
     .pipe(mocha({ require: './test-helper' }));
-});
+};
 
-gulp.task('watch', done => {
+tasks.watch = done => {
   const chokidarOpts = {
     atomic: true,
     ignoreInitial: true,
@@ -186,7 +179,7 @@ gulp.task('watch', done => {
   });
 
   const callback = procState => {
-    gutil.log(gutil.colors.yellow('[livereload]'), procState);
+    fancyLog.info('[livereload]', procState);
     if (procState === 'stopped') {
       watchers.forEach(w => w.close());
       setTimeout(() => process.exit(0), 500); // Chokidar doesn't release all watchers, so force it!
@@ -213,39 +206,43 @@ gulp.task('watch', done => {
     server.broadcast('reload-styles');
     callback('styles');
   }));
-});
+};
 
-gulp.task('default', ['watch']);
+tasks.default = tasks.watch;
 
 /// HELPERS //////////////////////////////////////////////////////////////////////////////
 
-function uploadArtifactsToDropbox(fileNames, sourceDir) {
-  const absoluteDir = path.resolve(sourceDir);
-  return Promise.all(fileNames.map(file => uploadToDropbox(path.join(absoluteDir, file), `/${file}`)));
+function ensureBuildDir() {
+  return mkdirp(BUILD_DIR);
 }
 
-function downloadArtifactsFromDropbox(fileNames, targetDir) {
+async function uploadArtifactsToDropbox(fileNames, sourceDir) {
+  const absoluteDir = path.resolve(sourceDir);
+  await Promise.all(fileNames.map(file => uploadToDropbox(path.join(absoluteDir, file), `/${file}`)));
+}
+
+async function downloadArtifactsFromDropbox(fileNames, targetDir) {
   const absoluteDir = path.resolve(targetDir);
-  shelljs.mkdir('-p', absoluteDir);
+  await mkdirp(absoluteDir);
   return Promise.all(fileNames.map(file => downloadFromDropbox(`/${file}`, path.join(absoluteDir, file))));
 }
 
-function uploadToDropbox(source, target) {
-  console.log(`Uploading to Dropbox: ${target}`);
-  const fileContent = fs.readFileSync(source);
+async function uploadToDropbox(source, target) {
+  fancyLog.info(`Uploading to Dropbox: ${target}`);
+  const fileContent = await fs.readFile(source);
   const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
-  return dbx.filesUpload({ path: target, contents: fileContent });
+  await dbx.filesUpload({ path: target, contents: fileContent });
 }
 
-function downloadFromDropbox(source, target) {
-  console.log(`Downloading from Dropbox: ${source}`);
+async function downloadFromDropbox(source, target) {
+  fancyLog.info(`Downloading from Dropbox: ${source}`);
   const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
-  return dbx.filesDownload({ path: source })
-    .then(data => fs.writeFileSync(target, data.fileBinary, 'binary'));
+  const data = await dbx.filesDownload({ path: source })
+  await fs.writeFile(target, data.fileBinary, 'binary');
 }
 
 function getLatestGithubRelease(githubAuth, owner, repo) {
-  console.log('Fetching latest Github release');
+  fancyLog.info('Fetching latest Github release');
   return new Promise((resolve, reject) => {
     gh.list(githubAuth, owner, repo, (err, res) => {
       if (err) {
@@ -258,7 +255,7 @@ function getLatestGithubRelease(githubAuth, owner, repo) {
 }
 
 function createGithubRelease(githubAuth, owner, repo, data) {
-  console.log(`Creating latest Github release: ${data.name}`);
+  fancyLog.info(`Creating latest Github release: ${data.name}`);
   return new Promise((resolve, reject) => {
     gh.create(githubAuth, owner, repo, data, (err, res) => {
       if (err) {
@@ -271,7 +268,7 @@ function createGithubRelease(githubAuth, owner, repo, data) {
 }
 
 function uploadAssetsToGithubRelease(githubAuth, owner, repo, releaseId, files) {
-  console.log('Uploading assets for Github release');
+  fancyLog.info('Uploading assets for Github release');
   return new Promise((resolve, reject) => {
     gh.uploadAssets(githubAuth, owner, repo, releaseId, files, (err, res) => {
       if (err) {

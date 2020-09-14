@@ -19,7 +19,7 @@ jobs:
       os: osx
       osx_image: xcode9.0
       language: node_js
-      node_js: "10"
+      node_js: "14.10.1"
       script:
         - yarn
         - ./node_modules/.bin/gulp build
@@ -27,7 +27,7 @@ jobs:
       install: skip
       os: linux
       language: node_js
-      node_js: "10"
+      node_js: "14.10.1"
       script:
         - yarn
         - ./node_modules/.bin/gulp build
@@ -35,7 +35,7 @@ jobs:
       install: skip
       os: windows
       language: node_js
-      node_js: "10"
+      node_js: "14.10.1"
       script:
         - yarn
         - ./node_modules/.bin/gulp build
@@ -43,7 +43,7 @@ jobs:
       install: skip
       os: linux
       language: node_js
-      node_js: "10"
+      node_js: "14.10.1"
       script:
         - yarn
         - ./node_modules/.bin/gulp release
