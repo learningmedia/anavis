@@ -30,21 +30,21 @@ function unzip(sourceFileName, targetDir, cb) {
         const unzippedFileName = path.join(targetDir, entry.fileName);
         if (/\/$/.test(unzippedFileName)) {
           // directory file names end with '/'
-          mkdirp(unzippedFileName, function (err) {
-            if (err) return cb && cb(err);
-            zipfile.readEntry();
-          });
+          mkdirp(unzippedFileName)
+            .then(() => zipfile.readEntry())
+            .catch(err => cb && cb(err));
         } else {
           // file entry
-          zipfile.openReadStream(entry, function (err, readStream) {
-            if (err) return cb && cb(err);
+          zipfile.openReadStream(entry, function (err1, readStream) {
+            if (err1) return cb && cb(err1);
             // ensure parent directory exists
-            mkdirp(path.dirname(unzippedFileName), function (err) {
-              if (err) return cb && cb(err);
-              readStream.pipe(fs.createWriteStream(unzippedFileName));
-              readStream.on('end', () => zipfile.readEntry());
-              readStream.on('error', err => cb && cb(err));
-            });
+            mkdirp(path.dirname(unzippedFileName))
+              .then(() => {
+                readStream.pipe(fs.createWriteStream(unzippedFileName));
+                readStream.on('end', () => zipfile.readEntry());
+                readStream.on('error', err2 => cb && cb(err2));
+              })
+              .catch(err3 => cb && cb(err3));
           });
         }
       })
