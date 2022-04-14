@@ -28,7 +28,7 @@
     "analysis"
   ],
   "dependencies": {
-    "async": "~2.6.0",
+    "async": "~3.2.2",
     "bignumber.js": "~5.0.0",
     "color": "~2.0.1",
     "color-hash": "~1.0.3",
