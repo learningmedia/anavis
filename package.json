@@ -32,6 +32,7 @@
     "bignumber.js": "~5.0.0",
     "color": "~2.0.1",
     "color-hash": "~1.0.3",
+    "csv-stringify": "~6.2.0",
     "devtron": "~1.4.0",
     "drag-and-drop-files": "~0.0.1",
     "electron-debug": "~3.1.0",
@@ -52,6 +53,7 @@
     "tiny-defer": "~2.0.2",
     "uuid": "~3.1.0",
     "xml2js": "~0.4.19",
+    "yargs": "~17.5.1",
     "yauzl": "~2.9.1",
     "yazl": "~2.4.3"
   },
