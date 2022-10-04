@@ -1,6 +1,6 @@
 # AnaVis
 
-[![Build Status](https://travis-ci.org/learningmedia/anavis.svg?branch=master)](https://travis-ci.org/learningmedia/anavis)
+[![Build Status](https://app.travis-ci.com/learningmedia/anavis.svg?branch=master)](https://app.travis-ci.com/github/learningmedia/anavis)
 
 AnaVis is a tool to visualize musical form.
 

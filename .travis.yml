@@ -21,6 +21,7 @@ jobs:
       language: node_js
       node_js: "14.10.1"
       script:
+        - npm install -g yarn # Make up for the yarn installation failure on Mac
         - yarn
         - ./node_modules/.bin/gulp build
     - stage: compile
