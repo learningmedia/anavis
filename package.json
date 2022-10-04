@@ -62,7 +62,7 @@
     "commits-between": "~0.2.0",
     "del": "~3.0.0",
     "dropbox": "~2.5.13",
-    "electron": "~10.1.1",
+    "electron": "~15.5.5",
     "electron-builder": "~22.8.0",
     "electron-connect": "~0.6.3",
     "electron-icon-maker": "~0.0.5",
