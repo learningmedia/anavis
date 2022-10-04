@@ -71,7 +71,7 @@ function doc2Csv(doc) {
     startPosition: sumPartLengths(doc.parts.slice(0, index)) / totalLength,
     title: part.name,
     color: part.color,
-    text: doc.annotations.map(anno => anno.values[index]).join('\n\n') || ''
+    text: doc.annotations.map(annotation => annotation.values[index]).filter(text => text).join('\n\n') || ''
   }));
 
   return csvStringify(segments, { header: true });
