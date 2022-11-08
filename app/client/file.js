@@ -14,6 +14,7 @@ const fileUtils = require('../shared/file-utils');
 const folderZip = require('../shared/folder-zip');
 const docLoader = require('../shared/doc-loader');
 const Messenger = require('../shared/messenger');
+const csvUtils = require('../shared/csv-utils');
 const events = require('../shared/events');
 const config = require('../shared/config');
 
@@ -153,6 +154,23 @@ function saveWork(work, cb) {
   }
 }
 
+function exportCsv(work, cb) {
+  const options = {
+    properties: ['createDirectory', 'showOverwriteConfirmation', 'dontAddToRecent'],
+    filters: [{ name: 'CSV document', extensions: ['csv'] }]
+  };
+  remote.dialog.showSaveDialog(options)
+    .then(({ filePath }) => {
+      if (filePath) {
+        const csvFileName = filePath.toLowerCase().endsWith('.csv') ? filePath : `${filePath}.csv`;
+        const csvContent = csvUtils.doc2Csv(ko.toJS(work));
+        fs.writeFile(csvFileName, csvContent, 'utf8', err2 => err2 ? cb && cb(err2) : cb && cb());
+      } else {
+        return cb && cb();
+      }
+    });
+}
+
 function close(workToClose) {
   const work = workToClose || appViewModel.currentWork();
   if (!work) return;
@@ -216,4 +234,4 @@ function consolidatePartLengths(doc) {
   return doc;
 }
 
-module.exports = { create, open, openSingle, openAll, save, saveAll, close };
+module.exports = { create, open, openSingle, openAll, save, saveAll, close, exportCsv };

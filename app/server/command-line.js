@@ -4,8 +4,8 @@ const glob = require('glob');
 const rimraf = require('rimraf');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
+const csvUtils = require('../shared/csv-utils');
 const docLoader = require('../shared/doc-loader');
-const { stringify: csvStringify } = require('csv-stringify/dist/cjs/sync.cjs');
 
 function checkCommandLine() {
   const cliArgs = yargs(hideBin(process.argv))
@@ -62,21 +62,6 @@ function doEject(args, cb) {
   });
 }
 
-function doc2Csv(doc) {
-  const sumPartLengths = parts => parts.reduce((accu, part) => accu + part.length, 0);
-
-  const totalLength = sumPartLengths(doc.parts);
-
-  const segments = doc.parts.map((part, index) => ({
-    startPosition: sumPartLengths(doc.parts.slice(0, index)) / totalLength,
-    title: part.name,
-    color: part.color,
-    text: doc.annotations.map(annotation => annotation.values[index]).filter(text => text).join('\n\n') || ''
-  }));
-
-  return csvStringify(segments, { header: true });
-}
-
 function ejectAvdFiles(avdFileNames, index, format, cb) {
   const avdFileName = avdFileNames[index];
   if (!avdFileName) return cb();
@@ -91,7 +76,7 @@ function ejectAvdFiles(avdFileNames, index, format, cb) {
 
     const content = format === 'json'
       ? JSON.stringify(doc, null, 2)
-      : doc2Csv(doc);
+      : csvUtils.doc2Csv(doc);
 
     fs.writeFile(outputFileName, content, 'utf8', err2 => {
       if (err2) return cb(err2);

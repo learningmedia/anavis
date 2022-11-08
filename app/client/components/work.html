@@ -1,9 +1,10 @@
 <div class="Work">
   <div class="Work-header">
-    <span class="Work-headerButton Work-headerButton--close" data-bind="click: onClose"></span>
-    <span class="Work-headerButton Work-headerButton--sound" data-bind="click: addSound"></span>
-    <span class="Work-headerButton Work-headerButton--annotation" data-bind="click: addAnnotation"></span>
-    <span class="Work-headerButton Work-headerButton--autoColorize" data-bind="click: autoColorize"></span>
+    <span title="Schließen" class="Work-headerButton Work-headerButton--close" data-bind="click: onClose"></span>
+    <span title="Sound hinzufügen" class="Work-headerButton Work-headerButton--sound" data-bind="click: addSound"></span>
+    <span title="Anmerkung hinzufügen" class="Work-headerButton Work-headerButton--annotation" data-bind="click: addAnnotation"></span>
+    <span title="Automatisch einfärben" class="Work-headerButton Work-headerButton--autoColorize" data-bind="click: autoColorize"></span>
+    <span title="Als CSV exportieren" class="Work-headerButton Work-headerButton--exportCsv" data-bind="click: exportCsv"></span>
     <span data-bind="text: $component.work._.zipFileName() || 'Unbenannt'"></span>
     <span data-bind="visible: $component.work._.isDirty">*</span>
   </div>

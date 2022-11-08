@@ -7,6 +7,7 @@
 @icon-music-color: @color-light-blue-800;
 @icon-pencil-square-o-color: @color-brown-600;
 @icon-paint-brush-color: @color-green-700;
+@icon-csv-export-color: @color-green-900;
 
 .m-icon {
   .fa;
@@ -35,6 +36,14 @@
   &:before {
     content: @fa-var-pencil-square-o;
     color: @icon-pencil-square-o-color;
+  }
+}
+
+.m-icon-file-excel-o {
+  .m-icon;
+  &:before {
+    content: @fa-var-file-excel-o;
+    color: @icon-csv-export-color;
   }
 }
 
