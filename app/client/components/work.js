@@ -39,6 +39,11 @@ function viewModel(params) {
     autoColorize: () => {
       autoColorizer.colorize(vm.work);
     },
+    exportCsv: () => {
+      file.exportCsv(vm.work, err => {
+        if (err) window.alert(err.message);
+      });
+    },
     onSoundDropped: files => {
       const filePaths = files.map(f => f.path);
       const extensions = filePaths.map(p => (path.extname(p) || '').toLowerCase());
